@@ -13,18 +13,18 @@ class UscisInterface:
         self.browser.select_form(name="caseStatusForm")
         self.browser.form["appReceiptNum"] = receipt_number
         resp = self.browser.submit()
-        UscisInterface.display_msg(resp)
+        return UscisInterface.display_msg(resp)
 
     @staticmethod
     def display_msg(resp):
         soup = BeautifulSoup(resp, features="html5lib")
         div = soup.find('div', attrs={'class': 'rows text-center'})
-        print(div.h1.string, "\t", "\t".join(map(str, div.p.contents)))
+        return div.h1.string, "\t".join(map(str, div.p.contents))
 
 
 if __name__ == "__main__":
     interface = UscisInterface()
 
     prefix = "LIN"
-    for i in range(2015550000, 2015551250):
-        interface.check(receipt_number="{}{}".format(prefix, i))
+    for i in range(2015550000, 2015550250):
+        print(interface.check(receipt_number="{}{}".format(prefix, i)))
