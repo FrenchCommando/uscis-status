@@ -6,7 +6,7 @@ from src.db_stuff import connect_to_database, drop_table, build_table, insert_en
 async def main():
     conn = await connect_to_database(database=uscis_database)
     try:
-        await drop_table(conn=conn, table_name=uscis_table_name)
+        # await drop_table(conn=conn, table_name=uscis_table_name)
         await build_table(conn=conn, table_name=uscis_table_name)
 
         await insert_entry(conn=conn, table_name=uscis_table_name,

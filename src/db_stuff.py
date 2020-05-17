@@ -43,6 +43,7 @@ async def insert_entry(conn, table_name, case_number, timestamp, response_title,
         INSERT INTO {table_name}(case_number, timestamp, response_title, response_message) 
         VALUES($1, $2, $3, $4)
     ''', case_number, timestamp, response_title, response_message)
+    return "All good"
 
 
 async def get_all(conn, table_name):
