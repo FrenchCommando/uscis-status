@@ -21,10 +21,5 @@ class UscisInterface:
         div = soup.find('div', attrs={'class': 'rows text-center'})
         return div.h1.string, "\t".join(map(str, div.p.contents))
 
-
-if __name__ == "__main__":
-    interface = UscisInterface()
-
-    prefix = "LIN"
-    for i in range(2015550000, 2015550250):
-        print(interface.check(receipt_number="{}{}".format(prefix, i)))
+    def check_and_update(self, receipt_number):
+        rep = self.check(receipt_number=receipt_number)

@@ -1,4 +1,7 @@
+aiodns
+aiohttp
 asyncpg
 beautifulsoup4
+cchardet
 flask
 mechanize

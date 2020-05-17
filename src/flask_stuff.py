@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from parse_site import UscisInterface
+from src.parse_site import UscisInterface
 
 
 app = Flask(__name__)
