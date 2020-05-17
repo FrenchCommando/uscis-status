@@ -1,6 +1,4 @@
-import asyncio
 import asyncpg
-from src.constants import uscis_database, uscis_table_name
 from src.db_secrets import postgres_user, postgres_password
 
 
@@ -40,25 +38,16 @@ async def drop_table(conn, table_name):
     ''')
 
 
-async def main():
-    conn = await connect_to_database(database=uscis_database)
-    await drop_table(conn=conn, table_name=uscis_table_name)
-    await build_table(conn=conn, table_name=uscis_table_name)
-
-    # Insert a record into the created table.
+async def insert_entry(conn, table_name, case_number, timestamp, response_title, response_message):
     await conn.execute(f'''
-        INSERT INTO {uscis_table_name}(case_number, timestamp, response_title, response_message) 
+        INSERT INTO {table_name}(case_number, timestamp, response_title, response_message) 
         VALUES($1, $2, $3, $4)
-    ''', 'Alice', "efefefe", "Received", "Type2")
+    ''', case_number, timestamp, response_title, response_message)
 
-    # Select a row from the table.
-    row = await conn.fetchrow(
-        f'SELECT * FROM {uscis_table_name} WHERE case_number = $1', 'Bob')
-    print(row)
-    row2 = await conn.fetch(
-        f'SELECT * FROM {uscis_table_name}')
-    print(row2)
-    print(len(row2))
-    await conn.close()
 
-asyncio.get_event_loop().run_until_complete(main())
+async def get_all(conn, table_name):
+    return await conn.fetch(f'SELECT * FROM {table_name}')
+
+
+async def get_all_case(conn, table_name, case_number):
+    return await conn.fetch(f'SELECT * FROM {table_name} WHERE case_number = $1', case_number)
