@@ -1,3 +1,4 @@
+asyncpg
 beautifulsoup4
 flask
 mechanize
