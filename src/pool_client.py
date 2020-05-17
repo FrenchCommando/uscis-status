@@ -1,13 +1,16 @@
 import asyncio
 import aiohttp
+from src.constants import localhost, port_number
+
+server_path = localhost.format(port=port_number)
 
 
 async def make_requests():
     async with aiohttp.ClientSession() as session:
-        async with session.get('http://localhost:8808') as resp:
+        async with session.get(server_path) as resp:
             print(resp.status)
             print(await resp.text())
-        rep = await session.post('http://localhost:8808', data=b'data')
+        rep = await session.post(server_path, data=b'data')
         print(rep)
 
 loop = asyncio.get_event_loop()
