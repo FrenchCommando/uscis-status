@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from mechanize import Browser
+import datetime
 
 
 class UscisInterface:
@@ -13,7 +14,8 @@ class UscisInterface:
         self.browser.select_form(name="caseStatusForm")
         self.browser.form["appReceiptNum"] = receipt_number
         resp = self.browser.submit()
-        return UscisInterface.display_msg(resp)
+        timestamp = f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S.%f}'
+        return timestamp, *UscisInterface.display_msg(resp)
 
     @staticmethod
     def display_msg(resp):
