@@ -1,5 +1,6 @@
 import asyncpg
 from src.db_secrets import postgres_user, postgres_password
+from src.db_def import table_to_specs
 
 
 async def connect_to_database(database):
@@ -18,31 +19,21 @@ async def connect_to_database(database):
 
 async def build_table(conn, table_name):
     try:
-        await conn.execute(f'''
-            CREATE TABLE {table_name}(
-                id serial PRIMARY KEY,
-                case_number text,
-                timestamp text,
-                response_title text,
-                response_message text
-            )
-        ''')
+        await conn.execute(f'CREATE TABLE {table_name}({table_to_specs[table_name]})')
     except asyncpg.exceptions.DuplicateTableError:
         print(f"Table {table_name} already exists")
         pass
 
 
 async def drop_table(conn, table_name):
-    await conn.execute(f'''
-        DROP TABLE IF EXISTS {table_name};
-    ''')
+    await conn.execute(f'DROP TABLE IF EXISTS {table_name};')
 
 
-async def insert_entry(conn, table_name, case_number, timestamp, response_title, response_message):
+async def insert_entry(conn, table_name, **kwargs):
     await conn.execute(f'''
-        INSERT INTO {table_name}(case_number, timestamp, response_title, response_message) 
-        VALUES($1, $2, $3, $4)
-    ''', case_number, timestamp, response_title, response_message)
+        INSERT INTO {table_name}({",".join(kwargs.keys())}) 
+        VALUES({",".join(f"${i+1}" for i in range(len(kwargs.keys())))})
+    ''', *kwargs.values())
     return "All good"
 
 

@@ -1,12 +1,13 @@
 import asyncio
 from src.constants import uscis_database, uscis_table_name
-from src.db_stuff import connect_to_database, drop_table, build_table, insert_entry, get_all, get_all_case
+from src.db_stuff import connect_to_database, drop_table, build_table, insert_entry, \
+    get_all, get_all_case
 
 
 async def main():
     conn = await connect_to_database(database=uscis_database)
     try:
-        # await drop_table(conn=conn, table_name=uscis_table_name)
+        await drop_table(conn=conn, table_name=uscis_table_name)
         await build_table(conn=conn, table_name=uscis_table_name)
 
         await insert_entry(conn=conn, table_name=uscis_table_name,
@@ -19,6 +20,12 @@ async def main():
                            timestamp="20200202",
                            response_title="received2",
                            response_message="received_message")
+        await insert_entry(
+            conn=conn, table_name=uscis_table_name,
+            case_number="Charles",
+            timestamp="202000000202",
+            response_title="received3",
+            response_message="received_message3")
 
         # Select a row from the table.
         row = await get_all_case(conn=conn, table_name=uscis_table_name, case_number="Alice")
