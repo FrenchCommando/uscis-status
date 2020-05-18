@@ -22,7 +22,7 @@ async def handle_power(request):
 
 
 async def handle_case(request):
-    power = request.match_info.get('case_number', "number")
+    power = request.match_info.get('case_number', "default_number")
     return web.Response(
         text="2 ^ {} is {}".format(power, power))
 
@@ -42,7 +42,7 @@ async def init_app():
         async with connection.transaction():
             await build_table(conn=connection, table_name=uscis_table_name)
 
-    app_inst.router.add_route('GET', '/{power:\d+}', handle_power)
+    app_inst.router.add_route('POST', '/{power:\d+}', handle_power)
     app_inst.router.add_route('GET', '/{case_number}', handle_case)
     app_inst.router.add_route('GET', '/', handle)
     return app_inst
