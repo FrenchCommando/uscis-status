@@ -1,7 +1,7 @@
 import asyncio
 from src.constants import uscis_database, uscis_table_name
 from src.db_stuff import connect_to_database, drop_table, build_table, insert_entry, get_all
-from src.parse_site import UscisInterface
+from src.parse_site import check as uscis_check
 
 
 async def main():
@@ -14,7 +14,7 @@ async def main():
         for i in range(2015550256, 2015550260):
             receipt_number = "{}{}".format(prefix, i)
             print(i)
-            timestamp, title, message = UscisInterface.check(receipt_number=receipt_number)
+            timestamp, title, message = uscis_check(receipt_number=receipt_number)
             print()
             await insert_entry(conn=conn, table_name=uscis_table_name,
                                case_number=receipt_number,
