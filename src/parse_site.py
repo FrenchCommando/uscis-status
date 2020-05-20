@@ -4,16 +4,16 @@ import datetime
 
 
 class UscisInterface:
-    def __init__(self):
-        url = 'https://egov.uscis.gov/casestatus/mycasestatus.do'
-        self.browser = Browser()
-        self.browser.open(url)
+    url = 'https://egov.uscis.gov/casestatus/mycasestatus.do'
 
-    async def check(self, receipt_number):
+    @staticmethod
+    def check(receipt_number):
+        browser = Browser()
+        browser.open(UscisInterface.url)
         print(receipt_number, end="\t")
-        self.browser.select_form(name="caseStatusForm")
-        self.browser.form["appReceiptNum"] = receipt_number
-        resp = self.browser.submit()
+        browser.select_form(name="caseStatusForm")
+        browser.form["appReceiptNum"] = receipt_number
+        resp = browser.submit()
         timestamp = f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S.%f}'
         return timestamp, *UscisInterface.display_msg(resp)
 
@@ -23,5 +23,6 @@ class UscisInterface:
         div = soup.find('div', attrs={'class': 'rows text-center'})
         return div.h1.string, "\t".join(map(str, div.p.contents))
 
-    def check_and_update(self, receipt_number):
-        rep = self.check(receipt_number=receipt_number)
+    @staticmethod
+    def check_and_update(receipt_number):
+        rep = UscisInterface.check(receipt_number=receipt_number)
