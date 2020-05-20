@@ -9,7 +9,7 @@ class UscisInterface:
         self.browser = Browser()
         self.browser.open(url)
 
-    def check(self, receipt_number):
+    async def check(self, receipt_number):
         print(receipt_number, end="\t")
         self.browser.select_form(name="caseStatusForm")
         self.browser.form["appReceiptNum"] = receipt_number

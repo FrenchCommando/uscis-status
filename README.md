@@ -33,6 +33,7 @@ using Beautifulsoup and mechanize to parse the website of USCIS
 
 - Fancy (too fancy) mapping from status type to message content
 - Using a DB hoping that the code can automatically add new types as the code runs
+
 `Case Received -> "Your case {case_number} has been accepted"`
 
 Need to check if same title always lead to same content
