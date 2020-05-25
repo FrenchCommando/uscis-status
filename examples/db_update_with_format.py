@@ -16,6 +16,8 @@ async def main():
         async def update_case_internal(receipt_number):
             rep = await get_all_case(conn=conn, table_name=test_table_name, case_number=receipt_number)
             timestamp, title, message = uscis_check(receipt_number=receipt_number)
+            if title is None:  # Case is None
+                return
             if rep:
                 print(rep)
                 current_args = args_to_string(d=get_arguments_from_string(s=message, status=title))
