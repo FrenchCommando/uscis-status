@@ -1,6 +1,7 @@
 import asyncio
 from src.constants import uscis_database, uscis_table_name
-from src.db_stuff import connect_to_database, drop_table, build_table, insert_entry, get_all, get_all_case, update_case
+from src.db_stuff import connect_to_database, drop_table, build_table, insert_entry, \
+    get_all, get_all_case, update_case, get_attribute_from_case
 from src.parse_site import check as uscis_check
 
 
@@ -16,10 +17,13 @@ async def main():
             timestamp, title, message = uscis_check(receipt_number=receipt_number)
             if rep:
                 print(rep)
+                old_message = rep[0]['history']
+                print(old_message)
+                new_message = "|".join([message, old_message]) if old_message else message
                 rep2 = await update_case(conn=conn, table_name=test_table_name, case_number=receipt_number,
                                          last_updated=timestamp,
                                          current_status=title,
-                                         history=message  # .replace("\"", "$")
+                                         history=new_message
                                          )
                 print(rep2)
             else:

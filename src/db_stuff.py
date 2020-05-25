@@ -46,6 +46,10 @@ async def get_all_case(conn, table_name, case_number):
     return await conn.fetch(f'SELECT * FROM {table_name} WHERE case_number = $1', case_number)
 
 
+async def get_attribute_from_case(conn, table_name, case_number, attribute):
+    return await conn.fetch(f'SELECT {attribute} FROM {table_name} WHERE case_number = $1', case_number)
+
+
 async def update_case(conn, table_name, case_number, **kwargs):
     update_msg = ",\n\t\t".join(f"{k} = \'{v}\'" for k, v in kwargs.items())
     command = f'''
@@ -53,6 +57,5 @@ async def update_case(conn, table_name, case_number, **kwargs):
             SET {update_msg} 
             WHERE case_number = '{case_number}';
     '''
-    print(command)
     await conn.execute(command)
     return "All good"
