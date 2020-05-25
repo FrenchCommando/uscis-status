@@ -13,15 +13,16 @@ async def main():
 
         prefix = "LIN"
         for i in range(2015550256, 2015550260):
-            receipt_number = "{}{}".format(prefix, i)
-            print(i)
-            timestamp, title, message = uscis_check(receipt_number=receipt_number)
-            print()
-            await insert_entry(conn=conn, table_name=test_table_name,
-                               case_number=receipt_number,
-                               last_updated=timestamp,
-                               current_status=title,
-                               history=message)
+            async def update_case(receipt_number):
+                print(i)
+                timestamp, title, message = uscis_check(receipt_number=receipt_number)
+                print()
+                await insert_entry(conn=conn, table_name=test_table_name,
+                                   case_number=receipt_number,
+                                   last_updated=timestamp,
+                                   current_status=title,
+                                   history=message)
+            await update_case(receipt_number=f"{prefix}{i}")
 
         row = await get_all(conn=conn, table_name=test_table_name)
         for u in row:
