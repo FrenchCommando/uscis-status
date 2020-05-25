@@ -70,10 +70,12 @@ async def main():
             2015550361,  # Case Was Received - re
             2015550259,  # Card Was Delivered To Me By The Post Office
             2015550256,  # Name Was Updated
+            2015550331,  # Name Was Updated
             2015550284,  # Notice Explaining USCIS Actions Was Mailed
+            2015550336,  # Notice Was Returned To USCIS Because The Post Office Could Not Deliver It
         ]:
             await test_number(number=i)
-        for i in range(2015550164, 2015550169):
+        for i in range(2015551164, 2015551169):
             await test_number(number=i)
 
     finally:
