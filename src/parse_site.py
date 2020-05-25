@@ -21,7 +21,3 @@ def display_msg(resp):
     soup = BeautifulSoup(resp, features="html5lib")
     div = soup.find('div', attrs={'class': 'rows text-center'})
     return div.h1.string, "\t".join(map(str, div.p.contents))
-
-
-def check_and_update(receipt_number):
-    rep = check(receipt_number=receipt_number)
