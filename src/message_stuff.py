@@ -8,28 +8,32 @@ status_to_msg = {
 
 if __name__ == "__main__":
 
-    print(status_to_msg["Case Was Received"].format(
-        date="April 1, 2020",
-        form_long_name="long_name",
-        receipt_number="LIN45435435",
-        notice_deadline="April 7, 2020",
-    ))
+    print("Case Was Received",
+          status_to_msg["Case Was Received"].format(
+            date="April 1, 2020",
+            form_long_name="long_name",
+            receipt_number="LIN45435435",
+            notice_deadline="April 7, 2020",
+          ))
 
-    print(status_to_msg["Case Was Approved"].format(
-        date="April 1, 2020",
-        form_long_name="long_name",
-        receipt_number="LIN45435435",
-        notice_deadline="April 7, 2020",
-    ))
+    print("Case Was Approved",
+          status_to_msg["Case Was Approved"].format(
+            date="April 1, 2020",
+            form_long_name="long_name",
+            receipt_number="LIN45435435",
+            notice_deadline="April 7, 2020",
+          ))
 
-    print(status_to_msg["Card Was Delivered To Me By The Post Office"].format(
-        date="April 1, 2020",
-        receipt_number="LIN45435435",
-        tracking_number="019490328490289043",
-    ))
+    print("Card Was Delivered To Me By The Post Office",
+          status_to_msg["Card Was Delivered To Me By The Post Office"].format(
+            date="April 1, 2020",
+            receipt_number="LIN45435435",
+            tracking_number="019490328490289043",
+          ))
 
-    print(status_to_msg["Name Was Updated"].format(
-        date="April 1, 2020",
-        form_long_name="long_name",
-        receipt_number="LIN45435435",
-    ))
+    print("Name Was Updated",
+          status_to_msg["Name Was Updated"].format(
+            date="April 1, 2020",
+            form_long_name="long_name",
+            receipt_number="LIN45435435",
+          ))
