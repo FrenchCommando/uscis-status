@@ -107,3 +107,62 @@ print("Case Was Sent To The Department of State",
         date="April 1, 2020",
         receipt_number="LIN45435435",
       ))
+
+print("Card Was Picked Up By The United States Postal Service",
+      status_to_msg["Card Was Picked Up By The United States Postal Service"].format(
+        date="April 1, 2020",
+        receipt_number="LIN45435435",
+        tracking_number="019490328490289043",
+      ))
+
+print("Case Rejected Because The Version Of The Form I Sent Is No Longer Accepted",
+      status_to_msg["Case Rejected Because The Version Of The Form I Sent Is No Longer Accepted"].format(
+        date="April 1, 2020",
+        receipt_number="LIN45435435",
+        form_long_name="long_name",
+        notice_deadline="April 7, 2020",
+      ))
+
+print("Fees Were Waived",
+      status_to_msg["Fees Were Waived"].format(
+        date="April 1, 2020",
+        receipt_number="LIN45435435",
+        form_long_name="long_name",
+        notice_deadline="April 7, 2020",
+      ))
+
+print("Case Was Rejected Because I Did Not Sign My Form",
+      status_to_msg["Case Was Rejected Because I Did Not Sign My Form"].format(
+        date="April 1, 2020",
+        receipt_number="LIN45435435",
+        form_long_name="long_name",
+        notice_deadline="April 7, 2020",
+      ))
+
+print("Card Was Mailed To Me",
+      status_to_msg["Card Was Mailed To Me"].format(
+        date="April 1, 2020",
+        receipt_number="LIN45435435",
+        form_long_name="long_name",
+        notice_deadline="April 7, 2020",
+      ))
+
+print("Case Was Updated To Show Fingerprints Were Taken",
+      status_to_msg["Case Was Updated To Show Fingerprints Were Taken"].format(
+        date="April 1, 2020",
+        receipt_number="LIN45435435",
+        form_long_name="long_name",
+      ))
+
+print("New Card Is Being Produced",
+      status_to_msg["New Card Is Being Produced"].format(
+        date="April 1, 2020",
+        receipt_number="LIN45435435",
+      ))
+
+print("Card Is Being Returned to USCIS by Post Office",
+      status_to_msg["Card Is Being Returned to USCIS by Post Office"].format(
+        date="April 1, 2020",
+        receipt_number="LIN45435435",
+        tracking_number="019490328490289043",
+      ))

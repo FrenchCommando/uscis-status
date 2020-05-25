@@ -15,6 +15,14 @@ status_to_msg = {
     "Case Was Rejected Because It Was Improperly Filed": """On {date}, we rejected your {form_long_name}, Receipt Number {receipt_number}, because it was not filed correctly.  We mailed your case back to you, including any supporting materials and fee.  Please follow the instructions to resubmit your case.  If you do not receive your rejected case by {notice_deadline}, contact the USCIS Contact Center at \twww.uscis.gov/contactcenter\t.  If you move, go to \twww.uscis.gov/addresschange\t to give us your new mailing address. """,
     "Case Transferred And New Office Has Jurisdiction": """On {date}, your {form_long_name}, Receipt Number {receipt_number}, was transferred to another USCIS office. That office now has jurisdiction over your case. We sent you a notice that explains why we moved your case. Please follow the instructions in the notice. If you do not receive your notice by {notice_deadline}, please go to \twww.uscis.gov/e-request\t to request a copy of the notice. If you move, go to \twww.uscis.gov/addresschange\t to give us your new mailing address.""",
     "Case Was Sent To The Department of State": """On {date}, we sent your case, Receipt Number {receipt_number}, to the Department of State for visa processing.  You can find general information on Consular Processing by visiting our website at www.uscis.gov .  The website will provide information on what to do next, who to contact, and how to inform us of any changes in your situation or address.""",
+    "Card Was Picked Up By The United States Postal Service": """On {date}, the Post Office picked up mail containing your new card for Receipt Number {receipt_number}. We mailed your card to the address you gave us. The tracking number assigned is {tracking_number}. You can use your tracking number at \twww.USPS.com\t in the Quick Tools Tracking section. If you did not receive the card, please go to \twww.uscis.gov/e-request\t to request that we resend the card to you. If you move, go to \twww.uscis.gov/addresschange\t to give us your new mailing address.""",
+    "Case Rejected Because The Version Of The Form I Sent Is No Longer Accepted": """On {date}, we rejected your {form_long_name}, Receipt Number {receipt_number}, because you used an old version of the form that we no longer accept.  We mailed your case back to you, including any supporting materials and the payment.  Please follow the instructions to resubmit your case.  If you do not receive your rejected case by {notice_deadline}, contact the USCIS Contact Center at \twww.uscis.gov/contactcenter\t.  If you move, go to \twww.uscis.gov/addresschange\t to give us your new mailing address.""",
+    "Fees Were Waived": """On {date}, we received your case and waived the filing fee for your {form_long_name}, Receipt Number {receipt_number}.  We mailed you a notice describing how we will process your case.  Please follow the instructions in the notice.  If you do not receive your receipt notice by {notice_deadline}, contact the USCIS Contact Center at \twww.uscis.gov/contactcenter\t.  If you move, go to \twww.uscis.gov/addresschange\t to give us your new mailing address.""",
+    "Case Was Rejected Because I Did Not Sign My Form": """On {date}, we rejected your {form_long_name}, Receipt Number {receipt_number}, because you did not sign your form.  We mailed your case back to you, including any supporting materials.  Please follow the instructions to resubmit your case.  If you do not receive your rejected case by {notice_deadline}, contact the USCIS Contact Center at \twww.uscis.gov/contactcenter\t.  If you move, go to \twww.uscis.gov/addresschange\t to give us your new mailing address. """,
+    "Card Was Mailed To Me": """On {date}, we mailed your new card for your {form_long_name}, Receipt Number {receipt_number}, to the address you gave us.  If you do not receive your card by {notice_deadline}, please go to \twww.uscis.gov/e-request\t  to request that we send your new card to you.  If you move, go to \twww.uscis.gov/addresschange\t  to give us your new mailing address.""",
+    "Case Was Updated To Show Fingerprints Were Taken": """As of {date}, fingerprints relating to your {form_long_name}, Receipt Number {receipt_number}, have been applied to your case.  If you move, go to \twww.uscis.gov/addresschange\t  to give us your new mailing address.""",
+    "New Card Is Being Produced": """On {date}, we ordered your new card for Receipt Number {receipt_number}, and will mail it to the address you gave us. If you move, go to \twww.uscis.gov/addresschange\t to give us your new mailing address.""",
+    "Card Is Being Returned to USCIS by Post Office": """On {date}, the Post Office reported that they are returning your new card for Receipt Number {receipt_number}, to us. We mailed your card to the address you gave us, but the Post Office could not deliver it. The tracking number assigned is {tracking_number}. You can use your tracking number at \twww.USPS.com\t in the Quick Tools Tracking section. Please go to \twww.uscis.gov/e-request\t to request that we resend the card to you. If you move, go to \twww.uscis.gov/addresschange\t to give us your new mailing address.""",
     None: "",
 }
 
@@ -22,8 +30,12 @@ sep_key_value = ":"
 sep_entries = "|"
 
 
+def remove_tags(s):
+    return re.sub(pattern=r'<[^>]+>', repl='', string=s)
+
+
 def match(s, template):
-    s = re.sub(pattern=r'<[^>]+>', repl='', string=s)
+    s = remove_tags(s=s)
     return re.match(pattern=template.replace("{", "(?P<").replace("}", ">.*)"), string=s).groupdict()
 
 
