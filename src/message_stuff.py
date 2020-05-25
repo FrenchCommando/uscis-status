@@ -7,6 +7,7 @@ status_to_msg = {
     "Card Was Delivered To Me By The Post Office": """On {date}, the Post Office delivered your new card for Receipt Number {receipt_number}, to the address that you gave us.  The tracking number assigned is {tracking_number}.  You can use your tracking number at \t<a href="https://tools.usps.com/go/TrackConfirmAction_input?origTrackNum={tracking_number}" target="_blank">www.USPS.com</a>\t in the Quick Tools Tracking section.  If you move, go to \t<a href="https://egov.uscis.gov/coa/displayCOAForm.do" target="_blank">www.uscis.gov/addresschange</a>\t to give us your new mailing address.""",
     "Name Was Updated": """On {date}, we updated your name for your {form_long_name}, Receipt Number {receipt_number}. If you move, go to \t<a href="https://egov.uscis.gov/coa/displayCOAForm.do" target="_blank">www.uscis.gov/addresschange</a>\t to give us your new mailing address.""",
     "Request for Additional Evidence Was Sent": """On {date}, we sent a request for additional evidence for your {form_long_name}, Receipt Number {receipt_number}.  The request for evidence explains what we need from you.  We will not take action on your case until we receive the evidence or the deadline to submit it expires. Please follow the instructions in the request for evidence.  If you do not receive your request for additional evidence by {notice_deadline}, please go to \t<a href="https://egov.uscis.gov/e-Request/Intro.do" target="_blank">www.uscis.gov/e-request</a>\t  to request a copy.  If you move, go to \t<a href="https://egov.uscis.gov/coa/displayCOAForm.do" target="_blank">www.uscis.gov/addresschange</a>\t  to give us your new mailing address.""",
+    "Notice Explaining USCIS Actions Was Mailed": """On {date}, we began reviewing your {form_long_name}, Receipt Number {receipt_number}.  We mailed you a notice informing you of the action we intend to take on your case.  Please follow the instructions in the notice and submit any requested materials.  If you do not receive your notice by {notice_deadline}, contact the USCIS Contact Center at \t<a href="https://www.uscis.gov/contactcenter" target="_blank">www.uscis.gov/contactcenter</a>\t.  If you move, go to \t<a href="https://egov.uscis.gov/coa/displayCOAForm.do" target="_blank">www.uscis.gov/addresschange</a>\t  to give us your new mailing address. """,
 }
 
 sep_key_value = ":"
@@ -83,6 +84,14 @@ if __name__ == "__main__":
 
     print("Request for Additional Evidence Was Sent",
           status_to_msg["Request for Additional Evidence Was Sent"].format(
+            date="April 1, 2020",
+            form_long_name="long_name",
+            receipt_number="LIN45435435",
+            notice_deadline="April 7, 2020",
+          ))
+
+    print("Notice Explaining USCIS Actions Was Mailed",
+          status_to_msg["Notice Explaining USCIS Actions Was Mailed"].format(
             date="April 1, 2020",
             form_long_name="long_name",
             receipt_number="LIN45435435",
