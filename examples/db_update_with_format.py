@@ -79,10 +79,13 @@ async def main():
             2015550567,  # Fee Will Be Refunded
             2015550574,  # Case Was Rejected Because It Was Improperly Filed
             2015550575,  # Case Was Rejected Because It Was Improperly Filed
+            2015550001,  # Case Transferred And New Office Has Jurisdiction
+            2015550002,  # Case Transferred And New Office Has Jurisdiction
+            2015550085,  # Case Was Sent To The Department of State
             9999999999,  # None
         ]:
             await test_number(number=i)
-        for i in range(2015551164, 2015551169):
+        for i in range(2015550000, 2015551169):
             await test_number(number=i)
 
     finally:

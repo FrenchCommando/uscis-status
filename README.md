@@ -60,3 +60,8 @@ Need to check if same title always lead to same content
 I Probably Should Read that
 
 https://codereview.stackexchange.com/questions/155681/optimizing-the-speed-of-a-web-scraper
+
+#
+Read about USCIS number
+
+https://citizenpath.com/uscis-receipt-number-explained/

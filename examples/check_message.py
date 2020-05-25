@@ -95,3 +95,15 @@ print("Case Was Rejected Because It Was Improperly Filed",
         receipt_number="LIN45435435",
         notice_deadline="April 7, 2020",
       ))
+print("Case Transferred And New Office Has Jurisdiction",
+      status_to_msg["Case Transferred And New Office Has Jurisdiction"].format(
+        date="April 1, 2020",
+        form_long_name="long_name",
+        receipt_number="LIN45435435",
+        notice_deadline="April 7, 2020",
+      ))
+print("Case Was Sent To The Department of State",
+      status_to_msg["Case Was Sent To The Department of State"].format(
+        date="April 1, 2020",
+        receipt_number="LIN45435435",
+      ))
