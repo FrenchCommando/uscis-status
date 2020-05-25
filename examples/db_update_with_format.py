@@ -16,8 +16,6 @@ async def main():
         async def update_case_internal(receipt_number):
             rep = await get_all_case(conn=conn, table_name=test_table_name, case_number=receipt_number)
             timestamp, title, message = uscis_check(receipt_number=receipt_number)
-            if title is None:  # Case is None
-                return
             if rep:
                 print(rep)
                 current_args = args_to_string(d=get_arguments_from_string(s=message, status=title))
@@ -39,7 +37,8 @@ async def main():
             else:
                 print()
                 current_args = args_to_string(d=get_arguments_from_string(s=message, status=title))
-                print(message == rebuild_string_from_template(status=title, **string_to_args(s=current_args)))
+                if title is not None:
+                    print(message == rebuild_string_from_template(status=title, **string_to_args(s=current_args)))
 
                 await insert_entry(conn=conn, table_name=test_table_name,
                                    case_number=receipt_number,
@@ -80,6 +79,7 @@ async def main():
             2015550567,  # Fee Will Be Refunded
             2015550574,  # Case Was Rejected Because It Was Improperly Filed
             2015550575,  # Case Was Rejected Because It Was Improperly Filed
+            9999999999,  # None
         ]:
             await test_number(number=i)
         for i in range(2015551164, 2015551169):
