@@ -60,9 +60,18 @@ async def main():
             await read_db()
             print()
 
-        for i in range(2015550360, 2015550370):
+        for i in [
+            2015550361,  # Case Was Received
+            2015550363,  # Case Was Received
+            2015550362,  # Case Was Approved
+            2015550364,  # Case Was Approved
+            2015550360,  # Request for Additional Evidence Was Sent
+            2015550064,  # Request for Additional Evidence Was Sent
+            2015550361,  # Case Was Received - re
+        ]:
             await test_number(number=i)
-        await test_number(number=2015550265)
+        for i in range(2015550164, 2015550169):
+            await test_number(number=i)
 
     finally:
         await conn.close()
