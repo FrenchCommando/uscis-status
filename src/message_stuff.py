@@ -1,3 +1,6 @@
+import re
+
+
 status_to_msg = {
     "Case Was Received": """On {date}, we received your {form_long_name}, Receipt Number {receipt_number}, and sent you the receipt notice that describes how we will process your case.  Please follow the instructions in the notice.  If you do not receive your receipt notice by {notice_deadline}, contact the USCIS Contact Center at \t<a href="https://www.uscis.gov/contactcenter" target="_blank">www.uscis.gov/contactcenter</a>\t.  If you move, go to \t<a href="https://egov.uscis.gov/coa/displayCOAForm.do" target="_blank">www.uscis.gov/addresschange</a>\t to give us your new mailing address.""",
     "Case Was Approved": """On {date}, we approved your {form_long_name}, Receipt Number {receipt_number}.  We sent you an approval notice.  Please follow the instructions in the notice. If you do not receive your approval notice by {notice_deadline}, please go to \t<a href="https://egov.uscis.gov/e-Request/Intro.do" target="_blank">www.uscis.gov/e-request</a>\t.  If you move, go to \t<a href="https://egov.uscis.gov/coa/displayCOAForm.do" target="_blank">www.uscis.gov/addresschange</a>\t  to give us your new mailing address.  """,
@@ -6,7 +9,22 @@ status_to_msg = {
 }
 
 
+def match(s, template):
+    m = re.findall(pattern=r'\{[^{}]*\}', string=template)
+    keys = [k[1:-1] for k in m]
+    mod_template = re.sub(pattern=r'\{[^{}]*\}', repl='(.*)', string=template)
+    matched = re.match(pattern=mod_template, string=s)
+    d = dict(zip(keys, matched.groups()))
+    return d
+
+
 if __name__ == "__main__":
+
+    v_s = """On April 7, 2020, we received your Form I-765, Application for Employment Authorization, Receipt Number LIN2015550257, and sent you the receipt notice that describes how we will process your case.  Please follow the instructions in the notice.  If you do not receive your receipt notice by May 7, 2020, contact the USCIS Contact Center at \t<a href="https://www.uscis.gov/contactcenter" target="_blank">www.uscis.gov/contactcenter</a>\t.  If you move, go to \t<a href="https://egov.uscis.gov/coa/displayCOAForm.do" target="_blank">www.uscis.gov/addresschange</a>\t to give us your new mailing address."""
+    v_template = status_to_msg["Case Was Received"]
+    print(match(s=v_s, template=v_template))
+    print(v_template.format(**match(s=v_s, template=v_template)))
+    print(v_template.format(**match(s=v_s, template=v_template)) == v_s)
 
     print("Case Was Received",
           status_to_msg["Case Was Received"].format(
