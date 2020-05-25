@@ -20,6 +20,8 @@ sep_entries = "|"
 
 
 def match(s, template):
+    s = re.sub(pattern=r'<[^<>]*?>', repl='', string=s)
+    template = re.sub(pattern=r'<[^<>]*?>', repl='', string=template)
     return re.match(pattern=template.replace("{", "(?P<").replace("}", ">.*)"), string=s).groupdict()
 
 
