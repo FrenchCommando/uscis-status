@@ -60,7 +60,7 @@ async def main():
             await read_db()
             print()
 
-        for i in [
+        for i in [  # just realized this list will be obsolete
             2015550361,  # Case Was Received
             2015550363,  # Case Was Received
             2015550362,  # Case Was Approved
@@ -73,6 +73,11 @@ async def main():
             2015550331,  # Name Was Updated
             2015550284,  # Notice Explaining USCIS Actions Was Mailed
             2015550336,  # Notice Was Returned To USCIS Because The Post Office Could Not Deliver It
+            2015550503,  # Withdrawal Acknowledgement Notice Was Sent
+            2015550507,  # Response To USCIS' Request For Evidence Was Received
+            2015550567,  # Fee Will Be Refunded
+            2015550574,  # Case Was Rejected Because It Was Improperly Filed
+            2015550575,  # Case Was Rejected Because It Was Improperly Filed
         ]:
             await test_number(number=i)
         for i in range(2015551164, 2015551169):
