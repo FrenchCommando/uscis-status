@@ -10,12 +10,7 @@ status_to_msg = {
 
 
 def match(s, template):
-    m = re.findall(pattern=r'\{[^{}]*\}', string=template)
-    keys = [k[1:-1] for k in m]
-    mod_template = re.sub(pattern=r'\{[^{}]*\}', repl='(.*)', string=template)
-    matched = re.match(pattern=mod_template, string=s)
-    d = dict(zip(keys, matched.groups()))
-    return d
+    return re.match(pattern=template.replace("{", "(?P<").replace("}", ">.*)"), string=s).groupdict()
 
 
 if __name__ == "__main__":
