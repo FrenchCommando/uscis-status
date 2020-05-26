@@ -6,7 +6,7 @@ using Beautifulsoup and mechanize to parse the website of USCIS
     - requests are logged and added to the database
         - timestamped (usual datetime format with ms)
         - message is compressed: the number of templates is small
-            - classes (can they be automatically generated from)
+            - `message_stuff.py`
     - this is the only way to add entries to the database
 - request to the api
     - managed by api
@@ -27,9 +27,10 @@ using Beautifulsoup and mechanize to parse the website of USCIS
 ## Case data
 
 - Case Number
-- Last updated: Timestamp ? String ?
-- Current Status: Date - Case Status(kwargs)
-- History: Date:CaseStatus(kwargs)|History
+- Last updated: Timestamp String
+- Current Status: "Received / Approved" - specific string
+- Current Args: Date - Form Number - Tracking Number
+- History: CaseStatus:CurrentArgs|History
 
 ## Status
 
@@ -47,6 +48,7 @@ Need to check if same title always lead to same content
         - another date (deadline for receipt)
         - form number and name
         - tracking number
+    - html tags are removed
 
 ## User Account
 
