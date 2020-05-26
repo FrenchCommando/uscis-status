@@ -167,9 +167,16 @@ print("Card Is Being Returned to USCIS by Post Office",
         tracking_number="019490328490289043",
       ))
 
-
 print("Date of Birth Was Updated",
       status_to_msg["Date of Birth Was Updated"].format(
+        date="April 1, 2020",
+        receipt_number="LIN45435435",
+        form_long_name="long_name",
+      ))
+
+
+print("Form G-28 Was Rejected Because It Was Improperly Filed",
+      status_to_msg["Form G-28 Was Rejected Because It Was Improperly Filed"].format(
         date="April 1, 2020",
         receipt_number="LIN45435435",
         form_long_name="long_name",

@@ -64,35 +64,36 @@ async def main():
             print()
 
         for i in [  # just realized this list will be obsolete
-            2015550361,  # Case Was Received
-            2015550363,  # Case Was Received
-            2015550362,  # Case Was Approved
-            2015550364,  # Case Was Approved
-            2015550360,  # Request for Additional Evidence Was Sent
-            2015550064,  # Request for Additional Evidence Was Sent
-            2015550361,  # Case Was Received - re
-            2015550259,  # Card Was Delivered To Me By The Post Office
-            2015550256,  # Name Was Updated
-            2015550331,  # Name Was Updated
-            2015550284,  # Notice Explaining USCIS Actions Was Mailed
-            2015550336,  # Notice Was Returned To USCIS Because The Post Office Could Not Deliver It
-            2015550503,  # Withdrawal Acknowledgement Notice Was Sent
-            2015550507,  # Response To USCIS' Request For Evidence Was Received
-            2015550567,  # Fee Will Be Refunded
-            2015550574,  # Case Was Rejected Because It Was Improperly Filed
-            2015550575,  # Case Was Rejected Because It Was Improperly Filed
-            2015550001,  # Case Transferred And New Office Has Jurisdiction
-            2015550002,  # Case Transferred And New Office Has Jurisdiction
-            2015550085,  # Case Was Sent To The Department of State
-            2015550025,  # Card Was Picked Up By The United States Postal Service
-            2015550037,  # Case Rejected Because The Version Of The Form I Sent Is No Longer Accepted
-            2015550095,  # Fees Were Waived
-            2015550110,  # Case Was Rejected Because I Did Not Sign My Form
-            2015550118,  # Card Was Mailed To Me
-            2015550139,  # Case Was Updated To Show Fingerprints Were Taken
-            2015550155,  # New Card Is Being Produced
-            2015550236,  # Card Is Being Returned to USCIS by Post Office
-            2015650015,  # Date of Birth Was Updated
+            # 2015550361,  # Case Was Received
+            # 2015550363,  # Case Was Received
+            # 2015550362,  # Case Was Approved
+            # 2015550364,  # Case Was Approved
+            # 2015550360,  # Request for Additional Evidence Was Sent
+            # 2015550064,  # Request for Additional Evidence Was Sent
+            # 2015550361,  # Case Was Received - re
+            # 2015550259,  # Card Was Delivered To Me By The Post Office
+            # 2015550256,  # Name Was Updated
+            # 2015550331,  # Name Was Updated
+            # 2015550284,  # Notice Explaining USCIS Actions Was Mailed
+            # 2015550336,  # Notice Was Returned To USCIS Because The Post Office Could Not Deliver It
+            # 2015550503,  # Withdrawal Acknowledgement Notice Was Sent
+            # 2015550507,  # Response To USCIS' Request For Evidence Was Received
+            # 2015550567,  # Fee Will Be Refunded
+            # 2015550574,  # Case Was Rejected Because It Was Improperly Filed
+            # 2015550575,  # Case Was Rejected Because It Was Improperly Filed
+            # 2015550001,  # Case Transferred And New Office Has Jurisdiction
+            # 2015550002,  # Case Transferred And New Office Has Jurisdiction
+            # 2015550085,  # Case Was Sent To The Department of State
+            # 2015550025,  # Card Was Picked Up By The United States Postal Service
+            # 2015550037,  # Case Rejected Because The Version Of The Form I Sent Is No Longer Accepted
+            # 2015550095,  # Fees Were Waived
+            # 2015550110,  # Case Was Rejected Because I Did Not Sign My Form
+            # 2015550118,  # Card Was Mailed To Me
+            # 2015550139,  # Case Was Updated To Show Fingerprints Were Taken
+            # 2015550155,  # New Card Is Being Produced
+            # 2015550236,  # Card Is Being Returned to USCIS by Post Office
+            # 2015650015,  # Date of Birth Was Updated
+            2015650603,  # Form G-28 Was Rejected Because It Was Improperly Filed
             9999999999,  # None
         ]:
             await test_number(number=i)
