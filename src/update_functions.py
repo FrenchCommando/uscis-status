@@ -1,20 +1,19 @@
-import asyncio
 from src.constants import uscis_database, uscis_table_name
 from src.db_stuff import connect_to_database, drop_table, build_table, insert_entry, \
-    get_all, get_all_case, update_case
+    get_all, get_all_case, update_case, delete_case
 from src.message_stuff import string_to_args, get_arguments_from_string, rebuild_string_from_template, \
     args_to_string, remove_tags
 from src.parse_site import check as uscis_check
 
 
-async def main(it):
+async def update_entries(it):
     conn = await connect_to_database(database=uscis_database)
     try:
         # await drop_table(conn=conn, table_name=uscis_table_name)
         await build_table(conn=conn, table_name=uscis_table_name)
 
         async def update_case_internal(receipt_number):
-            print(receipt_number)
+            print("Updating", receipt_number)
             rep = await get_all_case(conn=conn, table_name=uscis_table_name, case_number=receipt_number)
             if rep and rep[0]['current_status'] == "Case Was Approved":
                 return
@@ -27,7 +26,7 @@ async def main(it):
                 if (old_status, old_args) == (title, current_args):
                     new_history_joined = old_history
                 else:
-                    new_history = ":".join([title, current_args])
+                    new_history = ":".join([old_status, old_args])
                     new_history_joined = "||".join([new_history, old_history]) if old_history else new_history
                 await update_case(conn=conn, table_name=uscis_table_name, case_number=receipt_number,
                                   last_updated=timestamp,
@@ -64,6 +63,26 @@ async def main(it):
         await conn.close()
 
 
-l_i = range(2015550000, 2015551169)
-ll = [f"LIN{i}" for i in l_i]
-asyncio.get_event_loop().run_until_complete(main(it=ll))
+async def delete_entries(it):
+    conn = await connect_to_database(database=uscis_database)
+    try:
+        async def remove_case_internal(receipt_number):
+            print("Removing", receipt_number)
+            rep = await get_all_case(conn=conn, table_name=uscis_table_name, case_number=receipt_number)
+            if rep:
+                await delete_case(conn=conn, table_name=uscis_table_name, case_number=receipt_number)
+            else:
+                print("Removing failed, Entry does not exist")
+
+        async def read_db():
+            row = await get_all(conn=conn, table_name=uscis_table_name)
+            print(len(row))
+            for u in row:
+                print(u)
+
+        for case in it:
+            await remove_case_internal(receipt_number=case)
+        await read_db()
+
+    finally:
+        await conn.close()

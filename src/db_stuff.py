@@ -59,3 +59,12 @@ async def update_case(conn, table_name, case_number, **kwargs):
     '''
     await conn.execute(command)
     return "All good"
+
+
+async def delete_case(conn, table_name, case_number):
+    command = f'''
+        DELETE FROM {table_name}
+            WHERE case_number = '{case_number}';
+    '''
+    await conn.execute(command)
+    return "All good"
