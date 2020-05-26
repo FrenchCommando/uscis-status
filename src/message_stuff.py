@@ -38,6 +38,10 @@ def remove_tags(s):
     return re.sub(pattern=r'<[^>]+>', repl='', string=s)
 
 
+def check_title_in_status(title):
+    return title in status_to_msg
+
+
 def match(s, template):
     s = remove_tags(s=s)
     return re.match(pattern=template.replace("{", "(?P<").replace("}", ">.*)"), string=s).groupdict()
@@ -48,8 +52,7 @@ def get_arguments_from_string(s, status):
         template = status_to_msg[status]
     except KeyError as e:
         print("Missing Status", status, e)
-        template = "{content}"
-        status_to_msg[status] = template
+        return
     return match(s=s, template=template)
 
 
