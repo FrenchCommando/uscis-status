@@ -166,3 +166,11 @@ print("Card Is Being Returned to USCIS by Post Office",
         receipt_number="LIN45435435",
         tracking_number="019490328490289043",
       ))
+
+
+print("Date of Birth Was Updated",
+      status_to_msg["Date of Birth Was Updated"].format(
+        date="April 1, 2020",
+        receipt_number="LIN45435435",
+        form_long_name="long_name",
+      ))

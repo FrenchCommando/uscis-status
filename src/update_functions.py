@@ -13,11 +13,12 @@ async def update_entries(it):
         await build_table(conn=conn, table_name=uscis_table_name)
 
         async def update_case_internal(receipt_number):
-            print("Updating", receipt_number)
+            print("Updating", receipt_number, "\t")
             rep = await get_all_case(conn=conn, table_name=uscis_table_name, case_number=receipt_number)
             if rep and rep[0]['current_status'] == "Case Was Approved":
                 return
             timestamp, title, message = uscis_check(receipt_number=receipt_number)
+            print(title)
             if rep:
                 current_args = args_to_string(d=get_arguments_from_string(s=message, status=title))
                 old_status = rep[0]['current_status']

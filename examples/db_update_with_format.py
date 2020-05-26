@@ -92,6 +92,7 @@ async def main():
             2015550139,  # Case Was Updated To Show Fingerprints Were Taken
             2015550155,  # New Card Is Being Produced
             2015550236,  # Card Is Being Returned to USCIS by Post Office
+            2015650015,  # Date of Birth Was Updated
             9999999999,  # None
         ]:
             await test_number(number=i)
