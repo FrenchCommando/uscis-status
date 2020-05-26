@@ -17,7 +17,9 @@ async def update_case_internal(conn, receipt_number):
     print("Updating", receipt_number, "\t")
     rep = await get_all_case(conn=conn, table_name=uscis_table_name, case_number=receipt_number)
     if rep and rep[0]['current_status'] == "Case Was Approved":
-        return
+        msg = "Case Was Approved - Request not sent"
+        print(msg)
+        return msg
     timestamp, title, message = uscis_check(receipt_number=receipt_number)
     print(title)
     if rep:
@@ -54,6 +56,7 @@ async def update_case_internal(conn, receipt_number):
                                current_status=title,
                                current_args=current_args,
                                history="")
+    return title
 
 
 async def remove_case_internal(conn, receipt_number):
@@ -87,5 +90,29 @@ async def delete_entries(it):
         for case in it:
             await remove_case_internal(conn=conn, receipt_number=case)
         await read_db(conn=conn, table_name=uscis_table_name)
+    finally:
+        await conn.close()
+
+
+async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001):
+    conn = await connect_to_database(database=uscis_database)
+    try:
+        await build_table(conn=conn, table_name=uscis_table_name)
+        await build_table(conn=conn, table_name=error_table_name)
+
+        date_increment = 0
+        while (await update_case_internal(
+                conn=conn,
+                receipt_number=f'{prefix}{date_start + date_increment}{index_start}'
+        ) is not None):
+            index_increment = 1
+            while(await update_case_internal(
+                    conn=conn,
+                    receipt_number=f'{prefix}{date_start+date_increment}{index_start+index_increment}'
+            ) is not None):
+                index_increment += 1
+            date_increment += 1
+        await read_db(conn=conn, table_name=uscis_table_name)
+        await read_db(conn=conn, table_name=error_table_name)
     finally:
         await conn.close()
