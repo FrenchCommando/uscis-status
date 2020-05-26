@@ -190,3 +190,11 @@ print("Case Rejected Because I Sent An Incorrect Fee",
         form_long_name="long_name",
         notice_deadline="April 7, 2020",
       ))
+
+
+print("Fingerprint Fee Was Received",
+      status_to_msg["Fingerprint Fee Was Received"].format(
+        date="April 1, 2020",
+        receipt_number="LIN45435435",
+        form_long_name="long_name",
+      ))

@@ -61,6 +61,10 @@ I Probably Should Read that
 
 https://codereview.stackexchange.com/questions/155681/optimizing-the-speed-of-a-web-scraper
 
+Looks like (for LIN)
+- you can increment the first set fo 5 digits
+- then indices go from 50001 to whatever
+
 #
 Read about USCIS number
 
