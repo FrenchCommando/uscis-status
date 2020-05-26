@@ -181,3 +181,12 @@ print("Form G-28 Was Rejected Because It Was Improperly Filed",
         receipt_number="LIN45435435",
         form_long_name="long_name",
       ))
+
+
+print("Case Rejected Because I Sent An Incorrect Fee",
+      status_to_msg["Case Rejected Because I Sent An Incorrect Fee"].format(
+        date="April 1, 2020",
+        receipt_number="LIN45435435",
+        form_long_name="long_name",
+        notice_deadline="April 7, 2020",
+      ))

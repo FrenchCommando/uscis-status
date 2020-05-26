@@ -94,6 +94,7 @@ async def main():
             # 2015550236,  # Card Is Being Returned to USCIS by Post Office
             # 2015650015,  # Date of Birth Was Updated
             2015650603,  # Form G-28 Was Rejected Because It Was Improperly Filed
+            2015750588,  # Case Rejected Because I Sent An Incorrect Fee
             9999999999,  # None
         ]:
             await test_number(number=i)
