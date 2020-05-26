@@ -9,8 +9,8 @@ from src.parse_site import check as uscis_check
 async def update_entries(it):
     conn = await connect_to_database(database=uscis_database)
     try:
-        # await drop_table(conn=conn, table_name=uscis_table_name)
         await build_table(conn=conn, table_name=uscis_table_name)
+        await build_table(conn=conn, table_name=error_table_name)
 
         async def update_case_internal(receipt_number):
             print("Updating", receipt_number, "\t")
@@ -37,7 +37,6 @@ async def update_entries(it):
                                   )
             else:
                 if not check_title_in_status(title=title):
-                    await build_table(conn=conn, table_name=error_table_name)
                     await insert_entry(conn, error_table_name, title=title, case_number=receipt_number, message=message)
                     await read_db(table_name=error_table_name)
                 else:
@@ -64,7 +63,6 @@ async def update_entries(it):
         for case in it:
             await update_case_internal(receipt_number=case)
         await read_db(table_name=uscis_table_name)
-        await build_table(conn=conn, table_name=error_table_name)
         await read_db(table_name=error_table_name)
 
     finally:
