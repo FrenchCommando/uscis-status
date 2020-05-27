@@ -55,13 +55,11 @@ async def get_attribute_from_case(conn, table_name, case_number, attribute):
 
 
 async def update_case(conn, table_name, case_number, **kwargs):
-    update_msg = ",\n\t\t".join(f"{k} = \'{v}\'" for k, v in kwargs.items())
-    command = f'''
+    await conn.execute(f'''
         UPDATE {table_name}
-            SET {update_msg} 
+            SET {','.join(f'{k} = ${i}' for i, k in enumerate(kwargs.keys(), 1))} 
             WHERE case_number = '{case_number}';
-    '''
-    await conn.execute(command)
+    ''', *kwargs.values())
     return "All good"
 
 
