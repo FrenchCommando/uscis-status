@@ -113,7 +113,7 @@ async def delete_entries(it):
         await conn.close()
 
 
-async def refresh_case(status):  # delete all cases for a given status, and reloads them
+async def refresh_case(status, delete=False):  # delete all cases for a given status, and reloads them
     conn = await connect_to_database(database=uscis_database)
     try:
         old_status = await get_all_status(conn=conn, table_name=uscis_table_name, status=status)
@@ -121,7 +121,8 @@ async def refresh_case(status):  # delete all cases for a given status, and relo
         print("Refreshing", status)
         for case in old_cases:
             print("Refreshing case", case)
-            await remove_case_internal(conn=conn, receipt_number=case)
+            if delete:
+                await remove_case_internal(conn=conn, receipt_number=case)
             await update_case_internal(conn=conn, receipt_number=case)
         await read_db(conn=conn, table_name=uscis_table_name)
     finally:
