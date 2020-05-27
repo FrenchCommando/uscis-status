@@ -1,5 +1,5 @@
 import asyncio
-from src.update_functions import update_entries, delete_entries, smart_update_all
+from src.update_functions import update_entries, delete_entries, smart_update_all, refresh_case
 
 
 # start_index = 2020050000
@@ -9,3 +9,5 @@ from src.update_functions import update_entries, delete_entries, smart_update_al
 # asyncio.get_event_loop().run_until_complete(update_entries(it=ll))
 
 asyncio.get_event_loop().run_until_complete(smart_update_all(prefix="LIN", date_start=20001, index_start=50095))
+
+# asyncio.get_event_loop().run_until_complete(refresh_case(status='Card Was Mailed To Me'))

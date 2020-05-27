@@ -46,6 +46,10 @@ async def get_all_case(conn, table_name, case_number):
     return await conn.fetch(f'SELECT * FROM {table_name} WHERE case_number = $1', case_number)
 
 
+async def get_all_status(conn, table_name, status):
+    return await conn.fetch(f'SELECT * FROM {table_name} WHERE current_status = $1', status)
+
+
 async def get_attribute_from_case(conn, table_name, case_number, attribute):
     return await conn.fetch(f'SELECT {attribute} FROM {table_name} WHERE case_number = $1', case_number)
 

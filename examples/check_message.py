@@ -145,6 +145,7 @@ print("Card Was Mailed To Me",
         receipt_number="LIN45435435",
         form_long_name="long_name",
         notice_deadline="April 7, 2020",
+        send_phrase="was send blah blah",
       ))
 
 print("Case Was Updated To Show Fingerprints Were Taken",
