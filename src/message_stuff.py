@@ -42,9 +42,16 @@ def check_title_in_status(title):
     return title in status_to_msg
 
 
+def get_template(status):
+    return status_to_msg[status]
+
+
 def match(s, template):
     s = remove_tags(s=s)
-    return re.match(pattern=template.replace("{", "(?P<").replace("}", ">.*)"), string=s).groupdict()
+    mod_template = template.replace("{", "(?P<").replace("}", ">.*)")
+    # print(mod_template)
+    # print(s)
+    return re.match(pattern=mod_template, string=s).groupdict()
 
 
 def get_arguments_from_string(s, status):

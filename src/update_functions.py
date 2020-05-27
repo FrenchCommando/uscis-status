@@ -2,7 +2,7 @@ from src.constants import uscis_database, uscis_table_name, error_table_name
 from src.db_stuff import connect_to_database, drop_table, build_table, insert_entry, \
     get_all, get_all_case, update_case, delete_case
 from src.message_stuff import string_to_args, get_arguments_from_string, rebuild_string_from_template, \
-    args_to_string, remove_tags, check_title_in_status
+    args_to_string, remove_tags, check_title_in_status, get_template
 from src.parse_site import check as uscis_check
 
 
@@ -43,19 +43,27 @@ async def update_case_internal(conn, receipt_number):
             await insert_entry(conn, error_table_name, title=title, case_number=receipt_number, message=message)
             await read_db(conn=conn, table_name=error_table_name)
         else:
-            current_args = args_to_string(d=get_arguments_from_string(s=message, status=title))
-            if title is not None:
-                if not (remove_tags(s=message)
-                        == rebuild_string_from_template(status=title, **string_to_args(s=current_args))):
-                    print("Error Here")
-                    print("\t", message)
-                    print("\t", title, current_args)
-            await insert_entry(conn=conn, table_name=uscis_table_name,
-                               case_number=receipt_number,
-                               last_updated=timestamp,
-                               current_status=title,
-                               current_args=current_args,
-                               history="")
+            try:
+                current_args = args_to_string(d=get_arguments_from_string(s=message, status=title))
+                if title is not None:
+                    if not (remove_tags(s=message)
+                            == rebuild_string_from_template(status=title, **string_to_args(s=current_args))):
+                        print("Error Here")
+                        print("\t", message)
+                        print("\t", title, current_args)
+                await insert_entry(conn=conn, table_name=uscis_table_name,
+                                   case_number=receipt_number,
+                                   last_updated=timestamp,
+                                   current_status=title,
+                                   current_args=current_args,
+                                   history="")
+            except AttributeError as e:
+                await insert_entry(conn, error_table_name, title=title, case_number=receipt_number, message=message)
+                await read_db(conn=conn, table_name=error_table_name)
+                print("Message format error", title, e)
+                print(remove_tags(s=message))
+                print(get_template(title))
+
     return title
 
 
