@@ -98,20 +98,21 @@ async def main():
             # 2015750588,  # Case Rejected Because I Sent An Incorrect Fee
             # 1900250001,  # Fingerprint Fee Was Received
             # 2000150095,  # Card Was Mailed To Me
-            2000150163,  # Card Was Destroyed
-            2000150282,  # Case Was Approved And My Decision Was Emailed
-            2000350149,  # Case Was Denied
-            2000350167,  # Card Was Returned To USCIS
-            2000350256,  # Revocation Notice Was Sent
-            2000350478,  # Case Was Transferred And A New Office Has Jurisdiction
-            2000350654,  # Case is Ready to Be Scheduled for An Interview
-            2000350658,  # Department of State Sent Case to USCIS For Review
-            2000350671,  # Interview Cancelled
-            2000350680,  # Expedite Request Denied
-            2000350744,  # Interview Cancelled And Notice Ordered
-            2015150141,  # Petition/Application Was Rejected For Insufficient Funds
-            2015150303,  # Duplicate Notice Was Mailed
-            2015250040,  # Case Is On Hold Because Of Pending Litigation
+            # 2000150163,  # Card Was Destroyed
+            # 2000150282,  # Case Was Approved And My Decision Was Emailed
+            # 2000350149,  # Case Was Denied
+            # 2000350167,  # Card Was Returned To USCIS
+            # 2000350256,  # Revocation Notice Was Sent
+            # 2000350478,  # Case Was Transferred And A New Office Has Jurisdiction
+            # 2000350654,  # Case is Ready to Be Scheduled for An Interview
+            # 2000350658,  # Department of State Sent Case to USCIS For Review
+            # 2000350671,  # Interview Cancelled
+            # 2000350680,  # Expedite Request Denied
+            # 2000350744,  # Interview Cancelled And Notice Ordered
+            # 2015150141,  # Petition/Application Was Rejected For Insufficient Funds
+            # 2015150303,  # Duplicate Notice Was Mailed
+            # 2015250040,  # Case Is On Hold Because Of Pending Litigation
+            2000150375,  # Case Accepted By The USCIS Lockbox
             9999999999,  # None
         ]:
             await test_number(number=i)
