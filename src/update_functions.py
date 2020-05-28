@@ -15,13 +15,13 @@ async def read_db(conn, table_name):
 
 async def update_case_internal(conn, receipt_number):
     print("Updating", receipt_number, "\t")
-    ignored_cases = ['LIN2000150095']  # formatting is wrong - can't match the template
+    ignored_cases = []  # formatting is wrong - can't match the template
     if receipt_number in ignored_cases:
         print("Ignored - skip", receipt_number)
         return "Ignored"
     rep = await get_all_case(conn=conn, table_name=uscis_table_name, case_number=receipt_number)
     print(rep)
-    if rep:  # and rep[0]['current_status'] == "Case Was Approved":
+    if rep and rep[0]['current_status'] is not None and False:
         msg = "Case Was Approved - Request not sent"
         print(msg)
         return msg
@@ -33,7 +33,7 @@ async def update_case_internal(conn, receipt_number):
             old_status = rep[0]['current_status']
             old_args = rep[0]['current_args']
             old_history = rep[0]['history']
-            if (old_status, old_args) == (title, current_args):
+            if (old_status, old_args) == (title, current_args) or old_status is None:
                 new_history_joined = old_history
             else:
                 new_history = ":".join([old_status, old_args])

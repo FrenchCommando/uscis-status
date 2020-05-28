@@ -117,7 +117,13 @@ async def main():
             # 2000150723,  # Case Closed Benefit Received By Other Means
             # 2000150812,  # Case Was Automatically Revoked
             # 2000151044,  # Case Was Reopened
-            2015650152,  # Case Was Transferred To An Asylum Office
+            # 2015650152,  # Case Was Transferred To An Asylum Office
+            # 2015850212,  # Document Was Mailed To Me
+            # 2016250032,  # Request for Additional Information Received
+            # 2000350883,  # Correspondence Was Received And USCIS Is Reviewing It
+            # 2000650040,  # Card Was Received By USCIS Along With My Letter
+            # 2000650121,  # Case Was Received and A Receipt Notice Was Emailed
+            2000650571,  # Card Was Returned To USCIS - chevron syntax
             9999999999,  # None
         ]:
             await test_number(number=i)
