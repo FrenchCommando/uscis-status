@@ -123,7 +123,7 @@ async def main():
             # 2000350883,  # Correspondence Was Received And USCIS Is Reviewing It
             # 2000650040,  # Card Was Received By USCIS Along With My Letter
             # 2000650121,  # Case Was Received and A Receipt Notice Was Emailed
-            2000650571,  # Card Was Returned To USCIS - chevron syntax
+            2000650571,  # Card Was Returned To USCIS - tabs syntax
             9999999999,  # None
         ]:
             await test_number(number=i)
