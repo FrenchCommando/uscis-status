@@ -132,12 +132,12 @@ async def refresh_case(status, delete=False):  # delete all cases for a given st
         await conn.close()
 
 
-async def refresh_error(status, delete=False):
+async def refresh_error(delete=False):
     conn = await connect_to_database(database=uscis_database)
     try:
         old_status = await get_all(conn=conn, table_name=error_table_name)
         old_cases = [row['case_number'] for row in old_status]
-        print("Refreshing", status)
+        print("Refreshing errors")
         for case in old_cases:
             print("Refreshing case", case)
             if delete:
