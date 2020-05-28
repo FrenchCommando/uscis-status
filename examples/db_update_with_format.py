@@ -115,8 +115,9 @@ async def main():
             # 2015150303,  # Duplicate Notice Was Mailed
             # 2000350805,  # Duplicate Notice Was Mailed
             # 2000150723,  # Case Closed Benefit Received By Other Means
-            2000150812,  # Case Was Automatically Revoked
-            2000151044,  # Case Was Reopened
+            # 2000150812,  # Case Was Automatically Revoked
+            # 2000151044,  # Case Was Reopened
+            2015650152,  # Case Was Transferred To An Asylum Office
             9999999999,  # None
         ]:
             await test_number(number=i)
