@@ -110,9 +110,10 @@ async def main():
             # 2000350680,  # Expedite Request Denied
             # 2000350744,  # Interview Cancelled And Notice Ordered
             # 2015150141,  # Petition/Application Was Rejected For Insufficient Funds
-            # 2015150303,  # Duplicate Notice Was Mailed
             # 2015250040,  # Case Is On Hold Because Of Pending Litigation
-            2000150375,  # Case Accepted By The USCIS Lockbox
+            # 2000150375,  # Case Accepted By The USCIS Lockbox
+            2015150303,  # Duplicate Notice Was Mailed
+            2000350805,  # Duplicate Notice Was Mailed
             9999999999,  # None
         ]:
             await test_number(number=i)

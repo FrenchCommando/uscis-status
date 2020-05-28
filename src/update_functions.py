@@ -20,6 +20,7 @@ async def update_case_internal(conn, receipt_number):
         print("Ignored - skip", receipt_number)
         return "Ignored"
     rep = await get_all_case(conn=conn, table_name=uscis_table_name, case_number=receipt_number)
+    print(rep)
     if rep and rep[0]['current_status'] == "Case Was Approved":
         msg = "Case Was Approved - Request not sent"
         print(msg)
@@ -127,7 +128,7 @@ async def refresh_case(status, delete=False):  # delete all cases for a given st
             if delete:
                 await remove_case_internal(conn=conn, receipt_number=case)
             await update_case_internal(conn=conn, receipt_number=case)
-        await read_db(conn=conn, table_name=uscis_table_name)
+        # await read_db(conn=conn, table_name=uscis_table_name)
     finally:
         await conn.close()
 
