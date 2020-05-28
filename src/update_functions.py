@@ -21,7 +21,7 @@ async def update_case_internal(conn, receipt_number):
         return "Ignored"
     rep = await get_all_case(conn=conn, table_name=uscis_table_name, case_number=receipt_number)
     print(rep)
-    if rep and rep[0]['current_status'] == "Case Was Approved":
+    if rep:  # and rep[0]['current_status'] == "Case Was Approved":
         msg = "Case Was Approved - Request not sent"
         print(msg)
         return msg
