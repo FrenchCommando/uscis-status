@@ -43,6 +43,7 @@ async def update_case_internal(conn, receipt_number):
                               current_args=current_args,
                               history=new_history_joined
                               )
+            await delete_case(conn=conn, table_name=error_table_name, case_number=receipt_number)
         except AttributeError as e:
             await insert_entry(conn, error_table_name, title=title, case_number=receipt_number, message=message)
             await read_db(conn=conn, table_name=error_table_name)
@@ -68,8 +69,10 @@ async def update_case_internal(conn, receipt_number):
                                    current_status=title,
                                    current_args=current_args,
                                    history="")
+                await delete_case(conn=conn, table_name=error_table_name, case_number=receipt_number)
             except AttributeError as e:
-                await insert_entry(conn, error_table_name, title=title, case_number=receipt_number, message=message)
+                await insert_entry(conn=conn, table_name=error_table_name,
+                                   title=title, case_number=receipt_number, message=message)
                 await read_db(conn=conn, table_name=error_table_name)
                 print("Message format error", title, e)
                 print(remove_tags(s=message))
@@ -117,6 +120,22 @@ async def refresh_case(status, delete=False):  # delete all cases for a given st
     conn = await connect_to_database(database=uscis_database)
     try:
         old_status = await get_all_status(conn=conn, table_name=uscis_table_name, status=status)
+        old_cases = [row['case_number'] for row in old_status]
+        print("Refreshing", status)
+        for case in old_cases:
+            print("Refreshing case", case)
+            if delete:
+                await remove_case_internal(conn=conn, receipt_number=case)
+            await update_case_internal(conn=conn, receipt_number=case)
+        await read_db(conn=conn, table_name=uscis_table_name)
+    finally:
+        await conn.close()
+
+
+async def refresh_error(status, delete=False):
+    conn = await connect_to_database(database=uscis_database)
+    try:
+        old_status = await get_all(conn=conn, table_name=error_table_name)
         old_cases = [row['case_number'] for row in old_status]
         print("Refreshing", status)
         for case in old_cases:
