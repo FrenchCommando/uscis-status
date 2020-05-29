@@ -6,11 +6,12 @@ from src.message_stuff import string_to_args, get_arguments_from_string, rebuild
 from src.parse_site import check as uscis_check
 
 
-async def read_db(conn, table_name):
+async def read_db(conn, table_name, len_only=False):
     row = await get_all(conn=conn, table_name=table_name)
+    if not len_only:
+        for u in row:
+            print(u)
     print(len(row))
-    for u in row:
-        print(u)
 
 
 async def update_case_internal(conn, receipt_number):
@@ -21,7 +22,7 @@ async def update_case_internal(conn, receipt_number):
         return "Ignored"
     rep = await get_all_case(conn=conn, table_name=uscis_table_name, case_number=receipt_number)
     print(rep)
-    if rep and rep[0]['current_status'] is not None:
+    if rep and rep[0]['current_status'] is not None and False:
         msg = "Case Was Approved - Request not sent"
         print(msg)
         return msg
@@ -101,7 +102,7 @@ async def update_entries(it):
         await build_table(conn=conn, table_name=error_table_name)
         for case in it:
             await update_case_internal(conn=conn, receipt_number=case)
-        await read_db(conn=conn, table_name=uscis_table_name)
+        await read_db(conn=conn, table_name=uscis_table_name, len_only=True)
         await read_db(conn=conn, table_name=error_table_name)
     finally:
         await conn.close()
