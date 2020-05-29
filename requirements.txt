@@ -4,5 +4,6 @@ asyncpg
 beautifulsoup4
 cchardet
 flask
+grequests
 gunicorn
 requests

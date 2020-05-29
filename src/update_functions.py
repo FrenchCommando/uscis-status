@@ -14,7 +14,7 @@ async def read_db(conn, table_name, len_only=False):
     print(len(row))
 
 
-async def update_case_internal(conn, receipt_number):
+async def update_case_internal(conn, receipt_number, skip_existing=True):
     print("Updating", receipt_number, "\t")
     ignored_cases = []  # formatting is wrong - can't match the template
     if receipt_number in ignored_cases:
@@ -22,11 +22,11 @@ async def update_case_internal(conn, receipt_number):
         return "Ignored"
     rep = await get_all_case(conn=conn, table_name=uscis_table_name, case_number=receipt_number)
     print(rep)
-    if rep and rep[0]['current_status'] is not None and False:
-        msg = "Case Was Approved - Request not sent"
+    if rep and rep[0]['current_status'] is not None and skip_existing:
+        msg = f"\t{rep[0]['current_status']} - Request not sent"
         print(msg)
         return msg
-    timestamp, title, message = uscis_check(receipt_number=receipt_number)
+    timestamp, title, message = await uscis_check(receipt_number=receipt_number)
     print(title)
     if rep:
         try:
