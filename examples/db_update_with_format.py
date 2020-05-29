@@ -135,6 +135,11 @@ async def main():
             # 2001250293,  # Fee Refund Was Mailed
             # 2001250584,  # Case Transferred To Another Office
             # 2001450165,  # Case Was Received At Another USCIS Office
+            2017250427,  # Case Was Rejected Because My Check Or Money Order Is Not Signed
+            2001750216,  # Card Destroyed
+            2002650203,  # Advance Parole Document Was Produced
+            2002650508,  # Case Rejected For Incorrect Fee And Form Not Signed
+            2002950410,  # Interview Was Rescheduled
             9999999999,  # None
         ]:
             await test_number(number=i)
