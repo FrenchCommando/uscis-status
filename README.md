@@ -1,6 +1,6 @@
 USCIS-STATUS
 
-using Beautifulsoup and mechanize to parse the website of USCIS
+using Beautifulsoup and requests to parse USCIS data
 
 - makes requests to the USCIS website
     - requests are logged and added to the database
