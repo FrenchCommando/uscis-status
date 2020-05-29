@@ -1,3 +1,4 @@
+import asyncio
 from src.constants import uscis_database, uscis_table_name, error_table_name
 from src.db_stuff import connect_to_database, drop_table, build_table, insert_entry, \
     get_all, get_all_case, update_case, delete_case, get_all_status
@@ -100,8 +101,12 @@ async def update_entries(it):
     try:
         await build_table(conn=conn, table_name=uscis_table_name)
         await build_table(conn=conn, table_name=error_table_name)
-        for case in it:
-            await update_case_internal(conn=conn, receipt_number=case)
+
+        async def update_function(case):
+            connnn = await connect_to_database(database=uscis_database)
+            await update_case_internal(conn=connnn, receipt_number=case)
+
+        await asyncio.gather(*map(update_function, it))
         await read_db(conn=conn, table_name=uscis_table_name, len_only=True)
         await read_db(conn=conn, table_name=error_table_name)
     finally:
