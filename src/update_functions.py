@@ -97,85 +97,91 @@ async def remove_case_internal(conn, receipt_number):
 
 
 async def update_entries(it):
-    conn = await connect_to_database(database=uscis_database)
+    pool = await connect_to_database(database=uscis_database)
     try:
-        await build_table(conn=conn, table_name=uscis_table_name)
-        await build_table(conn=conn, table_name=error_table_name)
+        async with pool.acquire() as conn:
+            await build_table(conn=conn, table_name=uscis_table_name)
+            await build_table(conn=conn, table_name=error_table_name)
 
         async def update_function(case):
-            connnn = await connect_to_database(database=uscis_database)
-            await update_case_internal(conn=connnn, receipt_number=case)
+            async with pool.acquire() as conn:
+                await update_case_internal(conn=conn, receipt_number=case)
 
         await asyncio.gather(*map(update_function, it))
-        await read_db(conn=conn, table_name=uscis_table_name, len_only=True)
-        await read_db(conn=conn, table_name=error_table_name)
+        async with pool.acquire() as conn:
+            await read_db(conn=conn, table_name=uscis_table_name, len_only=True)
+            await read_db(conn=conn, table_name=error_table_name)
     finally:
-        await conn.close()
+        await pool.close()
 
 
 async def delete_entries(it):
-    conn = await connect_to_database(database=uscis_database)
+    pool = await connect_to_database(database=uscis_database)
     try:
-        for case in it:
-            await remove_case_internal(conn=conn, receipt_number=case)
-        await read_db(conn=conn, table_name=uscis_table_name)
+        async with pool.acquire() as conn:
+            for case in it:
+                await remove_case_internal(conn=conn, receipt_number=case)
+            await read_db(conn=conn, table_name=uscis_table_name)
     finally:
-        await conn.close()
+        await pool.close()
 
 
 async def refresh_case(status, delete=False):  # delete all cases for a given status, and reloads them
-    conn = await connect_to_database(database=uscis_database)
+    pool = await connect_to_database(database=uscis_database)
     try:
-        old_status = await get_all_status(conn=conn, table_name=uscis_table_name, status=status)
-        old_cases = [row['case_number'] for row in old_status]
-        print("Refreshing", status)
-        for case in old_cases:
-            print("Refreshing case", case)
-            if delete:
-                await remove_case_internal(conn=conn, receipt_number=case)
-            await update_case_internal(conn=conn, receipt_number=case)
-        # await read_db(conn=conn, table_name=uscis_table_name)
+        async with pool.acquire() as conn:
+            old_status = await get_all_status(conn=conn, table_name=uscis_table_name, status=status)
+            old_cases = [row['case_number'] for row in old_status]
+            print("Refreshing", status)
+            for case in old_cases:
+                print("Refreshing case", case)
+                if delete:
+                    await remove_case_internal(conn=conn, receipt_number=case)
+                await update_case_internal(conn=conn, receipt_number=case)
+            # await read_db(conn=conn, table_name=uscis_table_name)
     finally:
-        await conn.close()
+        await pool.close()
 
 
 async def refresh_error(delete=False):
-    conn = await connect_to_database(database=uscis_database)
+    pool = await connect_to_database(database=uscis_database)
     try:
-        old_status = await get_all(conn=conn, table_name=error_table_name)
-        old_cases = [row['case_number'] for row in old_status]
-        print("Refreshing errors")
-        for case in old_cases:
-            print("Refreshing case", case)
-            if delete:
-                await remove_case_internal(conn=conn, receipt_number=case)
-            await update_case_internal(conn=conn, receipt_number=case)
-        await read_db(conn=conn, table_name=uscis_table_name)
+        async with pool.acquire() as conn:
+            old_status = await get_all(conn=conn, table_name=error_table_name)
+            old_cases = [row['case_number'] for row in old_status]
+            print("Refreshing errors")
+            for case in old_cases:
+                print("Refreshing case", case)
+                if delete:
+                    await remove_case_internal(conn=conn, receipt_number=case)
+                await update_case_internal(conn=conn, receipt_number=case)
+            await read_db(conn=conn, table_name=uscis_table_name)
     finally:
-        await conn.close()
+        await pool.close()
 
 
 async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, skip_existing=False):
-    conn = await connect_to_database(database=uscis_database)
+    pool = await connect_to_database(database=uscis_database)
     try:
-        await build_table(conn=conn, table_name=uscis_table_name)
-        await build_table(conn=conn, table_name=error_table_name)
+        async with pool.acquire() as conn:
+            await build_table(conn=conn, table_name=uscis_table_name)
+            await build_table(conn=conn, table_name=error_table_name)
 
-        date_increment = 0
-        while (await update_case_internal(
-                conn=conn,
-                receipt_number=f'{prefix}{date_start + date_increment}{index_start}',
-                skip_existing=skip_existing,
-        ) is not None):
-            index_increment = 1
-            while(await update_case_internal(
+            date_increment = 0
+            while (await update_case_internal(
                     conn=conn,
-                    receipt_number=f'{prefix}{date_start+date_increment}{index_start+index_increment}',
+                    receipt_number=f'{prefix}{date_start + date_increment}{index_start}',
                     skip_existing=skip_existing,
             ) is not None):
-                index_increment += 1
-            date_increment += 1
-        await read_db(conn=conn, table_name=uscis_table_name)
-        await read_db(conn=conn, table_name=error_table_name)
+                index_increment = 1
+                while(await update_case_internal(
+                        conn=conn,
+                        receipt_number=f'{prefix}{date_start+date_increment}{index_start+index_increment}',
+                        skip_existing=skip_existing,
+                ) is not None):
+                    index_increment += 1
+                date_increment += 1
+            await read_db(conn=conn, table_name=uscis_table_name)
+            await read_db(conn=conn, table_name=error_table_name)
     finally:
-        await conn.close()
+        await pool.close()

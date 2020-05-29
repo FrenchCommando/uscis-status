@@ -5,16 +5,19 @@ from src.db_def import table_to_specs
 
 async def connect_to_database(database):
     try:
-        conn = await asyncpg.connect(
-            user=postgres_user, password=postgres_password, database=database)
+        pool = await asyncpg.create_pool(
+            user=postgres_user, password=postgres_password, database=database
+        )
     except asyncpg.InvalidCatalogNameError:
         sys_conn = await asyncpg.connect(user=postgres_user)
         await sys_conn.execute(
             f'CREATE DATABASE "{database}" OWNER "{postgres_user}"'
         )
         await sys_conn.close()
-        conn = await asyncpg.connect(user=postgres_user, database=database)
-    return conn
+        pool = await asyncpg.create_pool(
+            user=postgres_user, password=postgres_password, database=database
+        )
+    return pool
 
 
 async def build_table(conn, table_name):
