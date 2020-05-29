@@ -160,27 +160,35 @@ async def refresh_error(delete=False):
         await pool.close()
 
 
-async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, skip_existing=False):
+async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, skip_existing=False, chunk_size=10):
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn:
             await build_table(conn=conn, table_name=uscis_table_name)
             await build_table(conn=conn, table_name=error_table_name)
 
-            date_increment = 0
-            while (await update_case_internal(
-                    conn=conn,
-                    receipt_number=f'{prefix}{date_start + date_increment}{index_start}',
+        date_increment = 0
+
+        async def update_function(index):
+            async with pool.acquire() as conn2:
+                return await update_case_internal(
+                    conn=conn2, receipt_number=f'{prefix}{date_start + date_increment}{index}',
                     skip_existing=skip_existing,
-            ) is not None):
-                index_increment = 1
-                while(await update_case_internal(
-                        conn=conn,
-                        receipt_number=f'{prefix}{date_start+date_increment}{index_start+index_increment}',
-                        skip_existing=skip_existing,
-                ) is not None):
-                    index_increment += 1
-                date_increment += 1
+                )
+        while await update_function(index=index_start) is not None:
+            index_increment = 1
+            last_status = "Unknown"
+            while last_status is not None:
+                rep = await asyncio.gather(
+                    *map(update_function,
+                         [index_start + index_increment + i for i in range(chunk_size)])
+                )
+                last_status = rep[-1]
+                print(last_status)
+                index_increment += chunk_size
+            date_increment += 1
+
+        async with pool.acquire() as conn:
             await read_db(conn=conn, table_name=uscis_table_name)
             await read_db(conn=conn, table_name=error_table_name)
     finally:
