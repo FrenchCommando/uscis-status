@@ -123,7 +123,18 @@ async def main():
             # 2000350883,  # Correspondence Was Received And USCIS Is Reviewing It
             # 2000650040,  # Card Was Received By USCIS Along With My Letter
             # 2000650121,  # Case Was Received and A Receipt Notice Was Emailed
-            2000650571,  # Card Was Returned To USCIS - tabs syntax
+            # 2000650571,  # Card Was Returned To USCIS - tabs syntax
+            # 2000750343,  # Interview Was Scheduled
+            # 2000750453,  # Request for Initial Evidence Was Sent
+            # 2000750465,  # Case Approval Was Reaffirmed And Mailed Back To Department Of State
+            # 2000950296,  #  Premium Processing Fee Will Be Refunded
+            # 2000950563,  # Biometrics Appointment Was Scheduled
+            # 2000950666,  # Interview Was Completed And My Case Must Be Reviewed
+            # 2001050423,  # CASE STATUS
+            # 2001050751,  # Case Was Sent To The Administrative Appeals Office for Review
+            # 2001250293,  # Fee Refund Was Mailed
+            # 2001250584,  # Case Transferred To Another Office
+            # 2001450165,  # Case Was Received At Another USCIS Office
             9999999999,  # None
         ]:
             await test_number(number=i)
