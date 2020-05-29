@@ -14,7 +14,7 @@ async def read_db(conn, table_name, len_only=False):
     print(len(row))
 
 
-async def update_case_internal(conn, receipt_number, skip_existing=True):
+async def update_case_internal(conn, receipt_number, skip_existing=False):
     print("Updating", receipt_number, "\t")
     ignored_cases = []  # formatting is wrong - can't match the template
     if receipt_number in ignored_cases:
@@ -150,7 +150,7 @@ async def refresh_error(delete=False):
         await conn.close()
 
 
-async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001):
+async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, skip_existing=False):
     conn = await connect_to_database(database=uscis_database)
     try:
         await build_table(conn=conn, table_name=uscis_table_name)
@@ -159,12 +159,14 @@ async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001):
         date_increment = 0
         while (await update_case_internal(
                 conn=conn,
-                receipt_number=f'{prefix}{date_start + date_increment}{index_start}'
+                receipt_number=f'{prefix}{date_start + date_increment}{index_start}',
+                skip_existing=skip_existing,
         ) is not None):
             index_increment = 1
             while(await update_case_internal(
                     conn=conn,
-                    receipt_number=f'{prefix}{date_start+date_increment}{index_start+index_increment}'
+                    receipt_number=f'{prefix}{date_start+date_increment}{index_start+index_increment}',
+                    skip_existing=skip_existing,
             ) is not None):
                 index_increment += 1
             date_increment += 1
