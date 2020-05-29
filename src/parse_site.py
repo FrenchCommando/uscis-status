@@ -4,14 +4,10 @@ import requests
 
 
 def check(receipt_number):
-    resp = requests.post(
-        'https://egov.uscis.gov/casestatus/mycasestatus.do',
-        data={
-            "changeLocale": None,
-            "completedActionsCurrentPage": 0,
-            "upcomingActionsCurrentPage": 0,
+    resp = requests.get(
+        url='https://egov.uscis.gov/casestatus/mycasestatus.do',
+        params={
             "appReceiptNum": receipt_number,
-            "caseStatusSearchBtn": "CHECK STATUS"
         }
     )
     timestamp = f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S.%f}'
