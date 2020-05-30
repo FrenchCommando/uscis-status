@@ -153,7 +153,9 @@ async def main():
                     # 2014251040,  # Intent to Revoke Notice Was Sent
                     # 2014650021,  # Case Rejected For Incorrect Fee, Payment Not Signed And Incorrect Form Version
                     # 2018350522,  # Case Was Reopened For Reconsideration
-                    2001850605,  # Refugee Travel Document Was Produced
+                    # 2001850605,  # Refugee Travel Document Was Produced
+                    2004450493,  # Filed Under Known Employer Pilot
+                    2006350185,  # Travel Document Was Destroyed After USCIS Held It For 180 Days
                     9999999999,  # None
                 ]:
                     await test_number(number=i)

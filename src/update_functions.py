@@ -23,13 +23,11 @@ async def update_case_internal(conn, url_session, receipt_number, skip_existing=
         print("Ignored - skip", receipt_number)
         return "Ignored"
     rep = await get_all_case(conn=conn, table_name=uscis_table_name, case_number=receipt_number)
-    print(rep)
     if rep and rep[0]['current_status'] is not None and skip_existing:
         msg = f"\t{rep[0]['current_status']} - Request not sent"
         print(msg)
         return msg
     timestamp, title, message = await uscis_check(url_session=url_session, receipt_number=receipt_number)
-    print(title)
     if rep:
         try:
             current_args = args_to_string(d=get_arguments_from_string(s=message, status=title))
@@ -126,20 +124,14 @@ async def delete_entries(it):
         await pool.close()
 
 
-async def refresh_case(status, delete=False):  # delete all cases for a given status, and reloads them
+async def refresh_case(status):
     pool = await connect_to_database(database=uscis_database)
     try:
-        async with aiohttp.ClientSession() as session:
-            async with pool.acquire() as conn:
-                old_status = await get_all_status(conn=conn, table_name=uscis_table_name, status=status)
-                old_cases = [row['case_number'] for row in old_status]
-                print("Refreshing", status, len(old_status))
-                for case in reversed(old_cases):
-                    print("Refreshing case", case)
-                    if delete:
-                        await remove_case_internal(conn=conn, receipt_number=case)
-                    await update_case_internal(conn=conn, url_session=session, receipt_number=case)
-                await read_db(conn=conn, table_name=uscis_table_name, len_only=True)
+        async with pool.acquire() as conn:
+            old_status = await get_all_status(conn=conn, table_name=uscis_table_name, status=status)
+            old_cases = [row['case_number'] for row in old_status]
+            print("Refreshing", status, len(old_status))
+        await update_entries(old_cases)
     finally:
         await pool.close()
 
@@ -158,6 +150,7 @@ async def refresh_error(delete=False):
                         await remove_case_internal(conn=conn, receipt_number=case)
                     await update_case_internal(conn=conn, url_session=session, receipt_number=case, skip_existing=False)
                 await read_db(conn=conn, table_name=uscis_table_name)
+                await read_db(conn=conn, table_name=error_table_name)
     finally:
         await pool.close()
 
@@ -186,7 +179,6 @@ async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, sk
                              [index_start + index_increment + i for i in range(chunk_size)])
                     )
                     last_status = rep[-1]
-                    print(last_status)
                     index_increment += chunk_size
                 date_increment += 1
 
