@@ -63,9 +63,12 @@ I Probably Should Read that
 
 https://codereview.stackexchange.com/questions/155681/optimizing-the-speed-of-a-web-scraper
 
-Looks like (for LIN)
+#
+
+Looks like (for LIN and MSC)
 - you can increment the first set fo 5 digits
 - then indices go from 50001 to whatever
+- Another set: date_start=20900, index_start=10000
 
 #
 Read about USCIS number
