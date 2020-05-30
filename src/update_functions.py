@@ -186,7 +186,7 @@ async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, sk
                 date_increment += 1
 
         async with pool.acquire() as conn:
-            await read_db(conn=conn, table_name=uscis_table_name)
+            await read_db(conn=conn, table_name=uscis_table_name, len_only=True)
             await read_db(conn=conn, table_name=error_table_name)
     finally:
         await pool.close()
