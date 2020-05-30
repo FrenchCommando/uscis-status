@@ -12,7 +12,7 @@ ll = [f"LIN{i}" for i in l_i]
 #     prefix="LIN", date_start=20001, index_start=50001, skip_existing=True, chunk_size=200,
 # ))
 
-# asyncio.get_event_loop().run_until_complete(refresh_case(status='Blah'))
-asyncio.get_event_loop().run_until_complete(refresh_error(delete=False))
+asyncio.get_event_loop().run_until_complete(refresh_case(status='Case Was Received'))
+# asyncio.get_event_loop().run_until_complete(refresh_error(delete=False))
 
 # need one function to clean end of queues that should have been None and were misattributed

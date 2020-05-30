@@ -132,6 +132,9 @@ async def refresh_case(status):
             old_cases = [row['case_number'] for row in old_status]
             print("Refreshing", status, len(old_status))
         await update_entries(old_cases)
+        async with pool.acquire() as conn:
+            new_status = await get_all_status(conn=conn, table_name=uscis_table_name, status=status)
+            print("Refreshing Results", status, f"{len(old_status)} to {len(new_status)}")
     finally:
         await pool.close()
 
