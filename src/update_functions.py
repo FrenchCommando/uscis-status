@@ -52,6 +52,7 @@ async def update_case_internal(conn, url_session, receipt_number, skip_existing=
             print("Message format error", title, e)
             print(remove_tags(s=message))
             print(get_template(title))
+            return "Something went Wrong"
     else:
         if not check_title_in_status(title=title):
             await insert_entry(conn, error_table_name, title=title, case_number=receipt_number, message=message)
@@ -79,6 +80,7 @@ async def update_case_internal(conn, url_session, receipt_number, skip_existing=
                 print("Message format error", title, e)
                 print(remove_tags(s=message))
                 print(get_template(title))
+                return "Something went Wrong"
 
     return title
 
@@ -90,8 +92,6 @@ async def remove_case_internal(conn, receipt_number):
         await delete_case(conn=conn, table_name=uscis_table_name, case_number=receipt_number)
     else:
         print("Removing failed, Entry does not exist")
-    await drop_table(conn=conn, table_name=error_table_name)
-    await build_table(conn=conn, table_name=error_table_name)
     await delete_case(conn=conn, table_name=error_table_name, case_number=receipt_number)
 
 
@@ -139,21 +139,17 @@ async def refresh_case(status):
         await pool.close()
 
 
-async def refresh_error(delete=False):
+async def refresh_error():
     pool = await connect_to_database(database=uscis_database)
     try:
-        async with aiohttp.ClientSession() as session:
-            async with pool.acquire() as conn:
-                old_status = await get_all(conn=conn, table_name=error_table_name)
-                old_cases = [row['case_number'] for row in old_status]
-                print("Refreshing errors")
-                for case in old_cases:
-                    print("Refreshing case", case)
-                    if delete:
-                        await remove_case_internal(conn=conn, receipt_number=case)
-                    await update_case_internal(conn=conn, url_session=session, receipt_number=case, skip_existing=False)
-                await read_db(conn=conn, table_name=uscis_table_name)
-                await read_db(conn=conn, table_name=error_table_name)
+        async with pool.acquire() as conn:
+            old_status = await get_all(conn=conn, table_name=error_table_name)
+            old_cases = [row['case_number'] for row in old_status]
+            print("Refreshing errors")
+        await update_entries(old_cases)
+        async with pool.acquire() as conn:
+            await read_db(conn=conn, table_name=uscis_table_name, len_only=True)
+            await read_db(conn=conn, table_name=error_table_name)
     finally:
         await pool.close()
 
@@ -175,13 +171,13 @@ async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, sk
                     )
             while await update_function(index=index_start) is not None:
                 index_increment = 1
-                last_status = "Unknown"
-                while last_status is not None:
+                all_none = False
+                while not all_none:
                     rep = await asyncio.gather(
                         *map(update_function,
                              [index_start + index_increment + i for i in range(chunk_size)])
                     )
-                    last_status = rep[-1]
+                    all_none = all(s is None for s in rep)
                     index_increment += chunk_size
                 date_increment += 1
 

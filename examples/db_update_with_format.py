@@ -154,6 +154,9 @@ async def main():
                     # 2001850605,  # Refugee Travel Document Was Produced
                     # 2004450493,  # Filed Under Known Employer Pilot
                     # 2006350185,  # Travel Document Was Destroyed After USCIS Held It For 180 Days
+                    # 2000250787,  # Request To Reschedule My Appointment Was Received
+                    # 2006950236,  # Appeal Was Dismissed
+                    2009750705,  # Case Was Relocated From Administrative Appeals Office To USCIS Originating Office
                     9999999999,  # None
                 ]:
                     await test_number(prefix="LIN", number=i)

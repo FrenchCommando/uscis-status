@@ -17,7 +17,7 @@ async def check(url_session, receipt_number):
 async def display_msg(text):
     soup = BeautifulSoup(text, features="html5lib")
     error_message = soup.find(id="formErrorMessages")
-    if len(error_message.contents) != 1:
+    if len(error_message.contents) > 1:
         return None, ''
     div = soup.find('div', attrs={'class': 'rows text-center'})
     return div.h1.string, "\t".join(map(str, div.p.contents))
