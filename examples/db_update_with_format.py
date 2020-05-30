@@ -57,9 +57,7 @@ async def main():
                         print(u)
                     print(len(row))
 
-                prefix = "LIN"
-
-                async def test_number(number):
+                async def test_number(prefix, number):
                     print(number)
                     await update_case_internal(receipt_number=f"{prefix}{number}")
                     await read_db()
@@ -154,11 +152,18 @@ async def main():
                     # 2014650021,  # Case Rejected For Incorrect Fee, Payment Not Signed And Incorrect Form Version
                     # 2018350522,  # Case Was Reopened For Reconsideration
                     # 2001850605,  # Refugee Travel Document Was Produced
-                    2004450493,  # Filed Under Known Employer Pilot
-                    2006350185,  # Travel Document Was Destroyed After USCIS Held It For 180 Days
+                    # 2004450493,  # Filed Under Known Employer Pilot
+                    # 2006350185,  # Travel Document Was Destroyed After USCIS Held It For 180 Days
                     9999999999,  # None
                 ]:
-                    await test_number(number=i)
+                    await test_number(prefix="LIN", number=i)
+
+                for i in [  # just realized this list will be obsolete
+                    2091047553,  # Expedite Request Received
+                    2091035807,  # Case Rejected For Form Not Signed And Incorrect Form Version
+                    9999999999,  # None
+                ]:
+                    await test_number(prefix="MSC", number=i)
 
     finally:
         await pool.close()
