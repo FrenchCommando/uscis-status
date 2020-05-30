@@ -9,10 +9,10 @@ ll = [f"LIN{i}" for i in l_i]
 # asyncio.get_event_loop().run_until_complete(update_entries(it=[]))
 
 asyncio.get_event_loop().run_until_complete(smart_update_all(
-    prefix="LIN", date_start=20001, index_start=50001, skip_existing=True, chunk_size=25,
+    prefix="LIN", date_start=20001, index_start=50001, skip_existing=True, chunk_size=10,
 ))
 
-# asyncio.get_event_loop().run_until_complete(refresh_case(status='Card Was Returned To USCIS', delete=False))
+# asyncio.get_event_loop().run_until_complete(refresh_case(status='Case Was Approved', delete=False))
 # asyncio.get_event_loop().run_until_complete(refresh_error(delete=False))
 
 # need one function to clean end of queues that should have been None and were misattributed
