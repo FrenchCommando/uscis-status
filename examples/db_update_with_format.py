@@ -143,7 +143,15 @@ async def main():
                 # 2002950410,  # Interview Was Rescheduled
                 # 2005550055,  # Card Was Returned To USCIS - tags
                 # 2004250728,  # Case Was Updated To Show That No One Appeared for In-Person Processing
-                2004550140,  # Document Destroyed
+                # 2004550140,  # Document Destroyed
+                2006050782,  # Request For Premium Processing Services Was Received
+                2012150974,  # Case Was Reopened
+                2013250373,  # Reentry Permit Was Produced
+                2012150543,  # Request For Premium Processing Services Was Received
+                2013950387,  # Case Rejected For Incorrect Fee And Payment Not Signed
+                2014251040,  # Intent to Revoke Notice Was Sent
+                2014650021,  # Case Rejected For Incorrect Fee, Payment Not Signed And Incorrect Form Version
+                2018350522,  # Case Was Reopened For Reconsideration
                 9999999999,  # None
             ]:
                 await test_number(number=i)

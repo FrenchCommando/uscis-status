@@ -154,7 +154,7 @@ async def refresh_error(delete=False):
                 print("Refreshing case", case)
                 if delete:
                     await remove_case_internal(conn=conn, receipt_number=case)
-                await update_case_internal(conn=conn, receipt_number=case)
+                await update_case_internal(conn=conn, receipt_number=case, skip_existing=False)
             await read_db(conn=conn, table_name=uscis_table_name)
     finally:
         await pool.close()
