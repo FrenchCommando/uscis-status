@@ -36,9 +36,14 @@ async def handle_main(request):
     async with pool.acquire() as connection:
         rep = await get_all_uscis(conn=connection)
         text = [f"Number of entries {len(rep)}"]
+
+        status_number = {}
         for status in status_to_msg:
-            rep = await get_all_status_uscis(conn=connection, status=status)
-            text.append(f"Number of entries for {status}: {len(rep)}")
+            rep_status = await get_all_status_uscis(conn=connection, status=status)
+            status_number[status] = len(rep_status)
+
+        for status, length in sorted(status_number.items(), key=lambda k: k[1], reverse=True):
+            text.append(f"Number of entries for {status}: {length}")
         return web.Response(text="\n".join(text))
 
 
