@@ -179,7 +179,7 @@ async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, sk
                     )
                     all_none = all(s is None for s in rep)
                     index_increment += chunk_size
-                date_increment += 1
+                date_increment += max(1, index_increment // 100000)
 
         async with pool.acquire() as conn:
             await read_db(conn=conn, table_name=uscis_table_name, len_only=True)
