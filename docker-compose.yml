@@ -20,8 +20,8 @@ services:
       - ./.env.db
   nginx:
     build: ./nginx
-    ports:
-      - 1337:80
+    expose:
+      - 80
     depends_on:
       - uscis_service
 
