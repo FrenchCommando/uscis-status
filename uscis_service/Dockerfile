@@ -43,6 +43,7 @@ WORKDIR $APP_HOME
 
 # install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends netcat
+RUN apt-get install libffi libffi-dev
 COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --upgrade pip
 ENV BUILD_DEPS gcc g++
