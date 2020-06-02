@@ -67,11 +67,11 @@ async def init_app():
     return app_inst
 
 
-def main():
+def main_server():
     loop = asyncio.get_event_loop()
     app = loop.run_until_complete(init_app())
     web.run_app(app, port=port_number)
 
 
 if __name__ == "__main__":
-    main()
+    main_server()
