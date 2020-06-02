@@ -1,14 +1,22 @@
+import aiohttp
 import asyncio
 from aiohttp import web
 from src.constants import port_number
 from src.db_interaction import get_all_uscis, get_all_case_uscis, get_all_status_uscis, get_pool
 from src.message_stuff import status_to_msg
+from src.update_functions import update_case_internal
 
 
 async def handle_case(request):
     pool = request.app['pool']
     receipt_number = request.match_info.get('receipt_number', '')
     async with pool.acquire() as connection:
+        async with aiohttp.ClientSession() as session:
+            await update_case_internal(
+                conn=connection, url_session=session,
+                receipt_number=receipt_number,
+                skip_existing=False,
+            )
         rep = await get_all_case_uscis(conn=connection, case_number=receipt_number)
         rep_text = "\n".join([str(len(rep)), "\n".join(str(u) for u in rep)])
         return web.Response(text=rep_text)
