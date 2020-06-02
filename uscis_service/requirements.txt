@@ -2,5 +2,4 @@ aiodns
 aiohttp
 asyncpg
 beautifulsoup4
-cchardet
 gunicorn
