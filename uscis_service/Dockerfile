@@ -24,6 +24,7 @@ RUN flake8 --ignore=E501,F401,E121,W605 .
 
 # install python dependencies
 COPY ./requirements.txt .
+RUN pip3 install cython
 RUN pip3 wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
 
 
