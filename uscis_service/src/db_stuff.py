@@ -60,7 +60,7 @@ async def get_attribute_from_case(conn, table_name, case_number, attribute):
 async def update_case(conn, table_name, case_number, **kwargs):
     await conn.execute(f'''
         UPDATE {table_name}
-            SET {','.join(f'{k} = ${i}' for i, k in enumerate(kwargs.keys(), 1))} 
+            SET {','.join(f'{k} = ${i}' for i, k in enumerate(kwargs.keys(), 1))}
             WHERE case_number = '{case_number}';
     ''', *kwargs.values())
     return "All good"
