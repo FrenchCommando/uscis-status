@@ -41,8 +41,8 @@ async def main():
                         print()
                         current_args = args_to_string(d=get_arguments_from_string(s=message, status=title))
                         if title is not None:
-                            print(remove_tags(s=message) ==
-                                  rebuild_string_from_template(status=title, **string_to_args(s=current_args)))
+                            print(remove_tags(s=message) == rebuild_string_from_template(
+                                status=title, **string_to_args(s=current_args)))
 
                         await insert_entry(conn=conn, table_name=test_table_name,
                                            case_number=receipt_number,
