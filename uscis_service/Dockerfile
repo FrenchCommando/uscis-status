@@ -51,6 +51,8 @@ RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
 # install dependencies
+ENV BUILD_DEPS gcc g++
+RUN apt-get update && apt-get install -y $BUILD_DEPS --no-install-recommends && rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt-get install -y --no-install-recommends netcat
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .

@@ -3,8 +3,4 @@ aiohttp
 asyncpg
 beautifulsoup4
 cchardet
-cython
-flask
-grequests
 gunicorn
-requests
