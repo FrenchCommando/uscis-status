@@ -17,14 +17,14 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends gcc
 
 # lint
-RUN pip install --upgrade pip
-RUN pip install flake8
+RUN pip3 install --upgrade pip3
+RUN pip3 install flake8
 COPY . /usr/src/app/
 RUN flake8 --ignore=E501,F401,E121,W605 .
 
 # install python dependencies
 COPY ./requirements.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+RUN pip3 wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
 
 
 #########
@@ -49,8 +49,10 @@ WORKDIR $APP_HOME
 
 # install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends netcat
-RUN pip install --upgrade pip
-RUN pip install -r /usr/src/app/requirements.txt
+COPY --from=builder /usr/src/app/wheels /wheels
+COPY --from=builder /usr/src/app/requirements.txt .
+RUN pip3 install --upgrade pip3
+RUN pip3 install --no-cache /wheels/*
 
 # copy entrypoint-prod.sh
 COPY ./entrypoint.sh $APP_HOME
