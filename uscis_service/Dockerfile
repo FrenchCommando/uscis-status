@@ -48,7 +48,7 @@ RUN pip install --upgrade pip
 ENV BUILD_DEPS gcc g++
 RUN apt-get update && apt-get install -y $BUILD_DEPS --no-install-recommends && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN pip install --no-cache -r requirements.txt
+RUN pip install -r requirements.txt
 
 
 # copy entrypoint-prod.sh
