@@ -1,4 +1,4 @@
-from src.constants import uscis_table_name, error_table_name
+from uscis_service.src.constants import uscis_table_name, error_table_name
 
 
 table_to_specs = {

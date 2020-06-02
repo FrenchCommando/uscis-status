@@ -1,10 +1,10 @@
 import aiohttp
 import asyncio
 from aiohttp import web
-from src.constants import port_number
-from src.db_interaction import get_all_uscis, get_all_case_uscis, get_all_status_uscis, get_pool
-from src.message_stuff import status_to_msg
-from src.update_functions import update_case_internal
+from uscis_service.src.constants import port_number
+from uscis_service.src.db_interaction import get_all_uscis, get_all_case_uscis, get_all_status_uscis, get_pool
+from uscis_service.src.message_stuff import status_to_msg
+from uscis_service.src.update_functions import update_case_internal
 
 
 async def handle_case(request):
@@ -67,6 +67,11 @@ async def init_app():
     return app_inst
 
 
-loop = asyncio.get_event_loop()
-app = loop.run_until_complete(init_app())
-web.run_app(app, port=port_number)
+def main():
+    loop = asyncio.get_event_loop()
+    app = loop.run_until_complete(init_app())
+    web.run_app(app, port=port_number)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,7 +1,7 @@
 import asyncio
-from src.constants import uscis_database, uscis_table_name
-from src.db_stuff import connect_to_database, drop_table, build_table, insert_entry, get_all
-from src.parse_site import check as uscis_check
+from uscis_service.src.constants import uscis_database, uscis_table_name
+from uscis_service.src.db_stuff import connect_to_database, drop_table, build_table, insert_entry, get_all
+from uscis_service.src.parse_site import check as uscis_check
 
 
 async def main():
