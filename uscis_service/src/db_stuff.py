@@ -6,6 +6,7 @@ from src.db_def import table_to_specs
 async def connect_to_database(database):
     try:
         pool = await asyncpg.create_pool(
+            dsn="postgresql://hello_flask:hello_flask@db:5432",
             user=postgres_user, password=postgres_password, database=database
         )
     except asyncpg.InvalidCatalogNameError:
