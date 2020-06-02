@@ -5,7 +5,7 @@ services:
     build:
       context: ./uscis_service
       dockerfile: Dockerfile
-    command: gunicorn --bind 0.0.0.0:5000 examples.db_server:app
+    command: gunicorn --workers=1 --bind 0.0.0.0:5000 examples.db_server:app
     expose:
       - 5000
     env_file:
