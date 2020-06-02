@@ -73,5 +73,18 @@ def main_server():
     web.run_app(app, port=port_number)
 
 
+def app(environ, start_response):
+    """Simplest possible application object"""
+    data = b'Server USCIS Running\n'
+    status = '200 OK'
+    response_headers = [
+        ('Content-type', 'text/plain'),
+        ('Content-Length', str(len(data)))
+    ]
+    start_response(status, response_headers)
+    main_server()
+    return iter([data])
+
+
 if __name__ == "__main__":
     main_server()
