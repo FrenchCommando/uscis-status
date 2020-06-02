@@ -24,8 +24,9 @@ RUN flake8 --ignore=E501,F401,E121,W605 .
 
 # install python dependencies
 COPY ./requirements.txt .
-RUN pip install cython
-RUN pip install cchardet
+
+ENV BUILD_DEPS gcc g++
+RUN apt-get update && apt-get install -y $BUILD_DEPS --no-install-recommends && rm -rf /var/lib/apt/lists/*
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
 
 
