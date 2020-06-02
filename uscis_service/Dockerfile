@@ -26,7 +26,8 @@ RUN flake8 --ignore=E501,F401,E121,W605 .
 COPY ./requirements.txt .
 
 ENV BUILD_DEPS gcc g++
-RUN apt-get update && apt-get install -y $BUILD_DEPS --no-install-recommends && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y $BUILD_DEPS --no-install-recommends && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
 
 
@@ -56,7 +57,8 @@ COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --upgrade pip
 ENV BUILD_DEPS gcc g++
-RUN apt-get update && apt-get install -y $BUILD_DEPS --no-install-recommends && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y $BUILD_DEPS --no-install-recommends && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN pip install --no-cache /wheels/*
 
 # copy entrypoint-prod.sh
