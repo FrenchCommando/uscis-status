@@ -35,7 +35,7 @@ async def drop_table(conn, table_name):
 
 async def insert_entry(conn, table_name, **kwargs):
     await conn.execute(f'''
-        INSERT INTO {table_name}({",".join(kwargs.keys())}) 
+        INSERT INTO {table_name}({",".join(kwargs.keys())})
         VALUES({",".join(f"${i+1}" for i in range(len(kwargs.keys())))})
     ''', *kwargs.values())
     return "All good"

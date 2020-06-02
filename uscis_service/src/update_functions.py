@@ -61,8 +61,8 @@ async def update_case_internal(conn, url_session, receipt_number, skip_existing=
             try:
                 current_args = args_to_string(d=get_arguments_from_string(s=message, status=title))
                 if title is not None:
-                    if not (remove_tags(s=message)
-                            == rebuild_string_from_template(status=title, **string_to_args(s=current_args))):
+                    if not (remove_tags(s=message) == rebuild_string_from_template(
+                            status=title, **string_to_args(s=current_args))):
                         print("Error Here")
                         print("\t", message)
                         print("\t", title, current_args)

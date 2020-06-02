@@ -4,10 +4,11 @@ import datetime
 
 async def check(url_session, receipt_number):
     async with url_session.get(
-            url='https://egov.uscis.gov/casestatus/mycasestatus.do',
-            params={
-                    "appReceiptNum": receipt_number,
-            }) as resp:
+        url='https://egov.uscis.gov/casestatus/mycasestatus.do',
+        params={
+            "appReceiptNum": receipt_number,
+        }
+    ) as resp:
         timestamp = f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S.%f}'
         text = await resp.text()
         display_result = await display_msg(text)
