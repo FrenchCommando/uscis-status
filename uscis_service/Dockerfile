@@ -22,15 +22,6 @@ RUN pip install flake8
 COPY . /usr/src/app/
 RUN flake8 --ignore=E501,F401,E121,W605 .
 
-# install python dependencies
-COPY ./requirements.txt .
-
-ENV BUILD_DEPS gcc g++
-RUN apt-get update && apt-get install -y $BUILD_DEPS --no-install-recommends && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
-
-
 #########
 # FINAL #
 #########
@@ -44,7 +35,6 @@ RUN mkdir -p /home/app
 # create the app user
 RUN addgroup --system app && adduser --system --group app
 
-
 # create the appropriate directories
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/uscis_service
@@ -53,13 +43,13 @@ WORKDIR $APP_HOME
 
 # install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends netcat
-COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --upgrade pip
 ENV BUILD_DEPS gcc g++
 RUN apt-get update && apt-get install -y $BUILD_DEPS --no-install-recommends && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN pip install --no-cache /wheels/*
+RUN pip install --no-cache -r requirements.txt
+
 
 # copy entrypoint-prod.sh
 COPY ./entrypoint.sh $APP_HOME
