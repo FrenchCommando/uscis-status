@@ -5,7 +5,7 @@ services:
     build:
       context: ./uscis_service
       dockerfile: Dockerfile
-    command: gunicorn --bind 0.0.0.0:8088 examples.db_server:main
+    command: gunicorn --bind 0.0.0.0:8088 examples.db_server:main_server
     expose:
       - 8088
     env_file:
