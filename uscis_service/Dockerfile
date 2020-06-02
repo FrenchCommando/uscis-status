@@ -24,6 +24,7 @@ RUN flake8 --ignore=E501,F401,E121,W605 .
 
 # install python dependencies
 COPY ./requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
 
 
 #########
@@ -49,7 +50,7 @@ WORKDIR $APP_HOME
 # install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends netcat
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install -r /usr/src/app/requirements.txt
 
 # copy entrypoint-prod.sh
 COPY ./entrypoint.sh $APP_HOME
