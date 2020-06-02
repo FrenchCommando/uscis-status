@@ -1,6 +1,6 @@
 import aiohttp
 import asyncio
-from uscis_service.src.parse_site import check as uscis_check
+from src.parse_site import check as uscis_check
 
 
 async def main():

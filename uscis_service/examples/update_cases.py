@@ -1,5 +1,5 @@
 import asyncio
-from uscis_service.src.update_functions import update_entries
+from src.update_functions import update_entries
 
 start_index = 2015550100
 

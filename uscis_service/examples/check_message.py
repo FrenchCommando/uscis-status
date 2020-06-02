@@ -1,4 +1,4 @@
-from uscis_service.src.message_stuff import get_arguments_from_string, args_to_string, string_to_args, status_to_msg
+from src.message_stuff import get_arguments_from_string, args_to_string, string_to_args, status_to_msg
 
 
 v_s = """On April 7, 2020, we received your Form I-765, Application for Employment Authorization, Receipt Number LIN2015550257, and sent you the receipt notice that describes how we will process your case.  Please follow the instructions in the notice.  If you do not receive your receipt notice by May 7, 2020, contact the USCIS Contact Center at \t<a href="https://www.uscis.gov/contactcenter" target="_blank">www.uscis.gov/contactcenter</a>\t.  If you move, go to \t<a href="https://egov.uscis.gov/coa/displayCOAForm.do" target="_blank">www.uscis.gov/addresschange</a>\t to give us your new mailing address."""

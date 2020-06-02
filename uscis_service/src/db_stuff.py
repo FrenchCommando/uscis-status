@@ -1,6 +1,6 @@
 import asyncpg
-from uscis_service.src.db_secrets import postgres_user, postgres_password
-from uscis_service.src.db_def import table_to_specs
+from src.db_secrets import postgres_user, postgres_password
+from src.db_def import table_to_specs
 
 
 async def connect_to_database(database):

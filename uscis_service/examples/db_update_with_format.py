@@ -1,11 +1,11 @@
 import aiohttp
 import asyncio
-from uscis_service.src.constants import uscis_database, uscis_table_name
-from uscis_service.src.db_stuff import connect_to_database, drop_table, build_table, insert_entry, \
+from src.constants import uscis_database, uscis_table_name
+from src.db_stuff import connect_to_database, drop_table, build_table, insert_entry, \
     get_all, get_all_case, update_case
-from uscis_service.src.message_stuff import string_to_args, get_arguments_from_string, rebuild_string_from_template, \
+from src.message_stuff import string_to_args, get_arguments_from_string, rebuild_string_from_template, \
     args_to_string, remove_tags
-from uscis_service.src.parse_site import check as uscis_check
+from src.parse_site import check as uscis_check
 
 
 async def main():

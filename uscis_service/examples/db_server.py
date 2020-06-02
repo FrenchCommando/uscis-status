@@ -1,10 +1,10 @@
 import aiohttp
 import asyncio
 from aiohttp import web
-from uscis_service.src.constants import port_number
-from uscis_service.src.db_interaction import get_all_uscis, get_all_case_uscis, get_all_status_uscis, get_pool
-from uscis_service.src.message_stuff import status_to_msg
-from uscis_service.src.update_functions import update_case_internal
+from src.constants import port_number
+from src.db_interaction import get_all_uscis, get_all_case_uscis, get_all_status_uscis, get_pool
+from src.message_stuff import status_to_msg
+from src.update_functions import update_case_internal
 
 
 async def handle_case(request):
