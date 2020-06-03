@@ -19,6 +19,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgrespassword
       POSTGRES_DB: uscis
+    expose:
+      - 5432
   nginx:
     build: ./nginx
     ports:

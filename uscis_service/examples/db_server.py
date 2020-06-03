@@ -58,7 +58,7 @@ async def handle_main(request):
 async def init_app():
     """Initialize the application server."""
     app_inst = web.Application()
-    # app_inst['pool'] = await get_pool()
+    app_inst['pool'] = await get_pool()
 
     app_inst.router.add_route('GET', '/case/{receipt_number}', handle_case)
     app_inst.router.add_route('GET', '/status/{status}', handle_status)
