@@ -8,8 +8,6 @@ services:
     command: gunicorn  examples.db_server:init_app --bind 0.0.0.0:5000 --worker-class aiohttp.GunicornWebWorker
     expose:
       - 5000
-    env_file:
-      - ./.env
     depends_on:
       - db
   db:
