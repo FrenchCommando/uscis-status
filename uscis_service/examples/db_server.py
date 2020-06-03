@@ -67,24 +67,7 @@ async def init_app():
     return app_inst
 
 
-def main_server():
+if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     app = loop.run_until_complete(init_app())
     web.run_app(app, port=port_number)
-
-
-def app(environ, start_response):
-    """Simplest possible application object"""
-    data = b'Server USCIS Running\n'
-    status = '200 OK'
-    response_headers = [
-        ('Content-type', 'text/plain'),
-        ('Content-Length', str(len(data)))
-    ]
-    start_response(status, response_headers)
-    main_server()
-    return iter([data])
-
-
-if __name__ == "__main__":
-    main_server()
