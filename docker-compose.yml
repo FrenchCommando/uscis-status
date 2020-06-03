@@ -10,6 +10,8 @@ services:
       - 5000
     depends_on:
       - db
+    environment:
+      AM_I_IN_A_DOCKER_CONTAINER: True
   db:
     image: postgres:12-alpine
     volumes:
