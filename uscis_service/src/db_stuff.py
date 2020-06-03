@@ -1,12 +1,13 @@
 import asyncpg
 from src.db_secrets import postgres_user, postgres_password
+from src.constants import port_number
 from src.db_def import table_to_specs
 
 
 async def connect_to_database(database):
     try:
         pool = await asyncpg.create_pool(
-            dsn=f"postgresql://{postgres_user}:{postgres_password}@localhost:5432/{database}",
+            dsn=f"postgresql://{postgres_user}:{postgres_password}@db:{port_number}/{database}",
         )
     except asyncpg.InvalidCatalogNameError:
         sys_conn = await asyncpg.connect(user=postgres_user)
