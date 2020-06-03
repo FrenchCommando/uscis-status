@@ -9,3 +9,4 @@ form_table_name = "form_table"
 localhost = "http://localhost:{port}"
 host = "db"
 port_number = 5000
+pg_port_number = 5432
