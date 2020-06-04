@@ -4,7 +4,7 @@ from aiohttp import web
 from src.constants import port_number
 from src.db_interaction import get_all_uscis, get_all_case_uscis, get_all_status_uscis, get_pool
 from src.message_stuff import status_to_msg
-from src.update_functions import update_case_internal
+from src.update_functions import update_case_internal, smart_update_all_function
 
 
 async def handle_case(request):
@@ -39,6 +39,17 @@ async def handle_all(request):
         return web.Response(text=rep_text)
 
 
+async def handle_loop(request):
+    pool = request.app['pool']
+    prefix = request.match_info.get('prefix', 'LIN')
+    date_start = request.match_info.get('date_start', '20001')
+    index_start = request.match_info.get('index_start', '50001')
+    await smart_update_all_function(
+        pool=pool, prefix=prefix, date_start=date_start, index_start=index_start, skip_existing=False, chunk_size=50
+    )
+    await handle_main(request=request)
+
+
 async def handle_main(request):
     pool = request.app['pool']
     async with pool.acquire() as connection:
@@ -61,6 +72,7 @@ async def init_app():
     app_inst = web.Application()
     app_inst['pool'] = await get_pool()
 
+    app_inst.router.add_route('GET', '/loop/{prefix}/{date_start}/{index_start}', handle_loop)
     app_inst.router.add_route('GET', '/case/{receipt_number}', handle_case)
     app_inst.router.add_route('GET', '/status/{status}', handle_status)
     app_inst.router.add_route('GET', '/all', handle_all)

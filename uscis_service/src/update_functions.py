@@ -154,6 +154,29 @@ async def refresh_error():
         await pool.close()
 
 
+async def smart_update_all_function(
+        pool, prefix="LIN", date_start=20001, index_start=50001, skip_existing=False, chunk_size=10):
+    date_increment = 0
+    async with aiohttp.ClientSession() as session:
+        async def update_function(index):
+            async with pool.acquire() as conn2:
+                return await update_case_internal(
+                    conn=conn2, url_session=session, receipt_number=f'{prefix}{date_start + date_increment}{index}',
+                    skip_existing=skip_existing,
+                )
+        while await update_function(index=index_start) is not None:
+            index_increment = 1
+            all_none = False
+            while not all_none:
+                rep = await asyncio.gather(
+                    *map(update_function,
+                         [index_start + index_increment + i for i in range(chunk_size)])
+                )
+                all_none = all(s is None for s in rep)
+                index_increment += chunk_size
+            date_increment += max(1, index_increment // 100000)
+
+
 async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, skip_existing=False, chunk_size=10):
     pool = await connect_to_database(database=uscis_database)
     try:
@@ -161,25 +184,13 @@ async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, sk
             await build_table(conn=conn, table_name=uscis_table_name)
             await build_table(conn=conn, table_name=error_table_name)
 
-        date_increment = 0
-        async with aiohttp.ClientSession() as session:
-            async def update_function(index):
-                async with pool.acquire() as conn2:
-                    return await update_case_internal(
-                        conn=conn2, url_session=session, receipt_number=f'{prefix}{date_start + date_increment}{index}',
-                        skip_existing=skip_existing,
-                    )
-            while await update_function(index=index_start) is not None:
-                index_increment = 1
-                all_none = False
-                while not all_none:
-                    rep = await asyncio.gather(
-                        *map(update_function,
-                             [index_start + index_increment + i for i in range(chunk_size)])
-                    )
-                    all_none = all(s is None for s in rep)
-                    index_increment += chunk_size
-                date_increment += max(1, index_increment // 100000)
+        await smart_update_all_function(
+            pool,
+            prefix,
+            date_start,
+            index_start,
+            skip_existing,
+            chunk_size)
 
         async with pool.acquire() as conn:
             await read_db(conn=conn, table_name=uscis_table_name, len_only=True)
