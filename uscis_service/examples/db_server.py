@@ -65,10 +65,13 @@ async def handle_main(request):
             if length:
                 text.append(f"Number of entries for {status}: {length}")
 
+        text.append("")
         errors = await get_all_errors(conn=connection)
         for u in errors:
             text.append(str(u))
+        text.append("")
         text.append(str(len(errors)))
+        text.append("")
         return web.Response(text="\n".join(text))
 
 
