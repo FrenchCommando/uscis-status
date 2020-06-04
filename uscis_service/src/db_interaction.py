@@ -9,7 +9,7 @@ async def get_pool():
 async def get_all_uscis(conn):
     await build_table(conn=conn, table_name=uscis_table_name)
     await build_table(conn=conn, table_name=error_table_name)
-    return await get_all(conn=conn, table_name=uscis_table_name)
+    return await get_all(conn=conn, table_name=uscis_table_name, ignore_null=True)
 
 
 async def get_all_case_uscis(conn, case_number):

@@ -44,7 +44,9 @@ async def insert_entry(conn, table_name, **kwargs):
     return "All good"
 
 
-async def get_all(conn, table_name):
+async def get_all(conn, table_name, ignore_null=False):
+    if ignore_null:
+        return await conn.fetch(f'SELECT * FROM {table_name} WHERE current_status != $1', None)
     return await conn.fetch(f'SELECT * FROM {table_name}')
 
 
