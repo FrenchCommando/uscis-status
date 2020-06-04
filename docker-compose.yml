@@ -5,7 +5,7 @@ services:
     build:
       context: ./uscis_service
       dockerfile: Dockerfile
-    command: python examples.db_server
+    command: python -m examples.db_server
     expose:
       - 5000
     depends_on:
