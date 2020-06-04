@@ -1,5 +1,5 @@
-from src.db_stuff import get_all, get_all_case, get_all_status, connect_to_database
-from src.constants import uscis_table_name, uscis_database
+from src.db_stuff import get_all, get_all_case, get_all_status, connect_to_database, build_table
+from src.constants import uscis_table_name, uscis_database, error_table_name
 
 
 async def get_pool():
