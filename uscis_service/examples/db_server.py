@@ -43,7 +43,7 @@ async def handle_main(request):
     pool = request.app['pool']
     async with pool.acquire() as connection:
         rep = await get_all_uscis(conn=connection)
-        text = [f"Number of entries {len(rep)}"]
+        text = [f"Number of entries {len(rep)}", ""]
 
         status_number = {}
         for status in status_to_msg:
