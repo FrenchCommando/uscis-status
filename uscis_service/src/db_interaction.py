@@ -3,8 +3,6 @@ from src.constants import uscis_table_name, uscis_database, error_table_name
 
 
 async def get_pool():
-    await build_table(conn=conn, table_name=uscis_table_name)
-    await build_table(conn=conn, table_name=error_table_name)
     return await connect_to_database(database=uscis_database)
 
 
