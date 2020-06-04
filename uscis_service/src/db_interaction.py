@@ -22,3 +22,8 @@ async def get_all_status_uscis(conn, status):
     await build_table(conn=conn, table_name=uscis_table_name)
     await build_table(conn=conn, table_name=error_table_name)
     return await get_all_status(conn=conn, table_name=uscis_table_name, status=status)
+
+
+async def get_all_errors(conn):
+    await build_table(conn=conn, table_name=error_table_name)
+    return await get_all(conn=conn, table_name=error_table_name)

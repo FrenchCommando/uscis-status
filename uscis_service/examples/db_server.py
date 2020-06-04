@@ -44,7 +44,6 @@ async def handle_loop(request):
     prefix = request.match_info.get('prefix', 'LIN')
     date_start = int(request.match_info.get('date_start', 20001))
     index_start = int(request.match_info.get('index_start', 50001))
-    print(date_start, index_start)
     await smart_update_all_function(
         pool=pool, prefix=prefix, date_start=date_start, index_start=index_start, skip_existing=False, chunk_size=50
     )
@@ -65,6 +64,11 @@ async def handle_main(request):
         for status, length in sorted(status_number.items(), key=lambda k: k[1], reverse=True):
             if length:
                 text.append(f"Number of entries for {status}: {length}")
+
+        errors = await get_all_errors(conn=connection)
+        for u in errors:
+            text.append(str(u))
+        text.append(str(len(errors)))
         return web.Response(text="\n".join(text))
 
 
