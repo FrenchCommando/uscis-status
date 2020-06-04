@@ -26,7 +26,7 @@ async def connect_to_database(database):
 async def build_table(conn, table_name):
     try:
         table_filter_test = table_name.split("_", 1)[-1] if table_name.startswith("test") else table_name
-        await conn.execute(f'CREATE TABLE {table_name}({table_to_specs[table_filter_test]})')
+        await conn.execute(f'CREATE TABLE IF NOT EXISTS {table_name}({table_to_specs[table_filter_test]})')
     except asyncpg.exceptions.DuplicateTableError:
         print(f"Table {table_name} already exists")
         pass
