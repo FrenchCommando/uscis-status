@@ -72,7 +72,7 @@ async def init_app():
     app_inst = web.Application()
     app_inst['pool'] = await get_pool()
 
-    app_inst.router.add_route('GET', '/loop/{prefix}/{int:date_start}/{int:index_start}', handle_loop)
+    app_inst.router.add_route('GET', '/loop/{prefix}/{date_start:int}/{index_start:int}', handle_loop)
     app_inst.router.add_route('GET', '/case/{receipt_number}', handle_case)
     app_inst.router.add_route('GET', '/status/{status}', handle_status)
     app_inst.router.add_route('GET', '/all', handle_all)
