@@ -47,7 +47,7 @@ async def handle_loop(request):
     await smart_update_all_function(
         pool=pool, prefix=prefix, date_start=date_start, index_start=index_start, skip_existing=False, chunk_size=50
     )
-    await handle_main(request=request)
+    return await handle_main(request=request)
 
 
 async def handle_main(request):
