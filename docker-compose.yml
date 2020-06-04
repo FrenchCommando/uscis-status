@@ -11,7 +11,7 @@ services:
     depends_on:
       - db
     environment:
-      AM_I_IN_A_DOCKER_CONTAINER: True
+      AM_I_IN_A_DOCKER_CONTAINER: 1
   db:
     image: postgres:12-alpine
     volumes:
