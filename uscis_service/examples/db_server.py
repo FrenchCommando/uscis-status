@@ -51,7 +51,8 @@ async def handle_main(request):
             status_number[status] = len(rep_status)
 
         for status, length in sorted(status_number.items(), key=lambda k: k[1], reverse=True):
-            text.append(f"Number of entries for {status}: {length}")
+            if length:
+                text.append(f"Number of entries for {status}: {length}")
         return web.Response(text="\n".join(text))
 
 
