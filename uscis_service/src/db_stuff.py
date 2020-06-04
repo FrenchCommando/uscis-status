@@ -10,7 +10,9 @@ async def connect_to_database(database):
             dsn=f"postgresql://{postgres_user}:{postgres_password}@{host}:{pg_port_number}/{database}",
         )
     except asyncpg.InvalidCatalogNameError:
-        sys_conn = await asyncpg.connect(dsn=f"postgresql://{postgres_user}:{postgres_password}@{host}:{pg_port_number}")
+        sys_conn = await asyncpg.connect(
+            dsn=f"postgresql://{postgres_user}:{postgres_password}@{host}:{pg_port_number}"
+        )
         await sys_conn.execute(
             f'CREATE DATABASE "{database}" OWNER "{postgres_user}"'
         )
