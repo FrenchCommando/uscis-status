@@ -76,7 +76,7 @@ status_to_msg = {
         "Please follow the instructions to resubmit your case. "
         "If you do not receive your rejected case by {notice_deadline}, "
         "contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
-        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address. ",
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case Was Reopened": 
         "On {date}, {phrasing_1} {form_long_name}, Receipt Number {receipt_number}, {phrasing_2}. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
@@ -162,7 +162,7 @@ status_to_msg = {
         "Please follow the instructions to resubmit your case. "
         "If you do not receive your rejected case by {notice_deadline}, "
         "contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
-        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address. ",
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "CASE STATUS":
         "At this time USCIS cannot provide you with information for your case. "
         "Please contact the USCIS Contact Center at {phone_number} for additional information.",
@@ -284,6 +284,25 @@ status_to_msg = {
         "That office will mail you a decision or send you a request if it needs something from you. "
         "Please follow any instructions in the notice. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Case Was Transferred To International Office/Consulate":
+        "On {date}, we transferred your {form_long_name}, Receipt Number {receipt_number}, "
+        "as part of standard processing. "
+        "Form I-730 Asylee Petitions are transferred to USCIS International Office "
+        "or DOS Consulate Office in the country of your beneficiary.s physical residence. "
+        "That USCIS office or the National Visa Center will provide you with instructions "
+        "regarding the beneficiary.s interview. If the beneficiary relocates to a different country, "
+        "contact the USCIS International Office or the DOS Consulate Office in the new country "
+        "to request to transfer Form I-730, Refugee/Asylee Relative Petition. "
+        "Form I-730 Refugee Petitions are transferred to USCIS International Adjudications Support Branch "
+        "for further processing. "
+        "That USCIS Office will provide you with further instructions upon receipt of your case. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Case Was Transferred To Schedule An Interview":
+        "On {date}, we transferred your {form_long_name}, Receipt Number {receipt_number}, "
+        "to our local USCIS office to have an interview scheduled. "
+        "This office will schedule your interview and mail you an interview notice. "
+        "If you move before you receive the interview notice, "
+        "please go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case Was Updated To Show Fingerprints Were Taken":
         "As of {date}, fingerprints relating to your {form_long_name}, Receipt Number {receipt_number}, "
         "have been applied to your case. "
@@ -516,11 +535,6 @@ status_to_msg = {
         "If you do not receive your Withdrawal Acknowledgment Notice by {notice_deadline}, "
         "please go to www.uscis.gov/e-request to request a copy of the notice. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "totto":
-        "{rr}",
-    # "Case Was Transferred To International Office/Consulate": "{rr}",
-    # "Travel Document Was Returned to USCIS And Will Be Held For 180 Days": "{rr}",
-    # "Case Was Transferred To Schedule An Interview": "{rr}",
     None: "",
 }
 
