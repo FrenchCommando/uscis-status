@@ -20,6 +20,13 @@ status_to_msg = {
         "On {date}, we sent you a notice about this action. "
         "If you do not receive your notice by {notice_deadline}, please contact the appellate authority directly. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Appeal Was Terminated and A Notice Was Mailed To Me":
+        "We terminated your appeal for {form_long_name}, Receipt Number {receipt_number}, "
+        "and mailed you a termination notice. "
+        "Please follow the instructions in the notice. "
+        "If you do not receive your notice by {notice_deadline}, "
+        "please go to www.uscis.gov/e-request to request a copy of the notice. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Biometrics Appointment Was Scheduled": 
         "On {date}, we scheduled you for a biometrics appointment and sent you an appointment notice "
         "for Receipt Number {receipt_number}. "
@@ -489,6 +496,12 @@ status_to_msg = {
         "The 180 days have passed, and you did not contact us. We have destroyed your document. "
         "If you still need the document, you will have to file a {form_long_name_2}, with fee. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Travel Document Was Mailed":
+        "On {date}, we mailed your travel document for Receipt Number {receipt_number}, "
+        "to the address you gave us. "
+        "If you do not receive your travel document by {notice_deadline}, "
+        "please go to www.uscis.gov/e-request to request that we resend you the travel document. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Travel Document Was Returned to USCIS And Will Be Held For 180 Days":
         "On {date}, your travel document for Receipt Number {receipt_number}, "
         "was returned to us because the Post Office could not deliver it. "
@@ -496,12 +509,6 @@ status_to_msg = {
         "Please go to www.uscis.gov/e-request to request the travel document. "
         "If you do not submit an online request or contact us at 1-800-375-5283 by {notice_deadline2}, "
         "we will destroy your document and you will need to file a new {form_long_name_2}, with fee. "
-        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Travel Document Was Mailed":
-        "On {date}, we mailed your travel document for Receipt Number {receipt_number}, "
-        "to the address you gave us. "
-        "If you do not receive your travel document by {notice_deadline}, "
-        "please go to www.uscis.gov/e-request to request that we resend you the travel document. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Withdrawal Acknowledgement Notice Was Sent":
         "On {date}, we received your request to withdraw your {form_long_name}, Receipt Number {receipt_number}, "
