@@ -174,11 +174,11 @@ status_to_msg = {
         "please go to \twww.uscis.gov/e-request\t to request a copy of the notice. "
         "If you move, go to \twww.uscis.gov/addresschange\t to give us your new mailing address.",
     "Case Was Approved":
-        "On {date}, we approved your {form_long_name}, Receipt Number {receipt_number}.  "
-        "We sent you an approval notice.  Please follow the instructions in the notice. "
+        "On {date}, we approved your {form_long_name}, Receipt Number {receipt_number}. "
+        "We sent you an approval notice. Please follow the instructions in the notice. "
         "If you do not receive your approval notice by {notice_deadline}, "
-        "please go to \twww.uscis.gov/e-request\t.  "
-        "If you move, go to \twww.uscis.gov/addresschange\t  to give us your new mailing address.  ",
+        "please go to www.uscis.gov/e-request. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case Was Approved And My Decision Was Emailed":
         "We approved your {form_long_name}, Receipt Number {receipt_number}, and emailed you an approval notice.  "
         "Please follow any instructions on the approval notice.  "
@@ -197,11 +197,11 @@ status_to_msg = {
         "If you move, go to \twww.uscis.gov/addresschange\t  to give us your new mailing address.",
     "Case Was Received":
         "On {date}, we received your {form_long_name}, Receipt Number {receipt_number}, "
-        "and sent you the receipt notice that describes how we will process your case.  "
-        "Please follow the instructions in the notice.  "
+        "and sent you the receipt notice that describes how we will process your case. "
+        "Please follow the instructions in the notice. "
         "If you do not receive your receipt notice by {notice_deadline}, "
-        "contact the USCIS Contact Center at \twww.uscis.gov/contactcenter\t.  "
-        "If you move, go to \twww.uscis.gov/addresschange\t to give us your new mailing address.",
+        "contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case Was Received and A Receipt Notice Was Emailed":
         "On {date}, we received your {form_long_name}, Receipt Number {receipt_number}, "
         "and mailed you a receipt notice.  The notice describes how we will process your case.  "
