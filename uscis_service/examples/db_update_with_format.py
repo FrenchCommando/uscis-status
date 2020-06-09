@@ -157,20 +157,21 @@ async def main():
                     # 2000250787,  # Request To Reschedule My Appointment Was Received
                     # 2006950236,  # Appeal Was Dismissed
                     # 2009750705,  # Case Was Relocated From Administrative Appeals Office To USCIS Originating Office
-                    2090034030,  # Case Was Transferred To International Office/Consulate
-                    2090016186,  # Travel Document Was Returned to USCIS And Will Be Held For 180 Days
-                    2005950822,  # Case Was Transferred To Schedule An Interview
-                    2013550732,  # Case Was Sent To The Executive Office of Immigration Review
-                    2007951479,  # Travel Document Was Mailed
+                    # 2090034030,  # Case Was Transferred To International Office/Consulate
+                    # 2090016186,  # Travel Document Was Returned to USCIS And Will Be Held For 180 Days
+                    # 2005950822,  # Case Was Transferred To Schedule An Interview
+                    # 2013550732,  # Case Was Sent To The Executive Office of Immigration Review
+                    # 2007951479,  # Travel Document Was Mailed
                     2009350816,  # Travel Document Was Destroyed
+                    2015550001,  # Travel Document Was Destroyed
                     9999999999,  # None
                 ]:
                     await test_number(prefix="LIN", number=i)
 
                 for i in [  # just realized this list will be obsolete
-                    2091047553,  # Expedite Request Received
-                    2091035807,  # Case Rejected For Form Not Signed And Incorrect Form Version
-                    9999999999,  # None
+                    # 2091047553,  # Expedite Request Received
+                    # 2091035807,  # Case Rejected For Form Not Signed And Incorrect Form Version
+                    # 9999999999,  # None
                 ]:
                     await test_number(prefix="MSC", number=i)
 

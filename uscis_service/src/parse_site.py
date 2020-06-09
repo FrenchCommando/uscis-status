@@ -21,4 +21,6 @@ async def display_msg(text):
     if len(error_message.contents) > 1:
         return None, ''
     div = soup.find('div', attrs={'class': 'rows text-center'})
-    return div.h1.string, "\t".join(map(str, div.p.contents))
+    status = div.h1.string
+    msg = "\t".join(map(str, div.p.contents))
+    return status, msg
