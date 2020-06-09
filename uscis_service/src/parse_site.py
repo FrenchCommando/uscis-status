@@ -5,8 +5,15 @@ async def check(url_session, receipt_number):
     ) as resp:
         time = resp.headers['date']
         d = await display_msg(resp.content)
+
         if d["ErrorMessage"]:
             return time, None, ''
+        content = d["StatusContent"]
+        if receipt_number != d["appReceiptNum"] or \
+                (receipt_number[:8] in content and receipt_number not in content):
+            # print(f"\t\tRerunning\t{receipt_number}\t{content}")
+            return await check(url_session=url_session, receipt_number=receipt_number)
+        # print(receipt_number)
         return time, d["LongCaseStatus"], d["StatusContent"]
 
 

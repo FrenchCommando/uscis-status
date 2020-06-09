@@ -94,13 +94,14 @@ async def update_entries(it, test_table=False):
         async with pool.acquire() as conn:
             await build_table(conn=conn, table_name=uscis_table_name)
             await build_table(conn=conn, table_name=error_table_name)
-        async with aiohttp.ClientSession() as session:
-            async def update_function(case):
+
+        async def update_function(case):
+            async with aiohttp.ClientSession() as session:
                 async with pool.acquire() as conn2:
                     await update_case_internal(
                         conn=conn2, url_session=session, receipt_number=case, test_table=test_table
                     )
-            await asyncio.gather(*map(update_function, it))
+        await asyncio.gather(*map(update_function, it))
         async with pool.acquire() as conn:
             await read_db(conn=conn, table_name=uscis_table_name, len_only=True)
             await read_db(conn=conn, table_name=error_table_name)
@@ -182,10 +183,10 @@ async def smart_update_all_function(
                     skip_existing=skip_existing, test_table=False,
                 )
         while await update_function(index=index_start) is not None:
-            index_increment = 1
+            index_increment = 0
             all_none = False
             while not all_none:
-                print(f"smart update -\t{prefix}\t{date_start + date_increment}{index_start + index_increment}")
+                print(f"smart update -\t{prefix}\t{date_start + date_increment}\t{index_start + index_increment}")
                 rep = await asyncio.gather(
                     *map(update_function,
                          [index_start + index_increment + i for i in range(chunk_size)])

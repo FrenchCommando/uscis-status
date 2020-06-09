@@ -1,9 +1,9 @@
 import asyncio
 from src.update_functions import update_entries, smart_update_all, refresh_error, refresh_case, refresh_selected_status
 
-start_index = 2090025354
+start_index = 2010050354
 
-l_i = range(start_index, start_index + 1)
+l_i = range(start_index, start_index + 100)
 ll = [f"LIN{i}" for i in l_i]
 # asyncio.get_event_loop().run_until_complete(update_entries(it=ll))
 # asyncio.get_event_loop().run_until_complete(update_entries(it=[]))
