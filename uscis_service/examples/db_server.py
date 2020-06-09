@@ -2,7 +2,8 @@ import aiohttp
 import asyncio
 from aiohttp import web
 from src.constants import port_number
-from src.db_interaction import get_all_uscis, get_all_case_uscis, get_all_status_uscis, get_pool, get_all_errors
+from src.db_interaction import init_tables, \
+    get_all_uscis, get_all_case_uscis, get_all_status_uscis, get_pool, get_all_errors
 from src.message_stuff import status_to_msg
 from src.update_functions import update_case_internal, smart_update_all_function
 
@@ -79,6 +80,9 @@ async def init_app():
     """Initialize the application server."""
     app_inst = web.Application()
     app_inst['pool'] = await get_pool()
+
+    async with app_inst['pool'].acquire() as connection:
+        await init_tables(conn=connection)
 
     app_inst.router.add_route('GET', '/loop/{prefix}/{date_start}/{index_start}', handle_loop)
     app_inst.router.add_route('GET', '/case/{receipt_number}', handle_case)

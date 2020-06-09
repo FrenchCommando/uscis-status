@@ -1,5 +1,6 @@
 import aiohttp
 import asyncio
+import datetime
 from src.constants import uscis_database, uscis_table_name, error_table_name
 from src.db_stuff import connect_to_database, build_table, insert_entry, \
     get_all, get_all_case, update_case, delete_case, get_all_status
