@@ -4,7 +4,7 @@ from src.constants import uscis_database, uscis_table_name, error_table_name, te
 from src.db_stuff import connect_to_database, build_table, insert_entry, \
     get_all, get_all_case, update_case, delete_case, get_all_status
 from src.message_stuff import string_to_args, get_arguments_from_string, rebuild_string_from_template, \
-    args_to_string, remove_tags, check_title_in_status, get_template
+    args_to_string, remove_tags, check_title_in_status, get_template, status_to_msg
 from src.parse_site import check as uscis_check
 
 
@@ -18,7 +18,7 @@ async def read_db(conn, table_name, len_only=False):
 
 async def update_case_internal(conn, url_session, receipt_number, skip_existing=False, test_table=False):
     uscis_table = uscis_table_name if not test_table else test_uscis_table
-    print(f"update_case_internal - Updating {receipt_number}\t")
+    # print(f"update_case_internal - Updating {receipt_number}\t")
     rep = await get_all_case(conn=conn, table_name=uscis_table, case_number=receipt_number)
     if rep and rep[0]['current_status'] is not None and skip_existing:
         msg = f"\t{rep[0]['current_status']} - Request not sent"
@@ -45,7 +45,7 @@ async def update_case_internal(conn, url_session, receipt_number, skip_existing=
             rebuild_string = rebuild_string_from_template(status=title, **string_to_args(s=current_args))
             if not (clean_string == rebuild_string):
                 raise AttributeError(
-                    f"Message recomposition string is wrong\n\t\t{clean_string}\n\t\t{rebuild_string}"
+                    f"Message recomposition string is wrong\n\t\tClean\t{clean_string}\n\t\tRebuilt\t{rebuild_string}"
                     f"\n\t\t{message}"
                     f"\n\t\t{title}\t\t{current_args}"
                 )
@@ -136,6 +136,22 @@ async def refresh_case(status):
             print("Refreshing Results", status, f"{len(old_status)} to {len(new_status)}")
     finally:
         await pool.close()
+
+
+async def refresh_selected_status(threshold=1000):
+    pool = await connect_to_database(database=uscis_database)
+    async with pool.acquire() as connection:
+        rep = await get_all(conn=connection, table_name=uscis_table_name, ignore_null=True)
+        text = [f"Number of entries {len(rep)}", ""]
+
+        status_number = {}
+        for status in status_to_msg:
+            rep_status = await get_all_status(conn=connection, status=status, table_name=uscis_table_name)
+            status_number[status] = len(rep_status)
+
+        for status, length in sorted(status_number.items(), key=lambda k: k[1], reverse=True):
+            if length and length < threshold:
+                await refresh_case(status=status)
 
 
 async def refresh_error(test_table=False):

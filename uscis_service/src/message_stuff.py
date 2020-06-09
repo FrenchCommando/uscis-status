@@ -192,7 +192,7 @@ status_to_msg = {
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case Was Automatically Revoked":
         "On {date}, we automatically revoked your {form_long_name}, Receipt Number {receipt_number}. "
-        r"We will mail you a revocation notice explaining the specific reason\(s\) for our decision. "
+        "We will mail you a revocation notice explaining the specific reason(s) for our decision. "
         "Please follow any instructions in the notice. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case Was Denied":
@@ -241,7 +241,7 @@ status_to_msg = {
         "contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case Was Relocated From Administrative Appeals Office To USCIS Originating Office":
-        r"On {date}, the Administrative Appeals Office \(AAO\) transferred your {form_long_name}, "
+        "On {date}, the Administrative Appeals Office (AAO) transferred your {form_long_name}, "
         "Receipt Number {receipt_number}, to the USCIS office that made the original decision on your case. "
         "That office will mail you our decision or send you a request if it needs something from you. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
@@ -255,7 +255,7 @@ status_to_msg = {
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case Was Sent To The Administrative Appeals Office for Review":
         "On {date}, we sent your {form_long_name}, Receipt Number {receipt_number}, "
-        r"to the Administrative Appeals Office \(AAO\) for review. "
+        "to the Administrative Appeals Office (AAO) for review. "
         "That office will mail you our decision or send you a request if it needs something from you. "
         "Please follow any instructions provided to you. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
@@ -267,7 +267,7 @@ status_to_msg = {
         "and how to inform us of any changes in your situation or address.",
     "Case Was Sent To The Executive Office of Immigration Review":
         "On {date}, we sent your {form_long_name}, Receipt Number {receipt_number}, "
-        "to the Executive Office of Immigration Review \(EOIR\). "
+        "to the Executive Office of Immigration Review (EOIR). "
         "That office will mail you our decision or send you a request if it needs something from you. "
         "Please follow any instructions provided to you. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
@@ -290,7 +290,7 @@ status_to_msg = {
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case Was Updated To Show That No One Appeared for In-Person Processing":
         "On {date}, we requested that certain people associated with your {form_long_name}, "
-        "Receipt Number {receipt_number}, come to an appointment.   "
+        "Receipt Number {receipt_number}, come to an appointment. "
         "No one came to the appointment, and this will significantly affect your case. "
         "We will mail you a notice if we make a decision or take further action. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
@@ -388,7 +388,7 @@ status_to_msg = {
         "On {date}, we cancelled your interview for your {form_long_name}, Receipt Number {receipt_number}, "
         "and mailed you a cancellation notice. "
         "We will notify you by mail if the appointment is rescheduled, a decision is made, "
-        "or if we need something from you.  Please follow any instructions in the notice. "
+        "or if we need something from you. Please follow any instructions in the notice. "
         "If you do not receive your notice by {notice_deadline}, "
         "please go to www.uscis.gov/e-request to request a copy of the notice. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
@@ -546,7 +546,8 @@ def get_template(status):
 
 def match(s, template):
     s = remove_tags(s=s)
-    mod_template = template.replace("{", "(?P<").replace("}", ">.*)")
+    template_for_paren = template.replace("(", r"\(").replace(")", r"\)")
+    mod_template = template_for_paren.replace("{", "(?P<").replace("}", ">.*)")
     # print(mod_template)
     # print(s)
     return re.match(pattern=mod_template, string=s).groupdict()
