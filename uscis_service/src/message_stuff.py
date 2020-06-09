@@ -223,16 +223,16 @@ status_to_msg = {
         "because you did not sign your form.  We mailed your case back to you, including any supporting materials.  "
         "Please follow the instructions to resubmit your case.  "
         "If you do not receive your rejected case by {notice_deadline}, "
-        "contact the USCIS Contact Center at \twww.uscis.gov/contactcenter\t.  "
+        "contact the USCIS Contact Center at www.uscis.gov/contactcenter.  "
         "If you move, go to \twww.uscis.gov/addresschange\t to give us your new mailing address. ",
     "Case Was Rejected Because It Was Improperly Filed":
         "On {date}, we rejected your {form_long_name}, Receipt Number {receipt_number}, "
-        "because it was not filed correctly.  "
-        "We mailed your case back to you, including any supporting materials and fee.  "
-        "Please follow the instructions to resubmit your case.  "
+        "because it was not filed correctly. "
+        "We mailed your case back to you, including any supporting materials and fee. "
+        "Please follow the instructions to resubmit your case. "
         "If you do not receive your rejected case by {notice_deadline}, "
-        "contact the USCIS Contact Center at \twww.uscis.gov/contactcenter\t.  "
-        "If you move, go to \twww.uscis.gov/addresschange\t to give us your new mailing address. ",
+        "contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case Was Relocated From Administrative Appeals Office To USCIS Originating Office":
         r"On {date}, the Administrative Appeals Office \(AAO\) transferred your {form_long_name}, "
         "Receipt Number {receipt_number}, to the USCIS office that made the original decision on your case. "
@@ -334,11 +334,11 @@ status_to_msg = {
         "If you move, go to \twww.uscis.gov/addresschange\t to give us your new mailing address.",
     "Fee Will Be Refunded":
         "On {date}, USCIS made the decision to refund the fee for your {form_long_name}, "
-        "Receipt Number {receipt_number}.  Your refund will be mailed to the fee remitter on file. "
-        "This refund does not affect the processing or location of your case.  "
+        "Receipt Number {receipt_number}. Your refund will be mailed to the fee remitter on file. "
+        "This refund does not affect the processing or location of your case. "
         "If you do not receive your refund by {notice_deadline}, "
         "please call the Burlington Finance Center at 1-802-288-7600. "
-        "If you move, go to \twww.uscis.gov/addresschange\t to give us your new mailing address.",
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Fees Were Waived":
         "On {date}, we received your case and waived the filing fee for your {form_long_name}, "
         "Receipt Number {receipt_number}.  We mailed you a notice describing how we will process your case.  "
