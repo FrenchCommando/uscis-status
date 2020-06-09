@@ -25,7 +25,7 @@ async def update_case_internal(conn, url_session, receipt_number, skip_existing=
         print(msg)
         return msg
     timestamp, title, message = await uscis_check(url_session=url_session, receipt_number=receipt_number)
-    print(f"\t\t\tupdate_case_internal - Result {receipt_number}\t{title}")
+    print(f"\t\t\tupdate_case_internal - Result {receipt_number}\t{title} - {message}")
 
     async def handle_error(error=None):
         await insert_entry(conn, error_table_name, title=title, case_number=receipt_number, message=message)
