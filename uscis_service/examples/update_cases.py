@@ -13,7 +13,7 @@ ll = [f"LIN{i}" for i in l_i]
 # ))
 
 # asyncio.get_event_loop().run_until_complete(refresh_case(status='Card Was Destroyed'))
-# asyncio.get_event_loop().run_until_complete(refresh_selected_status(threshold=100))
+# asyncio.get_event_loop().run_until_complete(refresh_selected_status(filter_function=lambda x: 100 < x < 500))
 asyncio.get_event_loop().run_until_complete(refresh_error())
 
 # need one function to clean end of queues that should have been None and were misattributed - nah just refresh

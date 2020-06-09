@@ -138,7 +138,7 @@ async def refresh_case(status):
         await pool.close()
 
 
-async def refresh_selected_status(threshold=1000):
+async def refresh_selected_status(filter_function=lambda x: x < 100):
     pool = await connect_to_database(database=uscis_database)
     async with pool.acquire() as connection:
         rep = await get_all(conn=connection, table_name=uscis_table_name, ignore_null=True)
@@ -150,7 +150,7 @@ async def refresh_selected_status(threshold=1000):
             status_number[status] = len(rep_status)
 
         for status, length in sorted(status_number.items(), key=lambda k: k[1], reverse=True):
-            if length and length < threshold:
+            if length and filter_function(length):
                 await refresh_case(status=status)
 
 

@@ -342,6 +342,11 @@ status_to_msg = {
         "If you do not receive your duplicate notice by {notice_deadline}, "
         "please go to www.uscis.gov/e-request to request a copy of the notice. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Expedite Request Approved":
+        "On {date}, we approved your request for expedite processing on your {form_long_name}, "
+        "Receipt Number {receipt_number}. "
+        "We are processing your case and will send you a notice of action with our final decision. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Expedite Request Denied":
         "On {date}, we denied your request for expedite processing of your {form_long_name}, "
         "Receipt Number {receipt_number}. You did not provide evidence of an extreme emergent need. "
