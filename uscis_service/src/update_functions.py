@@ -174,7 +174,7 @@ async def refresh_error(test_table=False):
 
 async def smart_update_all_function(
         pool, prefix="LIN", date_start=20001, index_start=50001, skip_existing=False, chunk_size=10):
-    date_increment = 0
+
     async with aiohttp.ClientSession() as session:
         async def update_function(index):
             async with pool.acquire() as conn2:
@@ -183,19 +183,21 @@ async def smart_update_all_function(
                     receipt_number=f'{prefix}{date_start + date_increment:05d}{index:05d}',
                     skip_existing=skip_existing, test_table=False,
                 )
+
+        date_increment = 0
         while await update_function(index=index_start) is not None:
             index_increment = 0
             all_none = False
             while not all_none:
                 print(f"smart update -\t"
-                      f"{prefix}\t{date_start + date_increment:05d}\t{index_start + index_increment:05d}")
+                      f"{prefix}\t{date_start + date_increment}\t{index_start + index_increment}")
                 rep = await asyncio.gather(
                     *map(update_function,
                          [index_start + index_increment + i for i in range(chunk_size)])
                 )
                 all_none = all(s is None for s in rep)
                 index_increment += chunk_size
-            date_increment += max(1, index_increment // 100000)
+            date_increment += 1
 
 
 async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, skip_existing=False, chunk_size=10):

@@ -1,5 +1,6 @@
 import asyncio
-from src.update_functions import update_entries, smart_update_all, refresh_error, refresh_case, refresh_selected_status
+from src.update_functions import update_entries, smart_update_all, \
+    refresh_error, refresh_case, refresh_selected_status
 
 start_index = 2010050354
 

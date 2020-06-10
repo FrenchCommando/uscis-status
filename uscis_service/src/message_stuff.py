@@ -14,6 +14,13 @@ status_to_msg = {
         "On {date}, we produced your Advance Parole Document for your {form_long_name}, "
         "Receipt Number {receipt_number}. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Appeal Was Approved":
+        "The appellate authority approved your appeal and mailed you a decision. "
+        "Your case, Receipt Number {receipt_number}, "
+        "is being transferred back to the originating office for completion. "
+        "If you do not hear from the originating office by {notice_deadline}, "
+        "contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Appeal Was Dismissed": 
         "Your appeal was dismissed and the original decision on your case, "
         "Receipt Number {receipt_number}, remains the same. "
@@ -95,6 +102,11 @@ status_to_msg = {
         "If you do not receive your receipt notice by {notice_deadline}, "
         "contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Case Approval Was Certified By USCIS":
+        "On {date}, we certified the approval of your {form_long_name}, Receipt Number {receipt_number}, "
+        "and sent it to the appropriate appellate office. "
+        "That office will send you a final decision. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case Approval Was Reaffirmed And Mailed Back To Department Of State": 
         "On {date}, the Department of State returned your case, Receipt Number {receipt_number}, "
         "to us for further review and we mailed you a notice affirming our original approval. "
@@ -141,6 +153,14 @@ status_to_msg = {
         "On {date}, we rejected your {form_long_name}, Receipt Number {receipt_number}, "
         "because you did not sign the form and the fee you paid was incorrect. "
         "We mailed your case back to you, including any supporting materials and the payment. "
+        "Please follow the instructions to resubmit your case. "
+        "If you do not receive your rejected case by {notice_deadline}, "
+        "contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Case Rejected For Incorrect Fee And Incorrect Form Version":
+        "On {date}, we rejected your {form_long_name}, Receipt Number {receipt_number}, "
+        "because the fee you paid was incorrect and we no longer accept the version of the form you used. "
+        "We mailed your case back to you, including any supporting materials and the incorrect fee. "
         "Please follow the instructions to resubmit your case. "
         "If you do not receive your rejected case by {notice_deadline}, "
         "contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
@@ -292,7 +312,7 @@ status_to_msg = {
         "That USCIS office or the National Visa Center will provide you with instructions "
         "regarding the beneficiary.s interview. If the beneficiary relocates to a different country, "
         "contact the USCIS International Office or the DOS Consulate Office in the new country "
-        "to request to transfer Form I-730, Refugee/Asylee Relative Petition. "
+        "to request to transfer {form_long_name2}. "
         "Form I-730 Refugee Petitions are transferred to USCIS International Adjudications Support Branch "
         "for further processing. "
         "That USCIS Office will provide you with further instructions upon receipt of your case. "
