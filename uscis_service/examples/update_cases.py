@@ -8,8 +8,11 @@ ll = [f"LIN{i}" for i in l_i]
 # asyncio.get_event_loop().run_until_complete(update_entries(it=ll))
 # asyncio.get_event_loop().run_until_complete(update_entries(it=[]))
 
+# asyncio.get_event_loop().run_until_complete(smart_update_all(
+#     prefix="LIN", date_start=20001, index_start=50001, skip_existing=False, chunk_size=100,
+# ))
 asyncio.get_event_loop().run_until_complete(smart_update_all(
-    prefix="LIN", date_start=20001, index_start=50001, skip_existing=False, chunk_size=100,
+    prefix="LIN", date_start=20900, index_start=1, skip_existing=False, chunk_size=100,
 ))
 
 # asyncio.get_event_loop().run_until_complete(refresh_case(status='Card Was Destroyed'))

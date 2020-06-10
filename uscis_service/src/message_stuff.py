@@ -330,6 +330,12 @@ status_to_msg = {
         "because the Post Office returned it and we did not hear from you. "
         "You must file a {form_long_name_2}, with the correct fee to obtain a new document. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Document Was Destroyed And Letter Was Received":
+        "On {date}, we destroyed your document for your {form_long_name}, Receipt Number {receipt_number}. "
+        "We are reviewing your letter explaining the reasons for the return. "
+        "We will mail you a notice, if necessary. "
+        "If we send you a notice, please follow any instructions on that notice. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Document Was Mailed To Me":
         "On {date}, we mailed your document for Receipt Number {receipt_number}, directly to the address you gave us. "
         "If you do not receive your document by {notice_deadline}, "
@@ -456,6 +462,12 @@ status_to_msg = {
         "you must file a new application or petition and submit a new fee filing fee. "
         "If you need assistance, contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
         "If you change your mailing address, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Premium Processing Case is Eligible for Pre-Certification":
+        "On {date}, we determined that the business sponsor for your {form_long_name}, "
+        "Receipt Number {receipt_number}, meets our pre-certification requirements. "
+        "Your premium-processing receipt notice contains contact information for direct inquiries on your case. "
+        "Please follow the instructions in the notice. "
+        "If you move, contact the premium-processing unit directly to update your address.",
     "Reentry Permit Was Produced":
         "On {date}, we produced your Reentry Permit for your {form_long_name}, Receipt Number {receipt_number}. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
