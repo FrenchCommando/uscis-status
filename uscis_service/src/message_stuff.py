@@ -2,7 +2,7 @@ import re
 
 
 status_to_msg = {
-    " Premium Processing Fee Will Be Refunded": 
+    " Premium Processing Fee Will Be Refunded":
         "On {date}, USCIS made the decision to refund the Premium Processing fee for your {form_long_name}, "
         "Receipt Number {receipt_number}. "
         "Your refund will be mailed to the fee remitter on file. "
@@ -10,7 +10,7 @@ status_to_msg = {
         "If you do not receive your refund by {notice_deadline}, "
         "please call the Burlington Finance Center at 1-802-288-7600. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Advance Parole Document Was Produced": 
+    "Advance Parole Document Was Produced":
         "On {date}, we produced your Advance Parole Document for your {form_long_name}, "
         "Receipt Number {receipt_number}. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
@@ -21,7 +21,7 @@ status_to_msg = {
         "If you do not hear from the originating office by {notice_deadline}, "
         "contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Appeal Was Dismissed": 
+    "Appeal Was Dismissed":
         "Your appeal was dismissed and the original decision on your case, "
         "Receipt Number {receipt_number}, remains the same. "
         "On {date}, we sent you a notice about this action. "
@@ -34,19 +34,19 @@ status_to_msg = {
         "If you do not receive your notice by {notice_deadline}, "
         "please go to www.uscis.gov/e-request to request a copy of the notice. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Biometrics Appointment Was Scheduled": 
+    "Biometrics Appointment Was Scheduled":
         "On {date}, we scheduled you for a biometrics appointment and sent you an appointment notice "
         "for Receipt Number {receipt_number}. "
         "Please follow the instructions in the notice. "
         "If you do not receive your appointment notice by {notice_deadline}, "
         "please go to www.uscis.gov/e-request to request a copy of the notice. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Card Destroyed": 
+    "Card Destroyed":
         "On {date}, we destroyed your card for Receipt Number {receipt_number}, "
         "that you returned to us with a letter of explanation. "
         "We will inform you if any further action or information is necessary. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Card Is Being Returned to USCIS by Post Office": 
+    "Card Is Being Returned to USCIS by Post Office":
         "On {date}, the Post Office reported that they are returning your new card "
         "for Receipt Number {receipt_number}, to us. "
         "We mailed your card to the address you gave us, but the Post Office could not deliver it. "
@@ -54,29 +54,29 @@ status_to_msg = {
         "You can use your tracking number at www.USPS.com in the Quick Tools Tracking section. "
         "Please go to www.uscis.gov/e-request to request that we resend the card to you. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Card Was Delivered To Me By The Post Office": 
+    "Card Was Delivered To Me By The Post Office":
         "On {date}, the Post Office delivered your new card for Receipt Number {receipt_number}, "
         "to the address that you gave us. The tracking number assigned is {tracking_number}. "
         "You can use your tracking number at www.USPS.com in the Quick Tools Tracking section. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Card Was Destroyed": 
+    "Card Was Destroyed":
         "On {date}, we destroyed your card for your {form_long_name}, Receipt Number {receipt_number}, "
         "because the Post Office returned it and we did not hear from you. "
         "You must file a {form_long_name_2}, with the correct fee to obtain a new card. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Card Was Mailed To Me": 
+    "Card Was Mailed To Me":
         "On {date}, we mailed your new card for your {form_long_name}, Receipt Number {receipt_number}, "
         "to the address you gave us. If you do not receive your card by {notice_deadline}, "
         "please go to www.uscis.gov/e-request to request that we {send_phrase}. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Card Was Picked Up By The United States Postal Service": 
+    "Card Was Picked Up By The United States Postal Service":
         "On {date}, the Post Office picked up mail containing your new card for Receipt Number {receipt_number}. "
         "We mailed your card to the address you gave us. The tracking number assigned is {tracking_number}. "
         "You can use your tracking number at www.USPS.com in the Quick Tools Tracking section. "
         "If you did not receive the card, please go to www.uscis.gov/e-request "
         "to request that we resend the card to you. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Case Was Rejected Because My Check Or Money Order Is Not Signed": 
+    "Case Was Rejected Because My Check Or Money Order Is Not Signed":
         "On {date}, we rejected your {form_long_name}, Receipt Number {receipt_number}, "
         "because your check or money order was not signed. "
         "We mailed your case back to you, including supporting materials and the unsigned check or money order. "
@@ -84,10 +84,10 @@ status_to_msg = {
         "If you do not receive your rejected case by {notice_deadline}, "
         "contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Case Was Reopened": 
+    "Case Was Reopened":
         "On {date}, {phrasing_1} {form_long_name}, Receipt Number {receipt_number}, {phrasing_2}. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Card Was Returned To USCIS": 
+    "Card Was Returned To USCIS":
         "On {date}, the Post Office returned your new card for {form_long_name}, "
         "Receipt Number {receipt_number}, to us. "
         "We mailed your card to the address you gave us, but the Post Office could not deliver it."
@@ -95,7 +95,7 @@ status_to_msg = {
         "You can use your tracking number at www.USPS.com in the {section_path} section. "
         "We will destroy your new card if we do not receive an address update by {notice_deadline}. "
         "Please go to{inconsistent_tabs}to request that we resend the card to you. If you move, {truncated_message}",
-    "Case Accepted By The USCIS Lockbox": 
+    "Case Accepted By The USCIS Lockbox":
         "On {date}, we accepted your {form_long_name}, Receipt Number {receipt_number}, "
         "and mailed you a notice describing how we will process your case. "
         "Please follow the instructions in the notice. "
@@ -107,25 +107,25 @@ status_to_msg = {
         "and sent it to the appropriate appellate office. "
         "That office will send you a final decision. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Case Approval Was Reaffirmed And Mailed Back To Department Of State": 
+    "Case Approval Was Reaffirmed And Mailed Back To Department Of State":
         "On {date}, the Department of State returned your case, Receipt Number {receipt_number}, "
         "to us for further review and we mailed you a notice affirming our original approval. "
         "Please contact the Department of State directly for any further information on your case.",
-    "Case Closed Benefit Received By Other Means": 
+    "Case Closed Benefit Received By Other Means":
         "On {date}, we closed your {form_long_name}, Receipt Number {receipt_number}, "
         "because the applicant or petitioner received a status or benefit through other means. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Case Is On Hold Because Of Pending Litigation": 
+    "Case Is On Hold Because Of Pending Litigation":
         "On {date}, we placed your {form_long_name}, Receipt Number {receipt_number}, "
         "on hold because there is pending litigation that may affect the outcome. "
         "We will start working on your case as soon as the litigation is resolved. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Case is Ready to Be Scheduled for An Interview": 
+    "Case is Ready to Be Scheduled for An Interview":
         "As of {date}, we are ready to schedule your {form_long_name}, "
         "Receipt Number {receipt_number}, for an interview. We will schedule your interview and send you a notice. "
         "Please follow any instructions in the notice. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
-    "Case Rejected Because I Sent An Incorrect Fee": 
+    "Case Rejected Because I Sent An Incorrect Fee":
         "On {date}, we rejected your {form_long_name}, Receipt Number {receipt_number}, "
         "because you sent us the incorrect fee. "
         "We mailed your case back to you, including any supporting materials and the incorrect payment. "
