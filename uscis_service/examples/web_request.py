@@ -9,7 +9,7 @@ async def main():
     i = 2015549999
 
     async with aiohttp.ClientSession() as session:
-        for ii in range(200):
+        for ii in range(20):
             receipt_number = "{}{}".format(prefix, i + ii)
             print(receipt_number, await uscis_check(receipt_number=receipt_number, url_session=session))
 
