@@ -340,6 +340,12 @@ status_to_msg = {
         "No one came to the appointment, and this will significantly affect your case. "
         "We will mail you a notice if we make a decision or take further action. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Continuation Notice Was Mailed":
+        "On {date}, we mailed you a continuation notice regarding your {form_long_name}, "
+        "Receipt Number {receipt_number}. Please follow the instructions in the notice. "
+        "If you do not receive your continuation notice by {notice_deadline}, "
+        "please go to www.uscis.gov/e-request to request a copy of the notice. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Correspondence Was Received And USCIS Is Reviewing It":
         "On {date}, we received your correspondence for {form_long_name}, Receipt Number {receipt_number}. "
         "We are reviewing your correspondence, and will send you a notice if we need something from you. "
@@ -362,6 +368,11 @@ status_to_msg = {
         "We are reviewing your letter explaining the reasons for the return. "
         "We will mail you a notice, if necessary. "
         "If we send you a notice, please follow any instructions on that notice. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Document Was Mailed":
+        "We mailed your document for your {form_long_name}, Receipt Number {receipt_number}. "
+        "If you do not receive your document by {notice_deadline}, "
+        "please go to www.uscis.gov/e-request to request that we resend the document to you. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Document Was Mailed To Me":
         "On {date}, we mailed your document for Receipt Number {receipt_number}, directly to the address you gave us. "
@@ -508,6 +519,10 @@ status_to_msg = {
     "Refugee Travel Document Was Produced":
         "On {date}, we produced your Refugee Travel Document for your {form_long_name}, "
         "Receipt Number {receipt_number}. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Request For A Duplicate Card Was Approved":
+        "On {date}, we received your request for a duplicate card for your {form_long_name}, "
+        "Receipt Number {receipt_number}, and we approved your request. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Request for Additional Evidence Was Sent":
         "On {date}, we sent a request for additional evidence for your {form_long_name}, "
