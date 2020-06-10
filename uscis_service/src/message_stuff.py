@@ -222,6 +222,13 @@ status_to_msg = {
         "If you do not receive your denial notice by {notice_deadline}, "
         "please go to www.uscis.gov/e-request to request a copy of the notice. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Case Was Denied And My Decision Notice Mailed":
+        "On {date}, we denied your {form_long_name}, Receipt Number {receipt_number}. "
+        "We sent you a decision notice that explains why we denied your case and your options. "
+        "Please follow the instructions in the notice. "
+        "If you do not receive your denial notice by {notice_deadline}, "
+        "please go to www.uscis.gov/e-request to request a copy of the notice. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case Was Received":
         "On {date}, we received your {form_long_name}, Receipt Number {receipt_number}, "
         "and sent you the receipt notice that describes how we will process your case. "
@@ -407,6 +414,13 @@ status_to_msg = {
         "On {date}, we received your {form_long_name}, Receipt Number {receipt_number}. "
         "Your case has been filed under the Known Employer pilot. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Fingerprint and Biometrics Appointment Was Scheduled":
+        "On {date}, we scheduled you for a fingerprint and biometrics appointment "
+        "and mailed you an appointment notice for Receipt Number {receipt_number}. "
+        "Please follow the instructions in the notice. "
+        "If you do not receive your appointment notice by {notice_deadline}, "
+        "please go to www.uscis.gov/e-request to request a copy of the notice. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Fingerprint Fee Was Received":
         "On {date}, we accepted the fingerprint fee for your {form_long_name}, Receipt Number {receipt_number}. "
         "Our {location_name} location is working on your case. "
@@ -538,6 +552,12 @@ status_to_msg = {
         "and mailed you a revocation notice. It explains the reasons for our action. "
         "Please follow the instructions in the notice and submit any requested materials. "
         "If you do not receive your revocation notice by {notice_deadline}, "
+        "please go to www.uscis.gov/e-request to request a copy of the notice. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Status Termination Notice Was Mailed":
+        "On {date}, we mailed you a notice for Receipt Number {receipt_number}, terminating your status. "
+        "The notice explains the reasons for our action. Please follow the instructions in the notice. "
+        "If you do not receive your notice by {notice_deadline}, "
         "please go to www.uscis.gov/e-request to request a copy of the notice. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Travel Document Was Destroyed":
