@@ -143,7 +143,7 @@ async def refresh_selected_status(filter_function=lambda x: x < 100):
     pool = await connect_to_database(database=uscis_database)
     async with pool.acquire() as connection:
         rep = await get_all(conn=connection, table_name=uscis_table_name, ignore_null=True)
-        text = [f"Number of entries {len(rep)}", ""]
+        print(f"Number of entries {len(rep)}")
 
         status_number = {}
         for status in status_to_msg:
