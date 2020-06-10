@@ -179,14 +179,16 @@ async def smart_update_all_function(
         async def update_function(index):
             async with pool.acquire() as conn2:
                 return await update_case_internal(
-                    conn=conn2, url_session=session, receipt_number=f'{prefix}{date_start + date_increment}{index}',
+                    conn=conn2, url_session=session,
+                    receipt_number=f'{prefix}{date_start + date_increment:05d}{index:05d}',
                     skip_existing=skip_existing, test_table=False,
                 )
         while await update_function(index=index_start) is not None:
             index_increment = 0
             all_none = False
             while not all_none:
-                print(f"smart update -\t{prefix}\t{date_start + date_increment}\t{index_start + index_increment}")
+                print(f"smart update -\t"
+                      f"{prefix}\t{date_start + date_increment:05d}\t{index_start + index_increment:05d}")
                 rep = await asyncio.gather(
                     *map(update_function,
                          [index_start + index_increment + i for i in range(chunk_size)])
