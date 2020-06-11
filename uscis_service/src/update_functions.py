@@ -1,5 +1,6 @@
 import aiohttp
 import asyncio
+import datetime
 import itertools
 from src.constants import uscis_database, uscis_table_name, error_table_name
 from src.db_stuff import connect_to_database, build_table, insert_entry, \
@@ -9,13 +10,19 @@ from src.message_stuff import string_to_args, get_arguments_from_string, rebuild
 from src.parse_site import check as uscis_check
 
 
-async def update_case_internal(conn, url_session, receipt_number, skip_existing=False):
+async def update_case_internal(conn, url_session, receipt_number, skip_recent_threshold=10):
     # print(f"update_case_internal - Updating {receipt_number}\t")
     rep = await get_all_case(conn=conn, table_name=uscis_table_name, case_number=receipt_number)
-    if rep and rep[0]['current_status'] is not None and skip_existing:
-        msg = f"\t{rep[0]['current_status']} - Request not sent"
-        print(msg)
-        return msg
+    if rep and skip_recent_threshold:
+        current_status = rep[0]['current_status']
+        current_timestamp = rep[0]['last_updated']
+        if current_status is not None and current_status != "CASE STATUS":
+            age = datetime.datetime.utcnow() - current_timestamp
+            print(f"Age of status:\t{age}\t\t{current_timestamp}\t\t{datetime.datetime.utcnow()}")
+            if age < datetime.timedelta(hours=skip_recent_threshold):
+                msg = f"\t{current_status} - Request not sent"
+                print(msg)
+                return msg
     # print(f"\t\tupdate_case_internal - Requesting {receipt_number}\t")
     timestamp, title, message = await uscis_check(url_session=url_session, receipt_number=receipt_number)
     # print(f"\t\t\tupdate_case_internal - Result {receipt_number}\t{title} - {message}")
@@ -54,7 +61,7 @@ async def update_case_internal(conn, url_session, receipt_number, skip_existing=
             old_history = rep[0]['history']
             if title == "CASE STATUS" and old_status is not None and old_status != "CASE STATUS":
                 raise AttributeError(
-                    f"New Status is CASE STATUS although old status was different"
+                    f"New Status is CASE STATUS although old status was different:\t{old_status}"
                 )
             if (old_status, old_args) == (title, current_args) or old_status is None:
                 new_history_joined = old_history
@@ -84,7 +91,7 @@ async def remove_case_internal(conn, receipt_number):
     await delete_case(conn=conn, table_name=error_table_name, case_number=receipt_number)
 
 
-async def update_entries(it):
+async def update_entries(it, skip_recent_threshold=10):
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn:
@@ -94,7 +101,8 @@ async def update_entries(it):
         async with aiohttp.ClientSession() as session:
             async def update_function(case):
                 async with pool.acquire() as conn2:
-                    await update_case_internal(conn=conn2, url_session=session, receipt_number=case)
+                    await update_case_internal(conn=conn2, url_session=session, receipt_number=case,
+                                               skip_recent_threshold=skip_recent_threshold)
 
             it_t = iter(it)
             while True:
@@ -116,12 +124,12 @@ async def delete_entries(it):
         async with pool.acquire() as conn:
             for case in it:
                 await remove_case_internal(conn=conn, receipt_number=case)
-            await read_db(conn=conn, table_name=uscis_table_name)
+            await read_db(conn=conn, table_name=uscis_table_name, len_only=True)
     finally:
         await pool.close()
 
 
-async def refresh_case(status):
+async def refresh_case(status, skip_recent_threshold=0):
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn:
@@ -130,7 +138,7 @@ async def refresh_case(status):
             print("Refreshing", status, len(old_status))
     finally:
         await pool.close()
-    await update_entries(old_cases)
+    await update_entries(old_cases, skip_recent_threshold=skip_recent_threshold)
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn2:
@@ -142,7 +150,7 @@ async def refresh_case(status):
         await pool.close()
 
 
-async def refresh_selected_status(filter_function=lambda x: x < 100):
+async def refresh_selected_status(filter_function=lambda x: x < 100, skip_recent_threshold=0):
     pool = await connect_to_database(database=uscis_database)
     async with pool.acquire() as connection:
         rep = await get_all(conn=connection, table_name=uscis_table_name, ignore_null=True)
@@ -155,7 +163,7 @@ async def refresh_selected_status(filter_function=lambda x: x < 100):
 
         for status, length in sorted(status_number.items(), key=lambda k: k[1], reverse=True):
             if length and filter_function(length):
-                await refresh_case(status=status)
+                await refresh_case(status=status, skip_recent_threshold=skip_recent_threshold)
                 print()
 
 
@@ -166,7 +174,7 @@ async def refresh_error():
             old_status = await get_all(conn=conn, table_name=error_table_name)
             old_cases = [row['case_number'] for row in old_status]
             print("Refreshing errors")
-        await update_entries(old_cases)
+        await update_entries(old_cases, skip_recent_threshold=0)
         async with pool.acquire() as conn:
             new_status = await get_all(conn=conn, table_name=error_table_name)
             print("Refreshing Errors - result", f"{len(old_status)} to {len(new_status)}")
@@ -174,8 +182,7 @@ async def refresh_error():
         await pool.close()
 
 
-async def smart_update_all_function(
-        pool, prefix="LIN", date_start=20001, index_start=50001, skip_existing=False):
+async def smart_update_all_function(pool, prefix="LIN", date_start=20001, index_start=50001, skip_recent_threshold=10):
 
     async with aiohttp.ClientSession() as session:
         async def update_function(index):
@@ -183,7 +190,7 @@ async def smart_update_all_function(
                 return await update_case_internal(
                     conn=conn2, url_session=session,
                     receipt_number=f'{prefix}{date_start + date_increment:05d}{index:05d}',
-                    skip_existing=skip_existing,
+                    skip_recent_threshold=skip_recent_threshold,
                 )
 
         chunk_size = 100
@@ -203,7 +210,7 @@ async def smart_update_all_function(
             date_increment += 1
 
 
-async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, skip_existing=False):
+async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, skip_recent_threshold=10):
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn:
@@ -211,7 +218,8 @@ async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, sk
             await build_table(conn=conn, table_name=error_table_name)
 
         await smart_update_all_function(
-            pool, prefix, date_start, index_start, skip_existing)
+            pool=pool, prefix=prefix, date_start=date_start, index_start=index_start,
+            skip_recent_threshold=skip_recent_threshold)
 
         async with pool.acquire() as conn:
             await read_db(conn=conn, table_name=uscis_table_name, len_only=True)

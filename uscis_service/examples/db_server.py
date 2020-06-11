@@ -5,7 +5,7 @@ from src.constants import port_number
 from src.db_interaction import init_tables, \
     get_all_uscis, get_all_case_uscis, get_all_status_uscis, get_pool, get_all_errors
 from src.message_stuff import status_to_msg
-from src.update_functions import update_case_internal, smart_update_all_function
+from src.update_functions import update_case_internal
 
 
 async def handle_case(request):
@@ -16,7 +16,7 @@ async def handle_case(request):
             await update_case_internal(
                 conn=connection, url_session=session,
                 receipt_number=receipt_number,
-                skip_existing=False,
+                skip_recent_threshold=0,
             )
         rep = await get_all_case_uscis(conn=connection, case_number=receipt_number)
         rep_text = "\n".join([str(len(rep)), "\n".join(str(u) for u in rep)])
@@ -38,16 +38,6 @@ async def handle_all(request):
         rep = await get_all_uscis(conn=connection)
         rep_text = "\n".join([str(len(rep)), "\n".join(str(u['case_number']) for u in rep)])
         return web.Response(text=rep_text)
-
-
-async def handle_loop(request):
-    pool = request.app['pool']
-    prefix = request.match_info.get('prefix', 'LIN')
-    date_start = int(request.match_info.get('date_start', 20001))
-    index_start = int(request.match_info.get('index_start', 50001))
-    await smart_update_all_function(
-        pool=pool, prefix=prefix, date_start=date_start, index_start=index_start, skip_existing=False)
-    return await handle_main(request=request)
 
 
 async def handle_main(request):
@@ -83,7 +73,6 @@ async def init_app():
     async with app_inst['pool'].acquire() as connection:
         await init_tables(conn=connection)
 
-    app_inst.router.add_route('GET', '/loop/{prefix}/{date_start}/{index_start}', handle_loop)
     app_inst.router.add_route('GET', '/case/{receipt_number}', handle_case)
     app_inst.router.add_route('GET', '/status/{status}', handle_status)
     app_inst.router.add_route('GET', '/all', handle_all)
