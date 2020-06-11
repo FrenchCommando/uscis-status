@@ -18,10 +18,10 @@ async def update_case_internal(conn, url_session, receipt_number, skip_recent_th
         current_timestamp = rep[0]['last_updated']
         if current_status is not None and current_status != "CASE STATUS":
             age = datetime.datetime.utcnow() - current_timestamp
-            print(f"Age of status:\t{age}\t\t{current_timestamp}\t\t{datetime.datetime.utcnow()}")
+            # print(f"Age of status:\t{age}\t\t{current_timestamp}\t\t{datetime.datetime.utcnow()}")
             if age < datetime.timedelta(hours=skip_recent_threshold):
                 msg = f"\t{current_status} - Request not sent"
-                print(msg)
+                # print(msg)
                 return msg
     # print(f"\t\tupdate_case_internal - Requesting {receipt_number}\t")
     timestamp, title, message = await uscis_check(url_session=url_session, receipt_number=receipt_number)
