@@ -3,18 +3,10 @@ import asyncio
 import itertools
 from src.constants import uscis_database, uscis_table_name, error_table_name, test_uscis_table
 from src.db_stuff import connect_to_database, build_table, insert_entry, \
-    get_all, get_all_case, update_case, delete_case, get_all_status
+    get_all, get_all_case, update_case, delete_case, get_all_status, read_db
 from src.message_stuff import string_to_args, get_arguments_from_string, rebuild_string_from_template, \
     args_to_string, remove_tags, check_title_in_status, get_template, status_to_msg
 from src.parse_site import check as uscis_check
-
-
-async def read_db(conn, table_name, len_only=False):
-    row = await get_all(conn=conn, table_name=table_name)
-    if not len_only:
-        for u in row:
-            print(u)
-    print(f"\t\tSize of db {table_name}:\t{len(row)}")
 
 
 async def update_case_internal(conn, url_session, receipt_number, skip_existing=False, test_table=False):

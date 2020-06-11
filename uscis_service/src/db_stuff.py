@@ -74,3 +74,13 @@ async def get_all_status(conn: asyncpg.Connection, table_name: str, status: str)
 
 async def get_attribute_from_case(conn: asyncpg.Connection, table_name: str, case_number: str, attribute: str):
     return await conn.fetch(f'SELECT {attribute} FROM {table_name} WHERE case_number = $1;', case_number)
+
+
+async def read_db(conn: asyncpg.Connection, table_name: str, len_only: bool = False, head: int = 0):
+    row = await get_all(conn=conn, table_name=table_name)
+    if not len_only:
+        for i, u in enumerate(row):
+            print(i, u)
+            if head and i >= head:
+                break
+    print(f"\t\tSize of db {table_name}:\t{len(row)}")

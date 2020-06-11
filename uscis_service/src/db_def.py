@@ -4,7 +4,7 @@ from src.constants import uscis_table_name, error_table_name
 table_to_specs = {
     uscis_table_name:
         "case_number text PRIMARY KEY, "
-        "last_updated text, "
+        "last_updated timestamp, "
         "current_status text, "
         "current_args text, "
         "history text",

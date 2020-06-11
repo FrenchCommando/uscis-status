@@ -1,20 +1,24 @@
+import datetime
+
+
 async def check(url_session, receipt_number):
     async with url_session.get(
         url='https://egov.uscis.gov/casestatus/mycasestatus.do',
         params={"appReceiptNum": receipt_number}
     ) as resp:
-        time = resp.headers['date']
+        timestamp = datetime.datetime.strptime(resp.headers['date'], "%a, %d %b %Y %H:%M:%S %Z")
+        # print(timestamp)
         d = await display_msg(resp.content)
 
         if d["ErrorMessage"]:
-            return time, None, ''
+            return timestamp, None, ''
         content = d["StatusContent"]
         if receipt_number != d["appReceiptNum"] or \
                 (receipt_number[:8] in content and receipt_number not in content):
             # print(f"\t\tRerunning\t{receipt_number}\t{content}")
             return await check(url_session=url_session, receipt_number=receipt_number)
         # print(receipt_number)
-        return time, d["LongCaseStatus"], d["StatusContent"]
+        return timestamp, d["LongCaseStatus"], d["StatusContent"]
 
 
 async def display_msg(content):
