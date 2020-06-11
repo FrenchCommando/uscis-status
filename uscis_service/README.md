@@ -108,3 +108,11 @@ https://citizenpath.com/uscis-receipt-number-explained/
 - `args` = None
 - Wipes out the data table entirely - use with caution
 
+
+# Gmail
+
+- `https://developers.google.com/gmail/api/quickstart/python` to generate `credentials.json`
+- move `credentials.json` in `gmail` folder
+- run `gmail_service.py` to generate authentication token (`token.pickle`)
+    - should be in `uscis_service` because this is the cwd of python
+- then run docker-compose - token will be copied to the correct path
