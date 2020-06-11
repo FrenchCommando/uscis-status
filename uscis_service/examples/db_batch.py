@@ -37,10 +37,10 @@ def main(argv):
         delete_entries_function(argv=argv[1:])
     elif function_name == "refresh_errors":
         refresh_error_function()
-    elif function_name == "smart_update":
-        smart_update(argv=argv[1:])
     elif function_name == "refresh_status":
         refresh_status_function(argv=argv[1:])
+    elif function_name == "smart_update":
+        smart_update(argv=argv[1:])
     elif function_name == "clear":
         clear_table()
     else:

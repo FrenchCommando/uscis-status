@@ -1,10 +1,10 @@
-USCIS-STATUS
+# USCIS-STATUS
 
 using Beautifulsoup and requests to parse USCIS data
 
 - makes requests to the USCIS website
     - requests are logged and added to the database
-        - timestamped (usual datetime format with ms)
+        - timestamped (usual datetime format UTC)
         - message is compressed: the number of templates is small
             - `message_stuff.py`
     - this is the only way to add entries to the database
@@ -27,7 +27,7 @@ using Beautifulsoup and requests to parse USCIS data
 ## Case data
 
 - Case Number
-- Last updated: Timestamp String
+- Last updated: Timestamp(pg) / Datetime(python)
 - Current Status: "Received / Approved" - specific string
 - Current Args: Date - Form Number - Tracking Number
 - History: CaseStatus:CurrentArgs|History
@@ -74,3 +74,36 @@ Looks like (for LIN and MSC)
 Read about USCIS number
 
 https://citizenpath.com/uscis-receipt-number-explained/
+
+
+# Admin exec commands
+- Defined in `examples/db_batch.py`
+- If using Docker `docker-compose exec uscis_service <COMMAND>` 
+- `COMMAND` is `python -m examples.db_batch <function_name> <function args>`
+
+## Delete cases
+- `<function_name>` = `delete`
+- `args` = sequence of case numbers
+
+## Refresh Errors
+- `<function_name>` = `refresh_errors`
+- `args` = None
+
+## Refresh Status
+- `<function_name>` = `refresh_status`
+- `args` = status string 
+    - (leading/trailing space does not work) - Sorry `" Premium Processing Fee Will Be Refunded"`
+
+## Smart Update
+- `<function_name>` = `smart_update`
+- `args` = 
+    - `prefix`: `LIN`, or the other center names
+    - `date_start`: `20001` (year 20, day number 001) - or `20900` (year 20, not using day number)
+    - `index_start`: `50001` (when day number involved) - or `1` (if not day number) 
+    - `skip_recent_threshold`: only reffresh if current log is older than this number of hours
+
+## Clear
+- `<function_name>` = `clear`
+- `args` = None
+- Wipes out the data table entirely - use with caution
+
