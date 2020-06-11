@@ -1,6 +1,6 @@
 import sys
 import asyncio
-from src.update_functions import refresh_error, delete_entries, smart_update_all, refresh_case, clear_uscis_table
+from src.update_functions import refresh_error, delete_entries, smart_update_all, refresh_status, clear_uscis_table
 
 
 def refresh_error_function():
@@ -22,8 +22,8 @@ def smart_update(argv):
     asyncio.get_event_loop().run_until_complete(smart_update_all(**d))
 
 
-def refresh_case_function(argv):
-    asyncio.get_event_loop().run_until_complete(refresh_case(
+def refresh_status_function(argv):
+    asyncio.get_event_loop().run_until_complete(refresh_status(
         status=" ".join(argv[:-1]), skip_recent_threshold=int(argv[-1])))
 
 
@@ -39,8 +39,8 @@ def main(argv):
         refresh_error_function()
     elif function_name == "smart_update":
         smart_update(argv=argv[1:])
-    elif function_name == "refresh_case":
-        refresh_case_function(argv=argv[1:])
+    elif function_name == "refresh_status":
+        refresh_status_function(argv=argv[1:])
     elif function_name == "clear":
         clear_table()
 

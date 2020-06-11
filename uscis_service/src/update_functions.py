@@ -130,7 +130,7 @@ async def delete_entries(it):
         await pool.close()
 
 
-async def refresh_case(status, skip_recent_threshold=0):
+async def refresh_status(status, skip_recent_threshold=0):
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn:
@@ -164,7 +164,7 @@ async def refresh_selected_status(filter_function=lambda x: x < 100, skip_recent
 
         for status, length in sorted(status_number.items(), key=lambda k: k[1], reverse=True):
             if length and filter_function(length):
-                await refresh_case(status=status, skip_recent_threshold=skip_recent_threshold)
+                await refresh_status(status=status, skip_recent_threshold=skip_recent_threshold)
                 print()
 
 
