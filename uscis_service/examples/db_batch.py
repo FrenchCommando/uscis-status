@@ -49,7 +49,9 @@ def main(argv, retry=0):
     except BaseException as e:
         if retry > 10:
             return print(f"Error\tNot retrying - too many retries\t{argv}\t{__name__}{e}")
-        print(f"Error\trestarting\t{argv}\t{__name__}{e}")
+        print(f"Error\trestarting in 100s\t{argv}\t{__name__}{e}")
+        asyncio.sleep(100)
+        print(f"Error\trestarting now\t{argv}\t{__name__}{e}")
         main(argv=argv, retry=retry + 1)
 
 
