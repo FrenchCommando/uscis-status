@@ -1,5 +1,6 @@
 import aiohttp
 import asyncio
+import itertools
 from src.constants import uscis_database, uscis_table_name, error_table_name, test_uscis_table
 from src.db_stuff import connect_to_database, build_table, insert_entry, \
     get_all, get_all_case, update_case, delete_case, get_all_status
@@ -13,7 +14,7 @@ async def read_db(conn, table_name, len_only=False):
     if not len_only:
         for u in row:
             print(u)
-    print(len(row))
+    print(f"\t\tSize of db {table_name}:\t{len(row)}")
 
 
 async def update_case_internal(conn, url_session, receipt_number, skip_existing=False, test_table=False):
@@ -95,13 +96,20 @@ async def update_entries(it, test_table=False):
             await build_table(conn=conn, table_name=uscis_table_name)
             await build_table(conn=conn, table_name=error_table_name)
 
-        async def update_function(case):
-            async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession() as session:
+            async def update_function(case):
                 async with pool.acquire() as conn2:
                     await update_case_internal(
                         conn=conn2, url_session=session, receipt_number=case, test_table=test_table
                     )
-        await asyncio.gather(*map(update_function, it))
+
+            it_t = iter(it)
+            while True:
+                chunk = tuple(itertools.islice(it_t, 100))
+                if not chunk:
+                    break
+                await asyncio.gather(*map(update_function, chunk))
+
         async with pool.acquire() as conn:
             await read_db(conn=conn, table_name=uscis_table_name, len_only=True)
             await read_db(conn=conn, table_name=error_table_name)
@@ -173,7 +181,7 @@ async def refresh_error(test_table=False):
 
 
 async def smart_update_all_function(
-        pool, prefix="LIN", date_start=20001, index_start=50001, skip_existing=False, chunk_size=10):
+        pool, prefix="LIN", date_start=20001, index_start=50001, skip_existing=False):
 
     async with aiohttp.ClientSession() as session:
         async def update_function(index):
@@ -184,6 +192,7 @@ async def smart_update_all_function(
                     skip_existing=skip_existing, test_table=False,
                 )
 
+        chunk_size = 100
         date_increment = 0
         while await update_function(index=index_start) is not None:
             index_increment = 0
@@ -200,7 +209,7 @@ async def smart_update_all_function(
             date_increment += 1
 
 
-async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, skip_existing=False, chunk_size=10):
+async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, skip_existing=False):
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn:
@@ -208,12 +217,7 @@ async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, sk
             await build_table(conn=conn, table_name=error_table_name)
 
         await smart_update_all_function(
-            pool,
-            prefix,
-            date_start,
-            index_start,
-            skip_existing,
-            chunk_size)
+            pool, prefix, date_start, index_start, skip_existing)
 
         async with pool.acquire() as conn:
             await read_db(conn=conn, table_name=uscis_table_name, len_only=True)
