@@ -60,7 +60,8 @@ async def update_case_internal(conn, url_session, receipt_number, skip_recent_th
             old_args = rep[0]['current_args']
             old_history = rep[0]['history']
             if title == "CASE STATUS" and old_status is not None and old_status != "CASE STATUS":
-                raise AttributeError(
+                # raise AttributeError(
+                print(
                     f"New Status is CASE STATUS although old status was different:\t{old_status}"
                 )
             if (old_status, old_args) == (title, current_args) or old_status is None:
