@@ -31,20 +31,26 @@ def clear_table():
     asyncio.get_event_loop().run_until_complete(clear_uscis_table())
 
 
-def main(argv):
-    function_name = argv[0]
-    if function_name == "delete":
-        delete_entries_function(argv=argv[1:])
-    elif function_name == "refresh_errors":
-        refresh_error_function()
-    elif function_name == "refresh_status":
-        refresh_status_function(argv=argv[1:])
-    elif function_name == "smart_update":
-        smart_update(argv=argv[1:])
-    elif function_name == "clear":
-        clear_table()
-    else:
-        print(f"Function name did not match:\t{function_name}")
+def main(argv, retry=0):
+    try:
+        function_name = argv[0]
+        if function_name == "delete":
+            delete_entries_function(argv=argv[1:])
+        elif function_name == "refresh_errors":
+            refresh_error_function()
+        elif function_name == "refresh_status":
+            refresh_status_function(argv=argv[1:])
+        elif function_name == "smart_update":
+            smart_update(argv=argv[1:])
+        elif function_name == "clear":
+            clear_table()
+        else:
+            print(f"Function name did not match:\t{function_name}")
+    except BaseException as e:
+        if retry > 10:
+            return print(f"Error\tNot retrying - too many retries\t{argv}\t{__name__}{e}")
+        print(f"Error\trestarting\t{argv}\t{__name__}{e}")
+        main(argv=argv, retry=retry + 1)
 
 
 if __name__ == "__main__":
