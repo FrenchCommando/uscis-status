@@ -1,0 +1,2 @@
+1 1 * * * python -m examples.db_batch smart_update LIN 20001 50001 6 >> /var/log/cron-lin1.log 2>&1
+1 2 * * * python -m examples.db_batch smart_update LIN 20900 1 6 >> /var/log/cron-lin2.log 2>&1

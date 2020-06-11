@@ -101,7 +101,7 @@ https://citizenpath.com/uscis-receipt-number-explained/
     - `prefix`: `LIN`, or the other center names
     - `date_start`: `20001` (year 20, day number 001) - or `20900` (year 20, not using day number)
     - `index_start`: `50001` (when day number involved) - or `1` (if not day number) 
-    - `skip_recent_threshold`: only reffresh if current log is older than this number of hours
+    - `skip_recent_threshold`: only refresh if current log is older than this number of hours
 
 ## Clear
 - `<function_name>` = `clear`
