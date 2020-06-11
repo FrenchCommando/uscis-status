@@ -43,7 +43,6 @@ def main(argv):
         refresh_status_function(argv=argv[1:])
     elif function_name == "clear":
         clear_table()
-
     else:
         print(f"Function name did not match:\t{function_name}")
 
