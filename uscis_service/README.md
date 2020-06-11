@@ -78,7 +78,8 @@ https://citizenpath.com/uscis-receipt-number-explained/
 
 # Admin exec commands
 - Defined in `examples/db_batch.py`
-- If using Docker `docker-compose exec uscis_service <COMMAND>` 
+- If using Docker `docker-compose exec uscis_service <COMMAND>`
+    - for detached `docker-compose exec -d uscis_service <COMMAND>`
 - `COMMAND` is `python -m examples.db_batch <function_name> <function args>`
 
 ## Delete cases
