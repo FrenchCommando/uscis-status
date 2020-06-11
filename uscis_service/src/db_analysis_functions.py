@@ -74,14 +74,18 @@ def prefix_buckets(id_list, print_results=True):
     return records
 
 
-async def summary_analysis(custom_filter=lambda x: True, print_results=True):
+async def summary_analysis(custom_filter=lambda x: True, print_results=True, buckets_instead_of_strip=True):
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn:
             all_data = await get_all(conn=conn, table_name=uscis_table_name, ignore_null=True)
             all_data = [u for u in all_data if custom_filter(u)]
             all_cases = [row['case_number'] for row in all_data]
-            # find_strips(id_list=all_cases, print_results=False)  # looks like there are some holes in a cheese
-            prefix_buckets(id_list=all_cases, print_results=print_results)
+
+            if not buckets_instead_of_strip:
+                find_strips(id_list=all_cases, print_results=print_results)
+                # looks like there are some holes in the cheese
+            else:
+                prefix_buckets(id_list=all_cases, print_results=print_results)
     finally:
         await pool.close()
