@@ -1,5 +1,6 @@
-import sys
 import asyncio
+import sys
+from gmail.gmail_functions import send
 from src.update_functions import refresh_error, delete_entries, smart_update_all, refresh_status, clear_uscis_table
 
 
@@ -46,6 +47,7 @@ def main(argv, retry=0):
             clear_table()
         else:
             print(f"Function name did not match:\t{function_name}")
+        send(subject="db_batch have run", body=f"{argv}")
     except BaseException as e:
         if retry > 10:
             return print(f"Error\tNot retrying - too many retries\t{argv}\t{__name__}{e}")
