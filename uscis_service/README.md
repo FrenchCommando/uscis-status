@@ -92,8 +92,9 @@ https://citizenpath.com/uscis-receipt-number-explained/
 
 ## Refresh Status
 - `<function_name>` = `refresh_status`
-- `args` = status string 
-    - (leading/trailing space does not work) - Sorry `" Premium Processing Fee Will Be Refunded"`
+- `args` = 
+    - status string (leading/trailing space does not work) - Sorry `" Premium Processing Fee Will Be Refunded"`
+    - `skip_recent_threshold`: only refresh if current log is older than this number of hours
 
 ## Smart Update
 - `<function_name>` = `smart_update`
