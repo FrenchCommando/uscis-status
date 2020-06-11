@@ -12,4 +12,4 @@ from src.update_functions import update_entries, smart_update_all, refresh_case,
 #     prefix="LIN", date_start=20902, index_start=1, skip_existing=False))
 
 # asyncio.get_event_loop().run_until_complete(refresh_case(status='CASE STATUS'))
-# asyncio.get_event_loop().run_until_complete(refresh_selected_status(filter_function=lambda x: 99 < x < 410))
+# asyncio.get_event_loop().run_until_complete(refresh_selected_status(filter_function=lambda x: 0 < x < 100))

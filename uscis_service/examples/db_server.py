@@ -47,8 +47,7 @@ async def handle_loop(request):
     date_start = int(request.match_info.get('date_start', 20001))
     index_start = int(request.match_info.get('index_start', 50001))
     await smart_update_all_function(
-        pool=pool, prefix=prefix, date_start=date_start, index_start=index_start, skip_existing=False, chunk_size=50
-    )
+        pool=pool, prefix=prefix, date_start=date_start, index_start=index_start, skip_existing=False)
     return await handle_main(request=request)
 
 

@@ -142,7 +142,9 @@ async def refresh_case(status):
     try:
         async with pool.acquire() as conn2:
             new_status = await get_all_status(conn=conn2, table_name=uscis_table_name, status=status)
-            print("Refreshing Results", status, f"{len(old_status)} to {len(new_status)}")
+            conclusion = "Unchanged" if len(old_status) == len(new_status) \
+                else f"Reduced by {len(old_status) - len(new_status)}"
+            print("Refreshing Results", status, f"{len(old_status)} to {len(new_status)}\t---\t{conclusion}")
     finally:
         await pool.close()
 
@@ -161,6 +163,7 @@ async def refresh_selected_status(filter_function=lambda x: x < 100):
         for status, length in sorted(status_number.items(), key=lambda k: k[1], reverse=True):
             if length and filter_function(length):
                 await refresh_case(status=status)
+                print()
 
 
 async def refresh_error(test_table=False):
