@@ -1,7 +1,7 @@
 import aiohttp
 import asyncio
 import itertools
-from src.constants import uscis_database, uscis_table_name, error_table_name, test_uscis_table
+from src.constants import uscis_database, uscis_table_name, error_table_name
 from src.db_stuff import connect_to_database, build_table, insert_entry, \
     get_all, get_all_case, update_case, delete_case, get_all_status, read_db
 from src.message_stuff import string_to_args, get_arguments_from_string, rebuild_string_from_template, \
@@ -9,10 +9,9 @@ from src.message_stuff import string_to_args, get_arguments_from_string, rebuild
 from src.parse_site import check as uscis_check
 
 
-async def update_case_internal(conn, url_session, receipt_number, skip_existing=False, test_table=False):
-    uscis_table = uscis_table_name if not test_table else test_uscis_table
+async def update_case_internal(conn, url_session, receipt_number, skip_existing=False):
     # print(f"update_case_internal - Updating {receipt_number}\t")
-    rep = await get_all_case(conn=conn, table_name=uscis_table, case_number=receipt_number)
+    rep = await get_all_case(conn=conn, table_name=uscis_table_name, case_number=receipt_number)
     if rep and rep[0]['current_status'] is not None and skip_existing:
         msg = f"\t{rep[0]['current_status']} - Request not sent"
         print(msg)
@@ -43,7 +42,7 @@ async def update_case_internal(conn, url_session, receipt_number, skip_existing=
                     f"\n\t\t{title}\t\t{current_args}"
                 )
         if not rep:
-            await insert_entry(conn=conn, table_name=uscis_table,
+            await insert_entry(conn=conn, table_name=uscis_table_name,
                                case_number=receipt_number,
                                last_updated=timestamp,
                                current_status=title,
@@ -62,7 +61,7 @@ async def update_case_internal(conn, url_session, receipt_number, skip_existing=
             else:
                 new_history = ":".join([old_status, old_args])
                 new_history_joined = "||".join([new_history, old_history]) if old_history else new_history
-            await update_case(conn=conn, table_name=uscis_table,
+            await update_case(conn=conn, table_name=uscis_table_name,
                               case_number=receipt_number,
                               last_updated=timestamp,
                               current_status=title,
@@ -85,7 +84,7 @@ async def remove_case_internal(conn, receipt_number):
     await delete_case(conn=conn, table_name=error_table_name, case_number=receipt_number)
 
 
-async def update_entries(it, test_table=False):
+async def update_entries(it):
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn:
@@ -95,9 +94,7 @@ async def update_entries(it, test_table=False):
         async with aiohttp.ClientSession() as session:
             async def update_function(case):
                 async with pool.acquire() as conn2:
-                    await update_case_internal(
-                        conn=conn2, url_session=session, receipt_number=case, test_table=test_table
-                    )
+                    await update_case_internal(conn=conn2, url_session=session, receipt_number=case)
 
             it_t = iter(it)
             while True:
@@ -162,17 +159,15 @@ async def refresh_selected_status(filter_function=lambda x: x < 100):
                 print()
 
 
-async def refresh_error(test_table=False):
+async def refresh_error():
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn:
             old_status = await get_all(conn=conn, table_name=error_table_name)
             old_cases = [row['case_number'] for row in old_status]
             print("Refreshing errors")
-        await update_entries(old_cases, test_table=test_table)
+        await update_entries(old_cases)
         async with pool.acquire() as conn:
-            if test_table:
-                await read_db(conn=conn, table_name=test_uscis_table)
             new_status = await get_all(conn=conn, table_name=error_table_name)
             print("Refreshing Errors - result", f"{len(old_status)} to {len(new_status)}")
     finally:
@@ -188,7 +183,7 @@ async def smart_update_all_function(
                 return await update_case_internal(
                     conn=conn2, url_session=session,
                     receipt_number=f'{prefix}{date_start + date_increment:05d}{index:05d}',
-                    skip_existing=skip_existing, test_table=False,
+                    skip_existing=skip_existing,
                 )
 
         chunk_size = 100

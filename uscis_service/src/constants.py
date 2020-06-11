@@ -6,8 +6,8 @@ uscis_database = "uscis"
 
 uscis_table_name = "uscis_table"
 error_table_name = "error_table"
-test_uscis_table = f"test_{uscis_table_name}"
 
-port_number = 5000
 host = "db" if IS_DOCKER else "localhost"
-pg_port_number = 5432
+pg_port_number = 5432  # port of pg service
+
+port_number = 5000  # port to host server

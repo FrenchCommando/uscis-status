@@ -17,7 +17,6 @@ async def handle_case(request):
                 conn=connection, url_session=session,
                 receipt_number=receipt_number,
                 skip_existing=False,
-                test_table=False,
             )
         rep = await get_all_case_uscis(conn=connection, case_number=receipt_number)
         rep_text = "\n".join([str(len(rep)), "\n".join(str(u) for u in rep)])

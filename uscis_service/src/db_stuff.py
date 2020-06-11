@@ -24,8 +24,7 @@ async def connect_to_database(database: str):
 
 
 async def build_table(conn: asyncpg.Connection, table_name: str):
-    table_filter_test = table_name.split("_", 1)[-1] if table_name.startswith("test") else table_name
-    await conn.execute(f'CREATE TABLE IF NOT EXISTS {table_name}({table_to_specs[table_filter_test]});')
+    await conn.execute(f'CREATE TABLE IF NOT EXISTS {table_name}({table_to_specs[table_name]});')
 
 
 async def drop_table(conn: asyncpg.Connection, table_name: str):
