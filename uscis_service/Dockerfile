@@ -57,9 +57,6 @@ COPY . $APP_HOME
 # chown all the files to the app user
 RUN chown -R app:app $APP_HOME
 
-# change to the app user
-USER app
-
 # add cron jobs
 RUN apt-get update && apt-get -y install cron
 # Copy hello-cron file to the cron.d directory
@@ -73,3 +70,6 @@ RUN touch /var/log/cron-lin2.log
 RUN crontab /etc/cron.d/uscis-cron
 # Run the command on container startup
 CMD cron
+
+# change to the app user
+USER app
