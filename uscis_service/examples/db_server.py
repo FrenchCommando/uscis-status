@@ -1,6 +1,7 @@
 import aiohttp
 import asyncio
 from aiohttp import web
+from collections import defaultdict
 from src.constants import port_number
 from src.db_analysis_functions import count_date_status_function, count_date_status_format
 from src.db_interaction import init_tables, \
@@ -55,10 +56,10 @@ async def handle_main(request):
         rep = await get_all_uscis(conn=connection)
         text = [f"Number of entries {len(rep)}", ""]
 
-        status_number = {}
-        for status in status_to_msg:
-            rep_status = await get_all_status_uscis(conn=connection, status=status)
-            status_number[status] = len(rep_status)
+        status_number = defaultdict(int)
+        for line in rep:
+            current_status = line["current_status"]
+            status_number[current_status] += 1
 
         for status, length in sorted(status_number.items(), key=lambda k: k[1], reverse=True):
             if length:
