@@ -2,6 +2,7 @@ import aiohttp
 import asyncio
 from aiohttp import web
 from src.constants import port_number
+from src.db_analysis_functions import count_date_status_function, count_date_status_format
 from src.db_interaction import init_tables, \
     get_all_uscis, get_all_case_uscis, get_all_status_uscis, get_pool, get_all_errors
 from src.message_stuff import status_to_msg
@@ -21,6 +22,14 @@ async def handle_case(request):
         rep = await get_all_case_uscis(conn=connection, case_number=receipt_number)
         rep_text = "\n".join([str(len(rep)), "\n".join(str(u) for u in rep)])
         return web.Response(text=rep_text)
+
+
+async def handle_analysis(request):
+    pool = request.app['pool']
+    async with pool.acquire() as connection:
+        records = await count_date_status_function(conn=connection)
+        text = count_date_status_format(records=records)
+        return web.Response(text=text)
 
 
 async def handle_status(request):
@@ -75,6 +84,7 @@ async def init_app():
 
     app_inst.router.add_route('GET', '/case/{receipt_number}', handle_case)
     app_inst.router.add_route('GET', '/status/{status}', handle_status)
+    app_inst.router.add_route('GET', '/analysis', handle_analysis)
     app_inst.router.add_route('GET', '/all', handle_all)
     app_inst.router.add_route('GET', '/', handle_main)
     return app_inst

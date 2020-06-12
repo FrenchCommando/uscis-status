@@ -135,15 +135,23 @@ async def count_date_status_function(conn):
         # print(line)
         date = datetime.datetime.strptime(d['date'], "%B %d, %Y").date() if 'date' in d else ""
         records[form_name][current_status][date] += 1
-    for form, v in sorted(records.items()):
-        print(f"{form}:\t{sum(sum(w.values()) for w in v.values())}")
-        for status, w in sorted(v.items(), key=lambda ww: sum(ww[-1].values()), reverse=True):
-            print(f"\t\t{status}:\t{sum(w.values())}")
-            for date, count in sorted(w.items(), reverse=True):
-                print(f"\t\t\t{date}:\t{count}", end="\t")
-            print()
-    print()
+
+    print(count_date_status_format(records=records))
     return records
+
+
+def count_date_status_format(records):
+    text_l = []
+    for form, v in sorted(records.items()):
+        text_l.append(f"{form}:\t{sum(sum(w.values()) for w in v.values())}")
+        for status, w in sorted(v.items(), key=lambda ww: sum(ww[-1].values()), reverse=True):
+            text_l.append(f"\t\t{status}:\t{sum(w.values())}")
+            text_ll = []
+            for date, count in sorted(w.items(), reverse=True):
+                text_ll.append(f"{date}:\t{count}")
+            text_l.append("\t".join(text_ll))
+    text_l.append("")
+    return "\n".join(text_l)
 
 
 async def count_date_status():
