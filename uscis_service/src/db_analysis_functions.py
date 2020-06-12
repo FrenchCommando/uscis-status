@@ -1,6 +1,7 @@
 from collections import defaultdict
 from src.constants import uscis_database, uscis_table_name
 from src.db_stuff import connect_to_database, get_all
+from src.message_stuff import string_to_args
 
 
 def find_strips(id_list, print_results=True):
@@ -37,7 +38,8 @@ def find_strips(id_list, print_results=True):
         for k, v in records.items():
             print(k, v)
     print(f"Number of strips:\t{len(records)}")
-    print(f"Check Sum is consistent:\t{sum(records.values())} vs {len(id_list)}")
+    print(f"Longest strip:\t{max(records.values())}")
+    print(f"Check Sum is consistent:\t{sum(records.values())} vs {len(id_list)}\n")
     return records
 
 
@@ -70,7 +72,7 @@ def prefix_buckets(id_list, print_results=True):
                 print(f"{prefix}\t{year}:\t{i_year}")
             print(f"{prefix}:\t{i_prefix}")
             print()
-        print(f"Check Sum is consistent:\t{i} vs {len(id_list)}")
+        print(f"Check Sum is consistent:\t{i} vs {len(id_list)}\n")
     return records
 
 
@@ -89,3 +91,27 @@ async def summary_analysis(custom_filter=lambda x: True, print_results=True, buc
                 prefix_buckets(id_list=all_cases, print_results=print_results)
     finally:
         await pool.close()
+
+
+def filter_form(ref):
+    def select_form(line):
+        current_args = line["current_args"]
+        d = string_to_args(s=current_args)
+        form_name = d.get('form_long_name', "")
+        return form_name == ref
+    return select_form
+
+
+def filter_status(ref):
+    def select_status(line):
+        current_status = line["current_status"]
+        return current_status == ref
+    return select_status
+
+
+async def summary_analysis_form(ref_form, **kwargs):
+    return await summary_analysis(custom_filter=filter_form(ref=ref_form), **kwargs)
+
+
+async def summary_analysis_status(ref_status, **kwargs):
+    return await summary_analysis(custom_filter=filter_status(ref=ref_status), **kwargs)
