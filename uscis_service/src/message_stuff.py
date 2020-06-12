@@ -85,7 +85,7 @@ status_to_msg = {
         "contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case Was Reopened":
-        "On {date}, {phrasing_1} {form_long_name}, Receipt Number {receipt_number}, {phrasing_2}. "
+        "On {date}, we {phrasing_1} {form_long_name}, Receipt Number {receipt_number}, {phrasing_2}. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Card Was Returned To USCIS":
         "On {date}, the Post Office returned your new card for {form_long_name}, "
@@ -380,7 +380,7 @@ status_to_msg = {
         "please go to www.uscis.gov/e-request to request the document be sent to you. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Duplicate Notice Was Mailed":
-        "{date}, we sent you a duplicate notice about a decision on your {form_long_name}, "
+        "On {date}, we sent you a duplicate notice about a decision on your {form_long_name}, "
         "Receipt Number {receipt_number}, or describing how we will process the case if it is still pending. "
         "Your case is located at our {location_name} location. Please follow any instructions in the notice. "
         "If you do not receive your duplicate notice by {notice_deadline}, "

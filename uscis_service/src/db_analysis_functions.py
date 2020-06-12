@@ -1,4 +1,5 @@
 from collections import defaultdict
+import datetime
 from src.constants import uscis_database, uscis_table_name
 from src.db_stuff import connect_to_database, get_all
 from src.message_stuff import string_to_args
@@ -115,3 +116,30 @@ async def summary_analysis_form(ref_form, **kwargs):
 
 async def summary_analysis_status(ref_status, **kwargs):
     return await summary_analysis(custom_filter=filter_status(ref=ref_status), **kwargs)
+
+
+async def count_date_status():
+    pool = await connect_to_database(database=uscis_database)
+    try:
+        async with pool.acquire() as conn:
+            records = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
+            all_data = await get_all(conn=conn, table_name=uscis_table_name, ignore_null=True)
+            for line in all_data:
+                current_status = line["current_status"]
+                current_args = line["current_args"]
+                d = string_to_args(s=current_args)
+                form_name = d.get('form_long_name', "")
+                # print(d['date'] if 'date' in d else "")
+                # print(line)
+                date = datetime.datetime.strptime(d['date'], "%B %d, %Y").date() if 'date' in d else ""
+                records[form_name][current_status][date] += 1
+            for form, v in records.items():
+                print(f"{form}:\t")
+                for status, w in sorted(v.items(), key=lambda ww: sum(ww[-1].values())):
+                    print(f"\t\t{status}:\t")
+                    for date, count in sorted(w.items()):
+                        print(f"\t\t\t{date}:\t{count}")
+            print()
+            return records
+    finally:
+        await pool.close()
