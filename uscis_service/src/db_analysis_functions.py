@@ -136,7 +136,6 @@ async def count_date_status_function(conn):
         date = datetime.datetime.strptime(d['date'], "%B %d, %Y").date() if 'date' in d else ""
         records[form_name][current_status][date] += 1
 
-    print(count_date_status_format(records=records))
     return records
 
 
@@ -158,6 +157,7 @@ async def count_date_status():
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn:
-            await count_date_status_function(conn=conn)
+            records = await count_date_status_function(conn=conn)
+            print(count_date_status_format(records=records))
     finally:
         await pool.close()
