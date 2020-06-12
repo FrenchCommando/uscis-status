@@ -558,7 +558,7 @@ status_to_msg = {
         "We will inform you if your appointment is rescheduled and send any notices to the address you gave us. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Response To USCIS' Request For Evidence Was Received":
-        "On {date}, we received your response to our Request for Evidence for your Form {form_long_name}, "
+        "On {date}, we received your response to our Request for Evidence for your {form_long_name}, "
         "Receipt Number {receipt_number}. USCIS has begun working on your case again. "
         "We will send you a decision or notify you if we need something from you. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",

@@ -135,11 +135,11 @@ async def count_date_status_function(conn):
         # print(line)
         date = datetime.datetime.strptime(d['date'], "%B %d, %Y").date() if 'date' in d else ""
         records[form_name][current_status][date] += 1
-    for form, v in records.items():
-        print(f"{form}:\t")
-        for status, w in sorted(v.items(), key=lambda ww: sum(ww[-1].values())):
-            print(f"\t\t{status}:\t")
-            for date, count in sorted(w.items()):
+    for form, v in sorted(records.items()):
+        print(f"{form}:\t{sum(sum(w.values()) for w in v.values())}")
+        for status, w in sorted(v.items(), key=lambda ww: sum(ww[-1].values()), reverse=True):
+            print(f"\t\t{status}:\t{sum(w.values())}")
+            for date, count in sorted(w.items(), reverse=True):
                 print(f"\t\t\t{date}:\t{count}", end="\t")
             print()
     print()
