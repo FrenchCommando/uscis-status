@@ -1,5 +1,5 @@
 from collections import defaultdict
-import datetime
+import datetime as dt
 from src.constants import uscis_database, uscis_table_name
 from src.db_stuff import connect_to_database, get_all
 from src.message_stuff import string_to_args
@@ -118,24 +118,28 @@ async def summary_analysis_status(ref_status, **kwargs):
     return await summary_analysis(custom_filter=filter_status(ref=ref_status), **kwargs)
 
 
+def get_form_date(current_status, current_args):
+    d = string_to_args(s=current_args)
+    if current_status == "Case Was Reopened":
+        phrasing = " ".join([d.get('phrasing_1', ""), d.get('form_long_name', "")])
+        real_form = phrasing.split("Form")[-1]
+        form_name = f"Form{real_form}"
+    else:
+        form_name = d.get('form_long_name', "")
+    # print(d['date'] if 'date' in d else "")
+    # print(line)
+    record_date = dt.datetime.strptime(d['date'], "%B %d, %Y").date() if 'date' in d else ""
+    return form_name, record_date
+
+
 async def count_date_status_function(conn):
     records = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
     all_data = await get_all(conn=conn, table_name=uscis_table_name, ignore_null=True)
     for line in all_data:
         current_status = line["current_status"]
         current_args = line["current_args"]
-        d = string_to_args(s=current_args)
-        if current_status == "Case Was Reopened":
-            phrasing = " ".join([d.get('phrasing_1', ""), d.get('form_long_name', "")])
-            real_form = phrasing.split("Form")[-1]
-            form_name = f"Form{real_form}"
-        else:
-            form_name = d.get('form_long_name', "")
-        # print(d['date'] if 'date' in d else "")
-        # print(line)
-        date = datetime.datetime.strptime(d['date'], "%B %d, %Y").date() if 'date' in d else ""
-        records[form_name][current_status][date] += 1
-
+        form_name, record_date = get_form_date(current_status=current_status, current_args=current_args)
+        records[form_name][current_status][record_date] += 1
     return records
 
 
@@ -158,6 +162,39 @@ async def count_date_status():
     try:
         async with pool.acquire() as conn:
             records = await count_date_status_function(conn=conn)
+            print(count_date_status_format(records=records))
+    finally:
+        await pool.close()
+
+
+async def count_approval_history_function(conn, form, date):
+    records = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
+    records_hist = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
+    all_data = await get_all(conn=conn, table_name=uscis_table_name, ignore_null=True)
+    for line in all_data:
+        current_status = line["current_status"]
+        current_args = line["current_args"]
+        form_name, record_date = get_form_date(current_status=current_status, current_args=current_args)
+
+        if form in form_name and date == record_date and current_status == "Case Was Approved":
+            records[form_name][current_status][record_date] += 1
+            current_history = line["history"]
+            if not current_history:
+                continue
+            latest_history = current_history.split("||")[0]
+            latest_current_status, latest_current_args = tuple(latest_history.split(":", 1))
+            latest_form_name, latest_record_date = \
+                get_form_date(current_status=latest_current_status, current_args=latest_current_args)
+            records_hist[latest_form_name][latest_current_status][latest_record_date] += 1
+
+    return records_hist
+
+
+async def count_approval_history(form="I-129", date=dt.date(year=2020, month=6, day=11)):
+    pool = await connect_to_database(database=uscis_database)
+    try:
+        async with pool.acquire() as conn:
+            records = await count_approval_history_function(conn=conn, form=form, date=date)
             print(count_date_status_format(records=records))
     finally:
         await pool.close()

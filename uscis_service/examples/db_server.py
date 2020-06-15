@@ -2,8 +2,10 @@ import aiohttp
 import asyncio
 from aiohttp import web
 from collections import defaultdict
+import datetime as dt
 from src.constants import port_number
-from src.db_analysis_functions import count_date_status_function, count_date_status_format
+from src.db_analysis_functions import count_date_status_function, count_date_status_format, \
+    count_approval_history_function
 from src.db_interaction import init_tables, \
     get_all_uscis, get_all_case_uscis, get_all_status_uscis, get_pool, get_all_errors
 from src.message_stuff import status_to_msg
@@ -29,6 +31,17 @@ async def handle_analysis(request):
     pool = request.app['pool']
     async with pool.acquire() as connection:
         records = await count_date_status_function(conn=connection)
+        text = count_date_status_format(records=records)
+        return web.Response(text=text)
+
+
+async def handle_approval_analysis(request):
+    pool = request.app['pool']
+    form = request.match_info.get('form', '129')
+    date_str = request.match_info.get('date', '')
+    date = dt.datetime.strptime(date_str, "%Y-%m-%d").date() if date_str else dt.datetime.now().date()
+    async with pool.acquire() as connection:
+        records = await count_approval_history_function(conn=connection, form=form, date=date)
         text = count_date_status_format(records=records)
         return web.Response(text=text)
 
@@ -86,6 +99,7 @@ async def init_app():
     app_inst.router.add_route('GET', '/case/{receipt_number}', handle_case)
     app_inst.router.add_route('GET', '/status/{status}', handle_status)
     app_inst.router.add_route('GET', '/analysis', handle_analysis)
+    app_inst.router.add_route('GET', '/approval_analysis/{form}/{date}', handle_approval_analysis)
     app_inst.router.add_route('GET', '/all', handle_all)
     app_inst.router.add_route('GET', '/', handle_main)
     return app_inst
