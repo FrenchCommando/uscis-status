@@ -601,6 +601,11 @@ status_to_msg = {
         "If you do not submit an online request or contact us at 1-800-375-5283 by {notice_deadline2}, "
         "we will destroy your document and you will need to file a new {form_long_name_2}, with fee. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Travel Document Was Received By USCIS Along With My Letter":
+        "On {date}, we received your travel document for Receipt Number {receipt_number}, and letter. "
+        "We are reviewing your submission, and will mail you a notice, if necessary. "
+        "Please follow any instructions in the notice. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Withdrawal Acknowledgement Notice Was Sent":
         "On {date}, we received your request to withdraw your {form_long_name}, Receipt Number {receipt_number}, "
         "and completed our review. We mailed you a Withdrawal Acknowledgment Notice. "
