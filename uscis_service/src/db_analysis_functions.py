@@ -1,3 +1,4 @@
+import re
 from collections import defaultdict
 import datetime as dt
 from src.constants import uscis_database, uscis_table_name
@@ -110,12 +111,25 @@ def filter_status(ref):
     return select_status
 
 
+def filter_receipt(ref):
+    def select_receipt(line):
+        current_receipt = line["case_number"]
+        if re.fullmatch(ref, current_receipt):
+            return True
+        return False
+    return select_receipt
+
+
 async def summary_analysis_form(ref_form, **kwargs):
     return await summary_analysis(custom_filter=filter_form(ref=ref_form), **kwargs)
 
 
 async def summary_analysis_status(ref_status, **kwargs):
     return await summary_analysis(custom_filter=filter_status(ref=ref_status), **kwargs)
+
+
+async def summary_analysis_receipt(ref_receipt, **kwargs):
+    return await summary_analysis(custom_filter=filter_receipt(ref=ref_receipt), **kwargs)
 
 
 def get_form_date(current_status, current_args):
