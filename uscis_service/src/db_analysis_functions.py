@@ -147,7 +147,7 @@ async def count_date_status_function(conn, custom_filter=lambda x: True):
 
 
 def count_date_status_format(records):
-    text_l = []
+    text_l = [f"Total Count:\t{sum(sum(sum(w.values()) for w in v.values()) for v in records.values())}", ""]
     for form, v in sorted(records.items()):
         text_l.append(f"{form}:\t{sum(sum(w.values()) for w in v.values())}")
         for status, w in sorted(v.items(), key=lambda ww: sum(ww[-1].values()), reverse=True):
