@@ -120,18 +120,6 @@ def filter_receipt(ref):
     return select_receipt
 
 
-async def summary_analysis_form(ref_form, **kwargs):
-    return await summary_analysis(custom_filter=filter_form(ref=ref_form), **kwargs)
-
-
-async def summary_analysis_status(ref_status, **kwargs):
-    return await summary_analysis(custom_filter=filter_status(ref=ref_status), **kwargs)
-
-
-async def summary_analysis_receipt(ref_receipt, **kwargs):
-    return await summary_analysis(custom_filter=filter_receipt(ref=ref_receipt), **kwargs)
-
-
 def get_form_date(current_status, current_args):
     d = string_to_args(s=current_args)
     if current_status == "Case Was Reopened":
@@ -146,9 +134,10 @@ def get_form_date(current_status, current_args):
     return form_name, record_date
 
 
-async def count_date_status_function(conn):
+async def count_date_status_function(conn, custom_filter=lambda x: True):
     records = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
     all_data = await get_all(conn=conn, table_name=uscis_table_name, ignore_null=True)
+    all_data = [u for u in all_data if custom_filter(u)]
     for line in all_data:
         current_status = line["current_status"]
         current_args = line["current_args"]
@@ -167,15 +156,16 @@ def count_date_status_format(records):
             for date, count in sorted(w.items(), reverse=True):
                 text_ll.append(f"{date}:\t{count}")
             text_l.append("\t".join(text_ll))
+        text_l.append("")
     text_l.append("")
     return "\n".join(text_l)
 
 
-async def count_date_status():
+async def count_date_status(custom_filter=lambda x: True):
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn:
-            records = await count_date_status_function(conn=conn)
+            records = await count_date_status_function(conn=conn, custom_filter=custom_filter)
             print(count_date_status_format(records=records))
     finally:
         await pool.close()
