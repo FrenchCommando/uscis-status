@@ -34,6 +34,7 @@ def clear_table():
 
 def main(argv, retry=0):
     try:
+        send(subject="db_batch is starting", body=f"{argv}")
         function_name = argv[0]
         if function_name == "delete":
             delete_entries_function(argv=argv[1:])
