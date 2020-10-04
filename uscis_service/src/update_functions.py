@@ -109,7 +109,7 @@ async def update_entries(it, skip_recent_threshold=10):
             i = 0
             while True:
                 chunk = tuple(itertools.islice(it_t, 100))
-                print(f"update_entries chunk number {i}")
+                print(f"update_entries chunk number {i}\t\t-\t{datetime.datetime.now()}")
                 i += 1
                 if not chunk:
                     break
