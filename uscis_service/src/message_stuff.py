@@ -482,6 +482,12 @@ status_to_msg = {
         "On {date}, we scheduled an interview for your {form_long_name}, Receipt Number {receipt_number}. "
         "We will mail you an interview notice. Please follow any instructions in the notice. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Litigation Notice Was Mailed":
+        "On {date}, we mailed you a notice informing you about litigation related to your {form_long_name}, "
+        "Receipt Number {receipt_number}. Please follow the instructions in the notice. "
+        "If you do not receive your notice by {notice_deadline}, "
+        "please go to www.uscis.gov/e-request to request a copy of the notice. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Name Was Updated":
         "On {date}, we updated your name for your {form_long_name}, Receipt Number {receipt_number}. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
