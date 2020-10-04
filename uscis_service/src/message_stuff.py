@@ -213,6 +213,13 @@ status_to_msg = {
         "If you do not receive your approval notice by {notice_deadline}, "
         "please go to www.uscis.gov/e-request. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Case Was Approved And A Decision Notice Was Sent":
+        "We approved your {form_long_name}, Receipt Number {receipt_number}, "
+        "and mailed your approval decision to the address you gave us. "
+        "Please follow the instructions in the notice. "
+        "If you do not receive your approval notice by {notice_deadline}, "
+        "please go to www.uscis.gov/e-request to request a copy of the notice. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case Was Approved And My Decision Was Emailed":
         "We approved your {form_long_name}, Receipt Number {receipt_number}, and emailed you an approval notice. "
         "Please follow any instructions on the approval notice. "
