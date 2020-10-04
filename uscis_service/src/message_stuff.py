@@ -638,6 +638,13 @@ status_to_msg = {
         "If you do not receive your Withdrawal Acknowledgment Notice by {notice_deadline}, "
         "please go to www.uscis.gov/e-request to request a copy of the notice. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Withdrawal Of My Appeal Was Acknowledged":
+        "On {date}, we mailed you a notice acknowledging withdrawal of your appeal "
+        "for Receipt Number {receipt_number}. Your withdrawal ends all action on this appeal. "
+        "Please follow the instructions in the notice. "
+        "If you do not receive your notice by {notice_deadline}, "
+        "please go to www.uscis.gov/e-request to request a copy of the notice. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     None: "",
 }
 
