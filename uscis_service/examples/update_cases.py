@@ -18,6 +18,6 @@ from src.update_functions import update_entries, smart_update_all, refresh_statu
 #     prefix="LIN", date_start=20900, index_start=1, skip_recent_threshold=1))
 # #
 asyncio.get_event_loop().run_until_complete(refresh_status(
-    status='Response To USCIS\' Request For Evidence Was Received', skip_recent_threshold=0))
+    status='Case Was Received and A Receipt Notice Was Emailed', skip_recent_threshold=0))
 # asyncio.get_event_loop().run_until_complete(refresh_selected_status(
 #     filter_function=lambda x: 0 < x < 100, skip_recent_threshold=1))

@@ -238,7 +238,9 @@ status_to_msg = {
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case Was Received and A Receipt Notice Was Emailed":
         "On {date}, we received your {form_long_name}, Receipt Number {receipt_number}, "
-        "and mailed you a receipt notice. The notice describes how we will process your case. "
+        "and mailed you a receipt notice or acceptance notice. "
+        "It is being processed at our {location_name} location. "
+        "The notice describes how we will process your case. "
         "Please follow the instructions in the notice. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case Was Received At Another USCIS Office":
