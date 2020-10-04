@@ -14,6 +14,13 @@ status_to_msg = {
         "On {date}, we produced your Advance Parole Document for your {form_long_name}, "
         "Receipt Number {receipt_number}. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Amended Notice Was Mailed":
+        "On {date}, we sent you an amended notice describing how we will process your {form_long_name}, "
+        "Receipt Number {receipt_number}.¿ It is being processed at our National Benefits Center location. "
+        "Please follow any instructions in the notice. "
+        "If you do not receive your amended notice by {notice_deadline}, "
+        "please go to www.uscis.gov/e-request to request a copy of the notice. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Appeal Was Approved":
         "The appellate authority approved your appeal and mailed you a decision. "
         "Your case, Receipt Number {receipt_number}, "
@@ -351,6 +358,16 @@ status_to_msg = {
     "Correspondence Was Received And USCIS Is Reviewing It":
         "On {date}, we received your correspondence for {form_long_name}, Receipt Number {receipt_number}. "
         "We are reviewing your correspondence, and will send you a notice if we need something from you. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "CWR Notice of Intent to Revoke Sent":
+        "On {date}, we mailed you a notice explaining our intent to revoke "
+        "our earlier approval of the {form_long_name}, Receipt Number {receipt_number}, "
+        "based on failure to file your required Semiannual Report for CW-1 Employers (Form I-129CWR). "
+        "The notice provides guidance on what you must do in order to avoid revocation of this petition "
+        "and denial of your future petitions. "
+        "Please follow the instructions in the notice and submit any requested materials. "
+        "If you do not receive your notice by {notice_deadline}, "
+        "contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Date of Birth Was Updated":
         "On {date}, we updated your date of birth for your {form_long_name}, Receipt Number {receipt_number}. "
