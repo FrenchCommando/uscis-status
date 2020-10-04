@@ -201,7 +201,8 @@ async def smart_update_all_function(pool, prefix="LIN", date_start=20001, index_
             all_none = False
             while not all_none:
                 print(f"smart update -\t"
-                      f"{prefix}\t{date_start + date_increment:05d}\t{index_start + index_increment:05d}")
+                      f"{prefix}\t{date_start + date_increment:05d}\t{index_start + index_increment:05d}\t"
+                      f"\t{datetime.datetime.now()}")
                 rep = await asyncio.gather(
                     *map(update_function,
                          [index_start + index_increment + i for i in range(chunk_size)])
