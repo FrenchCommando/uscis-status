@@ -1,10 +1,12 @@
 import base64
 from email.mime.text import MIMEText
-from gmail.gmail_service import service, user_id
+from gmail.gmail_service import load_creds, user_id
 
 
 def send(subject, body):
     try:
+        print("Loading creds")
+        service = load_creds()
         message = MIMEText(body)
         message['to'] = "martialren@gmail.com"
         message['subject'] = subject
