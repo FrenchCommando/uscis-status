@@ -117,3 +117,9 @@ https://citizenpath.com/uscis-receipt-number-explained/
 - run `gmail_service.py` to generate authentication token (`token.pickle`)
     - should be in `uscis_service` because this is the cwd of python
 - then run docker-compose - token will be copied to the correct path
+
+
+# Spy on process output
+- `htop` to find process PIDs
+- 'strace -p1234 -s9999 -e write' where `1234` is the PIDs of the process to spy on
+ - `https://unix.stackexchange.com/questions/58550/how-to-view-the-output-of-a-running-process-in-another-bash-session`
