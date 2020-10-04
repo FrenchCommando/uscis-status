@@ -457,7 +457,8 @@ status_to_msg = {
         "contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Interview Cancelled":
-        "On {date}, we cancelled the interview scheduled for your {form_long_name}, Receipt Number {receipt_number}. "
+        "On {date}, we cancelled or descheduled the interview scheduled for your {form_long_name}, "
+        "Receipt Number {receipt_number}. "
         "We will notify you by mail if the appointment is rescheduled, a decision is made, "
         "or if the office needs something from you. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
