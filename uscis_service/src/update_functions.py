@@ -106,8 +106,11 @@ async def update_entries(it, skip_recent_threshold=10):
                                                skip_recent_threshold=skip_recent_threshold)
 
             it_t = iter(it)
+            i = 0
             while True:
                 chunk = tuple(itertools.islice(it_t, 100))
+                print(f"update_entries chunk number {i}")
+                i += 1
                 if not chunk:
                     break
                 await asyncio.gather(*map(update_function, chunk))
