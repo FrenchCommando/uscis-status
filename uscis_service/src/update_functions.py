@@ -63,6 +63,9 @@ async def update_case_internal(conn, url_session, receipt_number, skip_recent_th
                 # raise AttributeError(
                 print(
                     f"New Status is CASE STATUS although old status was different:\t{old_status}"
+                    f"\t\t{receipt_number}"
+                    f"\t\told_args:\t{old_args}"
+                    f"\t\tnew message:\t{message}"
                 )
             if (old_status, old_args) == (title, current_args) or old_status is None:
                 new_history_joined = old_history
