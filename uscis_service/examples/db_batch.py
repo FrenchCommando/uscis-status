@@ -1,6 +1,7 @@
 import asyncio
 import sys
 import time
+import datetime
 from gmail.gmail_functions import send
 from src.update_functions import refresh_error, delete_entries, smart_update_all, refresh_status, clear_uscis_table
 
@@ -35,7 +36,11 @@ def clear_table():
 
 def main(argv, retry=0):
     try:
-        send(subject="db_batch is starting", body=f"{argv}")
+        init_time = datetime.datetime.now()
+        send(subject="db_batch is starting",
+             body=f"{argv}\n"
+                  f"init time:\t{init_time}\n"
+             )
         function_name = argv[0]
         if function_name == "delete":
             delete_entries_function(argv=argv[1:])
@@ -49,7 +54,13 @@ def main(argv, retry=0):
             clear_table()
         else:
             print(f"Function name did not match:\t{function_name}")
-        send(subject="db_batch have run", body=f"{argv}")
+        end_time = datetime.datetime.now()
+        send(subject="db_batch have run",
+             body=f"{argv}\n"
+                  f"init time:\t{init_time}\n"
+                  f"end time:\t{end_time}\n"
+                  f"elapsed:\t{end_time - init_time}\n"
+             )
     except BaseException as e:
         if retry > 3:
             return print(f"Error\tNot retrying - too many retries\t{argv}\t{__name__}{e}")
