@@ -224,7 +224,7 @@ async def smart_update_all_function(pool, prefix="LIN", year_start=20, day_start
                 all_none = False
                 while not all_none:
                     print(f"smart update -\t"
-                          f"{current_format(index=index_start)}\t"
+                          f"{current_format(index=index_start+index_increment)}\t"
                           f"\t{datetime.datetime.now()}")
                     rep = await asyncio.gather(
                         *map(update_function, [index_start + index_increment + i for i in range(chunk_size)])
