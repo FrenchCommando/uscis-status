@@ -60,7 +60,6 @@ RUN chown -R app:app $APP_HOME
 # add cron jobs
 RUN apt-get update && apt-get -y install cron
 COPY ./uscis-cron /etc/cron.d
-ADD crontab /etc/cron.d/uscis-cron
 RUN chmod 0644 /etc/cron.d/uscis-cron
 RUN touch /var/log/cron-lin1.log
 RUN touch /var/log/cron-lin2.log
