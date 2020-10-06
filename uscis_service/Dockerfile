@@ -61,10 +61,10 @@ RUN chown -R app:app $APP_HOME
 RUN apt-get update && apt-get -y install cron
 COPY ./uscis-cron /etc/cron.d
 RUN chmod 0644 /etc/cron.d/uscis-cron
-RUN touch /var/log/cron-lin1.log
+RUN touch /var/log/cron.log
 RUN touch /var/log/cron-lin2.log
 RUN crontab /etc/cron.d/uscis-cron
-CMD cron
+CMD cron && tail -f /var/log/cron.log
 
 # change to the app user
 USER app
