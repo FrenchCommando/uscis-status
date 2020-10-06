@@ -100,8 +100,9 @@ https://citizenpath.com/uscis-receipt-number-explained/
 - `<function_name>` = `smart_update`
 - `args` = 
     - `prefix`: `LIN`, or the other center names
-    - `date_start`: `20001` (year 20, day number 001) - or `20900` (year 20, not using day number)
-    - `index_start`: `50001` (when day number involved) - or `1` (if not day number) 
+    - `year_start`: `20` (fiscal year 2019-2020  -- starts October 1st)
+    - `date_start`: `1` (actual index of day, 1 to something like 326 -> LIN2012350001 - 5 is the separator) 
+        - or `0` (if not day number -> LIN 2090000001 - 9 is the separator)  
     - `skip_recent_threshold`: only refresh if current log is older than this number of hours
 
 ## Clear

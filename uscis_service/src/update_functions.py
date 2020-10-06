@@ -189,36 +189,62 @@ async def refresh_error():
         await pool.close()
 
 
-async def smart_update_all_function(pool, prefix="LIN", date_start=20001, index_start=50001, skip_recent_threshold=10):
+async def smart_update_all_function(pool, prefix="LIN", year_start=20, day_start=1, skip_recent_threshold=10):
 
     async with aiohttp.ClientSession() as session:
+        if day_start == 0:
+            def format_receipt_number(year, day, index):
+                return f'{prefix}{year:02d}9{index:07d}'
+        else:
+            def format_receipt_number(year, day, index):
+                return f'{prefix}{year:02d}{day:03d}5{index:04d}'
+
+        def current_format(index):
+            return format_receipt_number(
+                        year=year_start + year_increment,
+                        day=day_start + day_increment,
+                        index=index,
+                    )
+
         async def update_function(index):
             async with pool.acquire() as conn2:
                 return await update_case_internal(
                     conn=conn2, url_session=session,
-                    receipt_number=f'{prefix}{date_start + date_increment:05d}{index:05d}',
+                    receipt_number=current_format(index=index),
                     skip_recent_threshold=skip_recent_threshold,
                 )
 
         chunk_size = 100
-        date_increment = 0
+        index_start = 1
+        year_increment = 0
+        day_increment = 0
         while await update_function(index=index_start) is not None:
-            index_increment = 0
-            all_none = False
-            while not all_none:
-                print(f"smart update -\t"
-                      f"{prefix}\t{date_start + date_increment:05d}\t{index_start + index_increment:05d}\t"
-                      f"\t{datetime.datetime.now()}")
-                rep = await asyncio.gather(
-                    *map(update_function,
-                         [index_start + index_increment + i for i in range(chunk_size)])
-                )
-                all_none = all(s is None for s in rep)
-                index_increment += chunk_size
-            date_increment += 1
+            while await update_function(index=index_start) is not None:
+                index_increment = 0
+                all_none = False
+                while not all_none:
+                    print(f"smart update -\t"
+                          f"{current_format(index=index_start)}\t"
+                          f"\t{datetime.datetime.now()}")
+                    rep = await asyncio.gather(
+                        *map(update_function,
+                             [index_start + index_increment + i for i in range(chunk_size)]
+                             )
+                    )
+                    all_none = all(s is None for s in rep)
+                    index_increment += chunk_size
+                day_increment += 1
+            year_increment += 1
 
 
-async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, skip_recent_threshold=10):
+async def smart_update_all(prefix="LIN", year_start=20, day_start=1, skip_recent_threshold=10):
+    """
+    prefix: 3 letter-string, represents the center location
+    year_start: 2 digit in representing the year - "20" for FY2019-2020 - FY starts on 1st Oct
+    day_start: 1 to 326 (should be the number of business days - I don't know why it's so high) -> index of day in FY
+                0 -> another representation : LIN2090000001
+    skip_recent_threshold: don't refresh if last refresh was more recent than x hours
+    """
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn:
@@ -226,7 +252,7 @@ async def smart_update_all(prefix="LIN", date_start=20001, index_start=50001, sk
             await build_table(conn=conn, table_name=error_table_name)
 
         await smart_update_all_function(
-            pool=pool, prefix=prefix, date_start=date_start, index_start=index_start,
+            pool=pool, prefix=prefix, year_start=year_start, day_start=day_start,
             skip_recent_threshold=skip_recent_threshold)
 
         async with pool.acquire() as conn:

@@ -18,8 +18,8 @@ def delete_entries_function(argv):
 def smart_update(argv):
     d = dict(
         prefix=argv[0],
-        date_start=int(argv[1]),
-        index_start=int(argv[2]),
+        year_start=int(argv[1]),
+        day_start=int(argv[2]),
         skip_recent_threshold=int(argv[3])
     )
     asyncio.get_event_loop().run_until_complete(smart_update_all(**d))
@@ -39,6 +39,7 @@ def main(argv, retry=0):
         init_time = datetime.datetime.now()
         send(subject="db_batch is starting",
              body=f"{argv}\n"
+                  f"Retry number:\t{retry}\n"
                   f"init time:\t{init_time}\n"
              )
         function_name = argv[0]
@@ -57,6 +58,7 @@ def main(argv, retry=0):
         end_time = datetime.datetime.now()
         send(subject="db_batch have run",
              body=f"{argv}\n"
+                  f"Retry number:\t{retry}\n"
                   f"init time:\t{init_time}\n"
                   f"end time:\t{end_time}\n"
                   f"elapsed:\t{end_time - init_time}\n"
