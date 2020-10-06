@@ -204,7 +204,7 @@ async def smart_update_all_function(pool, prefix="LIN", year_start=20, day_start
                         year=year_start + year_increment,
                         day=day_start + day_increment,
                         index=index,
-                    )
+            )
 
         async def update_function(index):
             async with pool.acquire() as conn2:
@@ -227,9 +227,7 @@ async def smart_update_all_function(pool, prefix="LIN", year_start=20, day_start
                           f"{current_format(index=index_start)}\t"
                           f"\t{datetime.datetime.now()}")
                     rep = await asyncio.gather(
-                        *map(update_function,
-                             [index_start + index_increment + i for i in range(chunk_size)]
-                             )
+                        *map(update_function, [index_start + index_increment + i for i in range(chunk_size)])
                     )
                     all_none = all(s is None for s in rep)
                     index_increment += chunk_size
