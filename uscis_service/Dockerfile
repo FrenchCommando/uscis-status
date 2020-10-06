@@ -64,7 +64,7 @@ RUN chmod 0644 /etc/cron.d/uscis-cron
 RUN touch /var/log/cron.log
 RUN touch /var/log/cron-lin2.log
 RUN crontab /etc/cron.d/uscis-cron
-CMD cron && tail -f /var/log/cron.log
+CMD ["cron", "-f"]
 
 # change to the app user
 USER app
