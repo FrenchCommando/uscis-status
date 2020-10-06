@@ -69,7 +69,7 @@ RUN touch /var/log/cron-lin2.log
 # Apply cron job
 RUN crontab /etc/cron.d/uscis-cron
 # Run the command on container startup
-CMD ["cron", "-f"]
+CMD cron
 
 # change to the app user
 USER app
