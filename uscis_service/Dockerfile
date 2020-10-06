@@ -60,7 +60,7 @@ RUN chown -R app:app $APP_HOME
 # add cron jobs
 RUN apt-get update && apt-get -y install cron
 # Copy hello-cron file to the cron.d directory
-ADD uscis-cron /etc/cron.d/uscis-cron
+COPY ./uscis-cron /etc/cron.d/uscis-cron
 # Give execution rights on the cron job
 RUN chmod 0644 /etc/cron.d/uscis-cron
 # Create the log file to be able to run tail
@@ -69,7 +69,7 @@ RUN touch /var/log/cron-lin2.log
 # Apply cron job
 RUN crontab /etc/cron.d/uscis-cron
 # Run the command on container startup
-CMD cron
+CMD ["cron", "-f"]
 
 # change to the app user
 USER app
