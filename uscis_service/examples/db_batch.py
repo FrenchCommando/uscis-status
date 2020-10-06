@@ -34,12 +34,14 @@ def clear_table():
     asyncio.get_event_loop().run_until_complete(clear_uscis_table())
 
 
-def main(argv, retry=0):
+def main(argv, retry=0, main_init_time=None):
     init_time = datetime.datetime.now()
+    main_init_time_val = init_time if main_init_time is None else main_init_time
     send(subject="db_batch is starting",
          body=f"{argv}\n"
               f"Retry number:\t{retry}\n"
               f"init time:\t{init_time}\n"
+              f"main init time:\t{main_init_time_val}\n"
          )
     try:
         function_name = argv[0]
@@ -62,6 +64,7 @@ def main(argv, retry=0):
                   f"init time:\t{init_time}\n"
                   f"end time:\t{end_time}\n"
                   f"elapsed:\t{end_time - init_time}\n"
+                  f"main elapsed:\t{end_time - main_init_time_val}\n"
              )
     except BaseException as e:
         if retry > 3:
@@ -72,13 +75,14 @@ def main(argv, retry=0):
                       f"init time:\t{init_time}\n"
                       f"end time:\t{end_time}\n"
                       f"elapsed:\t{end_time - init_time}\n"
+                      f"main elapsed:\t{end_time - main_init_time_val}\n"
                  )
             return print(f"Error\tNot retrying - too many retries\t{argv}\t{__name__}{e}")
         n_secs = 30
         print(f"Error\trestarting in {n_secs}s\t{argv}\t{__name__}{e}")
         time.sleep(n_secs)
         print(f"Error\trestarting now\t{argv}\t{__name__}{e}")
-        main(argv=argv, retry=retry + 1)
+        main(argv=argv, retry=retry + 1, main_init_time=main_init_time_val)
 
 
 if __name__ == "__main__":
