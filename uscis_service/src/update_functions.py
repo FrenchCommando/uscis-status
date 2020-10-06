@@ -201,9 +201,9 @@ async def smart_update_all_function(pool, prefix="LIN", year_start=20, day_start
 
         def current_format(index):
             return format_receipt_number(
-                        year=year_start + year_increment,
-                        day=day_start + day_increment,
-                        index=index,
+                year=year_start + year_increment,
+                day=day_start + day_increment,
+                index=index,
             )
 
         async def update_function(index):
