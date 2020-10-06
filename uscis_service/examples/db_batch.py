@@ -35,13 +35,13 @@ def clear_table():
 
 
 def main(argv, retry=0):
+    init_time = datetime.datetime.now()
+    send(subject="db_batch is starting",
+         body=f"{argv}\n"
+              f"Retry number:\t{retry}\n"
+              f"init time:\t{init_time}\n"
+         )
     try:
-        init_time = datetime.datetime.now()
-        send(subject="db_batch is starting",
-             body=f"{argv}\n"
-                  f"Retry number:\t{retry}\n"
-                  f"init time:\t{init_time}\n"
-             )
         function_name = argv[0]
         if function_name == "delete":
             delete_entries_function(argv=argv[1:])
@@ -65,6 +65,14 @@ def main(argv, retry=0):
              )
     except BaseException as e:
         if retry > 3:
+            end_time = datetime.datetime.now()
+            send(subject="db_batch - Aborted - Too many retries",
+                 body=f"{argv}\n"
+                      f"Retry number:\t{retry}\n"
+                      f"init time:\t{init_time}\n"
+                      f"end time:\t{end_time}\n"
+                      f"elapsed:\t{end_time - init_time}\n"
+                 )
             return print(f"Error\tNot retrying - too many retries\t{argv}\t{__name__}{e}")
         n_secs = 30
         print(f"Error\trestarting in {n_secs}s\t{argv}\t{__name__}{e}")
