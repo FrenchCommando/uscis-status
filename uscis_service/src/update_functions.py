@@ -118,10 +118,10 @@ async def update_entries(it, skip_recent_threshold=10, chunk_size=100):
             i = 0
             while True:
                 chunk = tuple(itertools.islice(it_t, chunk_size))
-                print(f"update_entries chunk number {i}\t\t-\t{datetime.datetime.now()}")
-                i += 1
                 if not chunk:
                     break
+                print(f"update_entries chunk number {i:6d}\t{chunk[0]}\t\t{datetime.datetime.now()}")
+                i += 1
                 await asyncio.gather(*map(update_function, chunk))
 
         async with pool.acquire() as conn:
