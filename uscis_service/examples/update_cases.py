@@ -8,7 +8,7 @@ from src.update_functions import update_entries, smart_update_all, refresh_statu
 # ))
 
 asyncio.get_event_loop().run_until_complete(update_entries(
-    it=[f"LIN{2090340265 + i}" for i in range(1)],
+    it=[f"LIN{2090346860 + i}" for i in range(1)],
     skip_recent_threshold=0,
 ))
 
@@ -18,6 +18,6 @@ asyncio.get_event_loop().run_until_complete(update_entries(
 #     prefix="LIN", date_start=20900, index_start=1, skip_recent_threshold=1))
 # #
 asyncio.get_event_loop().run_until_complete(refresh_status(
-    status='Eligibility Notice Was Mailed', skip_recent_threshold=0))
+    status='Premium Processing Case is Not Eligible for Pre-Certification', skip_recent_threshold=0))
 # asyncio.get_event_loop().run_until_complete(refresh_selected_status(
 #     filter_function=lambda x: 0 < x < 100, skip_recent_threshold=1))

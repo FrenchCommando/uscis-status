@@ -552,6 +552,13 @@ status_to_msg = {
         "Your premium-processing receipt notice contains contact information for direct inquiries on your case. "
         "Please follow the instructions in the notice. "
         "If you move, contact the premium-processing unit directly to update your address.",
+    "Premium Processing Case is Not Eligible for Pre-Certification":
+        "On {date}, we determined that your {form_long_name}, Receipt Number {receipt_number}, "
+        "is not eligible for pre-certification. "
+        "Additional documentation may be necessary for further processing. "
+        "Your premium-processing receipt notice contains contact information for direct inquiries on your case. "
+        "Please follow the instructions in the notice. "
+        "If you move, contact the premium-processing unit directly to update your address.",
     "Reentry Permit Was Produced":
         "On {date}, we produced your Reentry Permit for your {form_long_name}, Receipt Number {receipt_number}. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
