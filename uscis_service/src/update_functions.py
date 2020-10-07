@@ -229,14 +229,12 @@ async def smart_update_all_function(
                 all_none = all(s is None for s in rep)
                 index_increment += chunk_size
 
-        index_start = 1
-        year_increment = 0
-        day_increment = 0
-
         if day_start == 0:
             def format_receipt_number(year, day, index):
                 return f'{prefix}{year:02d}9{index:07d}'
 
+            index_start = 1
+            year_increment = 0
             while await update_function(index=index_start) is not None:
                 await inside_loop()
                 year_increment += 1
@@ -244,7 +242,10 @@ async def smart_update_all_function(
             def format_receipt_number(year, day, index):
                 return f'{prefix}{year:02d}{day:03d}5{index:04d}'
 
+            index_start = 1
+            year_increment = 0
             while await update_function(index=index_start) is not None:
+                day_increment = 0
                 while await update_function(index=index_start) is not None:
                     await inside_loop()
                     day_increment += 1
