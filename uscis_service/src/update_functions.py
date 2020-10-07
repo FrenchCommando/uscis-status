@@ -101,7 +101,7 @@ async def remove_case_internal(conn, receipt_number):
     await delete_case(conn=conn, table_name=error_table_name, case_number=receipt_number)
 
 
-async def update_entries(it, skip_recent_threshold=10):
+async def update_entries(it, skip_recent_threshold=10, chunk_size=100):
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn:
@@ -117,7 +117,7 @@ async def update_entries(it, skip_recent_threshold=10):
             it_t = iter(it)
             i = 0
             while True:
-                chunk = tuple(itertools.islice(it_t, 100))
+                chunk = tuple(itertools.islice(it_t, chunk_size))
                 print(f"update_entries chunk number {i}\t\t-\t{datetime.datetime.now()}")
                 i += 1
                 if not chunk:
@@ -142,7 +142,7 @@ async def delete_entries(it):
         await pool.close()
 
 
-async def refresh_status(status, skip_recent_threshold=0):
+async def refresh_status(status, skip_recent_threshold=0, chunk_size=100):
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn:
@@ -151,7 +151,7 @@ async def refresh_status(status, skip_recent_threshold=0):
             print("Refreshing", status, len(old_status))
     finally:
         await pool.close()
-    await update_entries(old_cases, skip_recent_threshold=skip_recent_threshold)
+    await update_entries(old_cases, skip_recent_threshold=skip_recent_threshold, chunk_size=chunk_size)
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn2:
@@ -187,7 +187,7 @@ async def refresh_error():
             old_status = await get_all(conn=conn, table_name=error_table_name)
             old_cases = [row['case_number'] for row in old_status]
             print("Refreshing errors")
-        await update_entries(old_cases, skip_recent_threshold=0)
+        await update_entries(old_cases, skip_recent_threshold=0, chunk_size=100)
         async with pool.acquire() as conn:
             new_status = await get_all(conn=conn, table_name=error_table_name)
             print("Refreshing Errors - result", f"{len(old_status)} to {len(new_status)}")
@@ -271,7 +271,7 @@ async def smart_update_all(
         await smart_update_all_function(
             pool=pool, prefix=prefix, year_start=year_start, day_start=day_start,
             skip_recent_threshold=skip_recent_threshold,
-            chunk_size=chunk_size
+            chunk_size=chunk_size,
         )
 
         async with pool.acquire() as conn:

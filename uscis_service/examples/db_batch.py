@@ -28,7 +28,10 @@ def smart_update(argv):
 
 def refresh_status_function(argv):
     asyncio.get_event_loop().run_until_complete(refresh_status(
-        status=" ".join(argv[:-1]), skip_recent_threshold=int(argv[-1])))
+        status=" ".join(argv[:-2]),
+        skip_recent_threshold=int(argv[-2]),
+        chunk_size=int(argv[-1]),
+    ))
 
 
 def clear_table():
