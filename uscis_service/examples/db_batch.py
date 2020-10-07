@@ -3,7 +3,8 @@ import sys
 import time
 import datetime
 from gmail.gmail_functions import send
-from src.update_functions import refresh_error, delete_entries, smart_update_all, refresh_status, clear_uscis_table
+from src.update_functions import \
+    refresh_error, delete_entries, smart_update_all, refresh_status, clear_uscis_table, refresh_selected_status
 
 
 def refresh_error_function():
@@ -34,6 +35,13 @@ def refresh_status_function(argv):
     ))
 
 
+def refresh_selected_status_function(argv):
+    asyncio.get_event_loop().run_until_complete(refresh_selected_status(
+        filter_function=lambda x: 0 < x < int(argv[-2]),
+        skip_recent_threshold=int(argv[-1]),
+    ))
+
+
 def clear_table():
     asyncio.get_event_loop().run_until_complete(clear_uscis_table())
 
@@ -55,6 +63,8 @@ def main(argv, retry=0, main_init_time=None):
             refresh_error_function()
         elif function_name == "refresh_status":
             refresh_status_function(argv=argv[1:])
+        elif function_name == "refresh_selected_status":
+            refresh_selected_status_function(argv=argv[1:])
         elif function_name == "smart_update":
             smart_update(argv=argv[1:])
         elif function_name == "clear":
