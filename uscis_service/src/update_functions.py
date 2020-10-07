@@ -195,15 +195,11 @@ async def refresh_error():
         await pool.close()
 
 
-async def smart_update_all_function(pool, prefix="LIN", year_start=20, day_start=1, skip_recent_threshold=10):
+async def smart_update_all_function(
+        pool, prefix="LIN", year_start=20, day_start=1, skip_recent_threshold=10, chunk_size=100
+):
 
     async with aiohttp.ClientSession() as session:
-        if day_start == 0:
-            def format_receipt_number(year, day, index):
-                return f'{prefix}{year:02d}9{index:07d}'
-        else:
-            def format_receipt_number(year, day, index):
-                return f'{prefix}{year:02d}{day:03d}5{index:04d}'
 
         def current_format(index):
             return format_receipt_number(
@@ -220,34 +216,51 @@ async def smart_update_all_function(pool, prefix="LIN", year_start=20, day_start
                     skip_recent_threshold=skip_recent_threshold,
                 )
 
-        chunk_size = 100
+        async def inside_loop():
+            index_increment = 0
+            all_none = False
+            while not all_none:
+                print(f"smart update -\t"
+                      f"{current_format(index=index_start+index_increment)}\t"
+                      f"\t{datetime.datetime.now()}")
+                rep = await asyncio.gather(
+                    *map(update_function, [index_start + index_increment + i for i in range(chunk_size)])
+                )
+                all_none = all(s is None for s in rep)
+                index_increment += chunk_size
+
         index_start = 1
         year_increment = 0
         day_increment = 0
-        while await update_function(index=index_start) is not None:
+
+        if day_start == 0:
+            def format_receipt_number(year, day, index):
+                return f'{prefix}{year:02d}9{index:07d}'
+
             while await update_function(index=index_start) is not None:
-                index_increment = 0
-                all_none = False
-                while not all_none:
-                    print(f"smart update -\t"
-                          f"{current_format(index=index_start+index_increment)}\t"
-                          f"\t{datetime.datetime.now()}")
-                    rep = await asyncio.gather(
-                        *map(update_function, [index_start + index_increment + i for i in range(chunk_size)])
-                    )
-                    all_none = all(s is None for s in rep)
-                    index_increment += chunk_size
-                day_increment += 1
-            year_increment += 1
+                await inside_loop()
+                year_increment += 1
+        else:
+            def format_receipt_number(year, day, index):
+                return f'{prefix}{year:02d}{day:03d}5{index:04d}'
+
+            while await update_function(index=index_start) is not None:
+                while await update_function(index=index_start) is not None:
+                    await inside_loop()
+                    day_increment += 1
+                year_increment += 1
 
 
-async def smart_update_all(prefix="LIN", year_start=20, day_start=1, skip_recent_threshold=10):
+async def smart_update_all(
+        prefix="LIN", year_start=20, day_start=1, skip_recent_threshold=10, chunk_size=100,
+):
     """
     prefix: 3 letter-string, represents the center location
     year_start: 2 digit in representing the year - "20" for FY2019-2020 - FY starts on 1st Oct
     day_start: 1 to 326 (should be the number of business days - I don't know why it's so high) -> index of day in FY
                 0 -> another representation : LIN2090000001
     skip_recent_threshold: don't refresh if last refresh was more recent than x hours
+    chunk_size: size of chunk in the loop
     """
     pool = await connect_to_database(database=uscis_database)
     try:
@@ -257,7 +270,9 @@ async def smart_update_all(prefix="LIN", year_start=20, day_start=1, skip_recent
 
         await smart_update_all_function(
             pool=pool, prefix=prefix, year_start=year_start, day_start=day_start,
-            skip_recent_threshold=skip_recent_threshold)
+            skip_recent_threshold=skip_recent_threshold,
+            chunk_size=chunk_size
+        )
 
         async with pool.acquire() as conn:
             await read_db(conn=conn, table_name=uscis_table_name, len_only=True)

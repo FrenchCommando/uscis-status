@@ -104,6 +104,7 @@ https://citizenpath.com/uscis-receipt-number-explained/
     - `date_start`: `1` (actual index of day, 1 to something like 326 -> LIN2012350001 - 5 is the separator) 
         - or `0` (if not day number -> LIN 2090000001 - 9 is the separator)  
     - `skip_recent_threshold`: only refresh if current log is older than this number of hours
+    - 'chunk_size': '100' - szie of chunks in the loop
 
 ## Clear
 - `<function_name>` = `clear`

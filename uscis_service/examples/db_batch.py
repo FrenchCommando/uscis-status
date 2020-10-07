@@ -20,7 +20,8 @@ def smart_update(argv):
         prefix=argv[0],
         year_start=int(argv[1]),
         day_start=int(argv[2]),
-        skip_recent_threshold=int(argv[3])
+        skip_recent_threshold=int(argv[3]),
+        chunk_size=int(argv[4]),
     )
     asyncio.get_event_loop().run_until_complete(smart_update_all(**d))
 
