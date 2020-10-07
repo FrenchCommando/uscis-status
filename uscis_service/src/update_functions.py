@@ -234,6 +234,7 @@ async def smart_update_all_function(
                 return f'{prefix}{year:02d}9{index:07d}'
 
             index_start = 1
+            day_increment = 0
             year_increment = 0
             while await update_function(index=index_start) is not None:
                 await inside_loop()
