@@ -1,5 +1,4 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
-from examples.db_batch import refresh_error
 
 
 scheduler = BlockingScheduler()
@@ -16,6 +15,7 @@ def main():
 
     def some_other_job():
         print(i, "the other one")
+        from examples.db_batch import refresh_error
         refresh_error()
 
     scheduler.add_job(some_job, 'interval', minutes=1)
