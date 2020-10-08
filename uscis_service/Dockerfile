@@ -41,29 +41,27 @@ RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
 # install dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends netcat
-RUN apt-get install libffi-dev
 COPY --from=builder /usr/src/app/requirements.txt .
-RUN pip install --upgrade pip
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends netcat && \
+    apt-get install libffi-dev && \
+    pip install --upgrade pip
 ENV BUILD_DEPS gcc g++
-RUN apt-get update && apt-get install -y $BUILD_DEPS --no-install-recommends && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN pip install -r requirements.txt
-
-# copy project
-COPY . $APP_HOME
-
-# chown all the files to the app user
-RUN chown -R app:app $APP_HOME
+RUN apt-get update && \
+    apt-get install -y $BUILD_DEPS --no-install-recommends && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    pip install -r requirements.txt
 
 # add cron jobs
-RUN apt-get update && apt-get -y install cron
 COPY ./uscis-cron /etc/cron.d
-RUN chmod 0644 /etc/cron.d/uscis-cron
-RUN touch /var/log/cron.log
-RUN crontab /etc/cron.d/uscis-cron
-RUN chmod 744 /var/run/crond.pid
-CMD ["cron", "-f"]
+RUN apt-get update && \
+    apt-get -y install cron && \
+    chmod 0644 /etc/cron.d/uscis-cron && \
+    crontab /etc/cron.d/uscis-cron && \
+    touch /var/log/cron.log
 
-# change to the app user
+COPY . $APP_HOME
+RUN chown -R app:app $APP_HOME
 USER app
+
+CMD ["cron", "-f"]
