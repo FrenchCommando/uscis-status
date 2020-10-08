@@ -7,7 +7,6 @@ scheduler = BlockingScheduler()
 
 def main():
     i = 0
-    j = 100
 
     def some_job():
         global i
@@ -15,12 +14,9 @@ def main():
         print(i)
         i += 1
 
-    j = 0
-
     def some_other_job():
-        global j
-        print(j)
-        j += 1
+        print(i, "the other one")
+        refresh_error()
 
     scheduler.add_job(some_job, 'interval', minutes=1)
     scheduler.add_job(some_other_job, 'interval', minutes=1)
