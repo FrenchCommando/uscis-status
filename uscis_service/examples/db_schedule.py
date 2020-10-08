@@ -7,6 +7,7 @@ scheduler = BlockingScheduler()
 
 def main():
     i = 0
+    j = 100
 
     def some_job():
         global i
@@ -17,6 +18,7 @@ def main():
     j = 0
 
     def some_other_job():
+        global j
         print(j)
         j += 1
 
