@@ -52,15 +52,28 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     pip install -r requirements.txt
 
-# add cron jobs
-RUN apt-get update && apt-get -y install cron
-COPY ./uscis-cron /etc/cron.d
+# Add crontab file in the cron directory
+ADD uscis-cron /etc/cron.d/uscis-cron
+# Give execution rights on the cron job
 RUN chmod 0644 /etc/cron.d/uscis-cron
-RUN crontab -e /etc/cron.d/uscis-cron
+# Create the log file to be able to run tail
 RUN touch /var/log/cron.log
+#Install Cron
+RUN apt-get update
+RUN apt-get -y install cron
+# Run the command on container startup
+CMD cron && tail -f /var/log/cron.log
+
+## add cron jobs
+#RUN apt-get update && apt-get -y install cron
+#COPY ./uscis-cron /etc/cron.d
+#RUN chmod 0644 /etc/cron.d/uscis-cron
+#RUN crontab -e /etc/cron.d/uscis-cron
+#RUN touch /var/log/cron.log
+#CMD cron && tail -f /var/log/cron.log
+
 
 COPY . $APP_HOME
 RUN chown -R app:app $APP_HOME
 USER app
 
-CMD cron && tail -f /var/log/cron.log
