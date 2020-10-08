@@ -62,6 +62,7 @@ COPY ./uscis-cron /etc/cron.d
 RUN chmod 0644 /etc/cron.d/uscis-cron
 RUN touch /var/log/cron.log
 RUN crontab /etc/cron.d/uscis-cron
+RUN chmod 744 /var/run/crond.pid
 CMD ["cron", "-f"]
 
 # change to the app user
