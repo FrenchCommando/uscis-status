@@ -63,4 +63,4 @@ COPY . $APP_HOME
 RUN chown -R app:app $APP_HOME
 USER app
 
-CMD ["cron", "-f"]
+CMD cron && tail -f /var/log/cron.log
