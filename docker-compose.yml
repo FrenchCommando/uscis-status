@@ -12,6 +12,14 @@ services:
       - db
     environment:
       AM_I_IN_A_DOCKER_CONTAINER: 1
+  uscis_service_cron:
+    build:
+      context: ./uscis_service
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    environment:
+      AM_I_IN_A_DOCKER_CONTAINER: 1
   db:
     image: postgres:12-alpine
     volumes:
