@@ -56,9 +56,9 @@ COPY . $APP_HOME
 # add cron jobs
 COPY ./uscis-cron /etc/cron.d
 RUN apt-get update && \
-    apt-get -y install cron && \
-    chmod 0644 /etc/cron.d/uscis-cron && \
-    crontab /etc/cron.d/uscis-cron && \
+    apt-get -y install cron
+RUN chmod 0644 /etc/cron.d/uscis-cron
+RUN crontab /etc/cron.d/uscis-cron && \
     touch /var/log/cron.log
 
 RUN chown -R app:app $APP_HOME
