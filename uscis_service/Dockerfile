@@ -17,10 +17,9 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends gcc
 
 # lint
-RUN pip install --upgrade pip
-RUN pip install flake8
 COPY . /usr/src/app/
-RUN flake8 --ignore=E121,E501,F401,W605 .
+RUN pip install --upgrade pip && pip install flake8 && \
+    flake8 --ignore=E121,E501,F401,W605 .
 
 #########
 # FINAL #
@@ -62,7 +61,6 @@ RUN apt-get update && apt-get -y install cron
 COPY ./uscis-cron /etc/cron.d
 RUN chmod 0644 /etc/cron.d/uscis-cron
 RUN touch /var/log/cron.log
-RUN touch /var/log/cron-lin2.log
 RUN crontab /etc/cron.d/uscis-cron
 CMD ["cron", "-f"]
 
