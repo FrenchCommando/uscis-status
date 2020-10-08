@@ -14,8 +14,14 @@ def main():
         print(i)
         i += 1
 
+    j = 0
+
+    def some_other_job():
+        print(j)
+        j += 1
+
     scheduler.add_job(some_job, 'interval', minutes=1)
-    # scheduler.add_job(refresh_error, 'interval', minutes=1)
+    scheduler.add_job(some_other_job, 'interval', minutes=1)
     scheduler.start()
 
 
