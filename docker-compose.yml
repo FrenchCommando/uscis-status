@@ -12,11 +12,11 @@ services:
       - db
     environment:
       AM_I_IN_A_DOCKER_CONTAINER: 1
-  uscis_service_cron:
+  uscis_service_schedule:
     build:
       context: ./uscis_service
       dockerfile: Dockerfile
-    command: python -m examples.db_batch refresh_errors
+    command: python -m examples.db_schedule
     depends_on:
       - db
     environment:
