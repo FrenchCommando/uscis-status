@@ -56,7 +56,7 @@ RUN apt-get update && \
 RUN apt-get update && apt-get -y install cron
 COPY uscis-cron /etc/cron.d/uscis-cron
 RUN chmod 0744 /etc/cron.d/uscis-cron
-RUN crontab -e /etc/cron.d/uscis-cron
+RUN crontab /etc/cron.d/uscis-cron
 RUN touch /var/log/cron.log
 CMD cron && tail -f /var/log/cron.log
 
