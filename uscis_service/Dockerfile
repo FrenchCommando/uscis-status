@@ -52,17 +52,15 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     pip install -r requirements.txt
 
-COPY . $APP_HOME
-RUN chown -R app:app $APP_HOME
-
 # add cron jobs
+RUN apt-get update && apt-get -y install cron
 COPY ./uscis-cron /etc/cron.d
-RUN apt-get update && \
-    apt-get -y install cron
-RUN chmod 0644 /etc/cron.d/uscis-cron
-RUN crontab /etc/cron.d/uscis-cron && \
+RUN chmod 0644 /etc/cron.d/uscis-cron && \
+    crontab /etc/cron.d/uscis-cron && \
     touch /var/log/cron.log
 
+COPY . $APP_HOME
+RUN chown -R app:app $APP_HOME
 USER app
 
 CMD ["cron", "-f"]
