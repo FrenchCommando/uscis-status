@@ -5,13 +5,29 @@ from tornado.platform.asyncio import AnyThreadEventLoopPolicy
 asyncio.set_event_loop_policy(AnyThreadEventLoopPolicy())
 
 
-def some_other_job():
+def refresh_job():
     batch_main(["refresh_errors"])
+
+
+def case_status_job():
+    batch_main(["refresh_status", "CASE", "STATUS", "0", "10"])
+
+
+def smart_job():
+    batch_main(["smart_update", "20", "0", "18", "10"])
+
+
+def smart_date_job():
+    batch_main(["smart_update", "20", "1", "18", "10"])
 
 
 def main():
     scheduler = BlockingScheduler()
-    scheduler.add_job(some_other_job, 'interval', seconds=5)
+    scheduler.configure(job_defaults=dict(max_instances=5))
+    scheduler.add_job(refresh_job, 'interval', seconds=10)
+    scheduler.add_job(case_status_job, 'cron', hour=16)
+    scheduler.add_job(smart_job, 'cron', hour=0)
+    scheduler.add_job(smart_date_job, 'cron', hour=8)
     scheduler.start()
 
 
