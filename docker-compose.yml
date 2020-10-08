@@ -16,7 +16,7 @@ services:
     build:
       context: ./uscis_service
       dockerfile: Dockerfile
-    command: cron -f
+    command: echo "Hello World"
     depends_on:
       - db
     environment:
