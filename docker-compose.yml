@@ -16,7 +16,7 @@ services:
     build:
       context: ./uscis_service
       dockerfile: Dockerfile
-    command: echo "Hello World"
+    command: python -m examples.db_batch refresh_errors
     depends_on:
       - db
     environment:
