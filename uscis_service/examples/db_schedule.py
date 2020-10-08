@@ -1,28 +1,19 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
+from examples.db_batch import main as batch_main
 import asyncio
-from examples.db_batch import refresh_error
+from tornado.platform.asyncio import AnyThreadEventLoopPolicy
+asyncio.set_event_loop_policy(AnyThreadEventLoopPolicy())
 
 
-scheduler = BlockingScheduler()
+def some_other_job():
+    batch_main(["refresh_errors"])
 
 
 def main():
-    i = 0
-
-    def some_job():
-        global i
-        print("Decorated job")
-        print(i)
-        i += 1
-
-    def some_other_job():
-        print(i, "the other one")
-        asyncio.get_event_loop().run_until_complete(refresh_error())
-
-    scheduler.add_job(some_job, 'interval', minutes=1)
-    scheduler.add_job(some_other_job, 'interval', minutes=1)
+    scheduler = BlockingScheduler()
+    scheduler.add_job(some_other_job, 'interval', seconds=5)
     scheduler.start()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
