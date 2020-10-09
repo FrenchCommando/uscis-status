@@ -25,19 +25,19 @@ async def display_msg(content):
     i = 0
     d = dict()
     async for line in content:
-        if i == 598:
+        if i == 693:
             # print(line)  # appReceiptNum
             d["appReceiptNum"] = line.decode("utf-8").split("\"")[1]
-        elif i == 624:
+        elif i == 719:
             # print(line)  # Short Case Status
             d["ShortCaseStatus"] = line.decode("utf-8").strip()
-        elif i == 637:
+        elif i == 732:
             # print(line)  # Long Case Status with h1
             d["LongCaseStatus"] = line.decode("utf-8").strip().split("<h1>")[1].split("</h1>")[0]
-        elif i == 638:
+        elif i == 733:
             # print(line)  # Case Status Content p
             d["StatusContent"] = line.decode("utf-8").strip().split("<p>")[1].split("</p>")[0]
-        elif i == 673:  # [671, 672, 673]:
+        elif i == 768:  # [671, 672, 673]:
             # print(line)  # formErrorMessages
             error_message = line.decode("utf-8").strip()
             d["ErrorMessage"] = error_message != '</div>'
