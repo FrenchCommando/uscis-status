@@ -14,17 +14,17 @@ def case_status_job():
 
 
 def smart_job():
-    batch_main(["smart_update", "20", "0", "18", "10"])
+    batch_main(["smart_update", "LIN", "20", "0", "18", "10"])
 
 
 def smart_date_job():
-    batch_main(["smart_update", "20", "1", "18", "10"])
+    batch_main(["smart_update", "LIN", "20", "1", "18", "10"])
 
 
 def main():
     scheduler = BlockingScheduler()
     scheduler.configure(job_defaults=dict(max_instances=5))
-    scheduler.add_job(refresh_job, 'interval', hours=1)
+    scheduler.add_job(refresh_job, 'cron', hour='1-23/2', minute=30)
     scheduler.add_job(case_status_job, 'cron', hour=16)
     scheduler.add_job(smart_job, 'cron', hour=0)
     scheduler.add_job(smart_date_job, 'cron', hour=8)
