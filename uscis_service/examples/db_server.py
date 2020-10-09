@@ -5,7 +5,7 @@ from collections import defaultdict
 import datetime as dt
 from src.constants import port_number
 from src.db_analysis_functions import count_date_status_function, count_date_status_format, \
-    count_approval_history_function
+    count_approval_history_function, get_form_date
 from src.db_interaction import init_tables, \
     get_all_uscis, get_all_case_uscis, get_all_status_uscis, get_pool, get_all_errors
 from src.message_stuff import status_to_msg
@@ -59,7 +59,10 @@ async def handle_all(request):
     pool = request.app['pool']
     async with pool.acquire() as connection:
         rep = await get_all_uscis(conn=connection)
-        rep_text = "\n".join([str(len(rep)), "\n".join(str(u['case_number']) for u in rep)])
+        rep_text = "\n".join([str(len(rep)), "\n".join(
+            f"{u['case_number']}\t{u['current_status']}"
+            f"\t{get_form_date(current_status=u['current_status'], current_args=u['current_args'])}"
+            for u in rep)])
         return web.Response(text=rep_text)
 
 
