@@ -59,10 +59,18 @@ async def handle_all(request):
     pool = request.app['pool']
     async with pool.acquire() as connection:
         rep = await get_all_uscis(conn=connection)
-        rep_text = "\n".join([str(len(rep)), "\n".join(
-            f"{u['case_number']}\t{u['current_status']}"
-            f"\t{get_form_date(current_status=u['current_status'], current_args=u['current_args'])}"
-            for u in rep)])
+
+        def get_line(u):
+            case_value = u['case_number']
+            status_value = u['current_status']
+            args_value = u['current_args']
+            form_value, date_value = get_form_date(
+                current_status=status_value, current_args=args_value
+            )
+            date_str = date_value.strftime("%Y-%m-%d") if date_value else date_value
+            return f"{case_value}\t{status_value}\t{form_value}\t{date_str}"
+
+        rep_text = "\n".join([str(len(rep)), "\n".join(get_line(u=u) for u in rep)])
         return web.Response(text=rep_text)
 
 
