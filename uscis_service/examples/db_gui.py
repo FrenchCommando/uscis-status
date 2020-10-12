@@ -165,4 +165,4 @@ def update_x_timeseries(
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False, port=port_number_dash)
+    app.run_server(debug=False, port=port_number_dash, host="0.0.0.0")
