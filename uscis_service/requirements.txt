@@ -11,3 +11,4 @@ html5lib
 apscheduler
 tornado
 dash
+pandas
