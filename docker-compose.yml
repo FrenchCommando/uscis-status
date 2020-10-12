@@ -47,8 +47,8 @@ services:
   nginx:
     build: ./nginx
     ports:
-      - 1337:8080
-      - 1338:8081
+      - 1337:1337
+      - 1338:1338
     depends_on:
       - db
       - uscis_service
