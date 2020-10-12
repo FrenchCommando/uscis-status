@@ -4,14 +4,13 @@ import dash_html_components as html
 import pandas as pd
 import plotly.express as px
 import requests
-from src.constants import port_number, port_number_dash
+from src.constants import port_number, port_number_dash, host_uscis_service
 
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+app = dash.Dash(__name__)
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-r = requests.get(f'http://uscis_service:{port_number}/all')
+r = requests.get(f'http://{host_uscis_service}:{port_number}/all')
 l_text = [x.split("\t") for x in r.text.split("\n")]
 print(f"Number of items:\t{l_text[0]}")
 print(f"Number of lines:\t{len(l_text[1:])}")
