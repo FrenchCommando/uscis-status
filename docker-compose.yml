@@ -48,8 +48,10 @@ services:
     build: ./nginx
     ports:
       - 1337:80
+      - 1338:8050
     depends_on:
       - uscis_service
+      - uscis_service_dash
 
 volumes:
   postgres_data:
