@@ -608,6 +608,14 @@ status_to_msg = {
         "Receipt Number {receipt_number}. USCIS has begun working on your case again. "
         "We will send you a decision or notify you if we need something from you. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Resubmitted Fee Was Not Accepted":
+        "On {date}, we did not accept your filing fee resubmission for your {form_long_name}, "
+        "Receipt Number {receipt_number}. "
+        "We mailed you a notice explaining why we didn.t accept your fee. "
+        "Please follow the instructions in the notice. "
+        "If you do not receive your notice by {notice_deadline}, "
+        "please go to www.uscis.gov/e-request to request a copy of the notice. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Revocation Notice Was Sent":
         "On {date}, we revoked the approval of your case, Receipt Number {receipt_number}, "
         "and mailed you a revocation notice. It explains the reasons for our action. "
