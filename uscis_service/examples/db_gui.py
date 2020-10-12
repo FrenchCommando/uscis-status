@@ -4,13 +4,14 @@ import dash_html_components as html
 import pandas as pd
 import plotly.express as px
 import requests
+from src.constants import port_number, port_number_dash
 
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-r = requests.get('http://uscis_service:5000/all')
+r = requests.get(f'http://uscis_service:{port_number}/all')
 l_text = [x.split("\t") for x in r.text.split("\n")]
 print(f"Number of items:\t{l_text[0]}")
 print(f"Number of lines:\t{len(l_text[1:])}")
@@ -165,4 +166,4 @@ def update_x_timeseries(
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8050)
+    app.run_server(debug=False, port=port_number_dash)

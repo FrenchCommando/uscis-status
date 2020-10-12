@@ -11,3 +11,4 @@ host = "db" if IS_DOCKER else "localhost"
 pg_port_number = 5432  # port of pg service
 
 port_number = 5000  # port to host server
+port_number_dash = 8050  # port to host server
