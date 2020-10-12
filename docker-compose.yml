@@ -12,6 +12,18 @@ services:
       - db
     environment:
       AM_I_IN_A_DOCKER_CONTAINER: 1
+  uscis_service_dash:
+    build:
+      context: ./uscis_service
+      dockerfile: Dockerfile
+    command: python -m examples.db_gui
+    expose:
+      - 8050
+    depends_on:
+      - db
+      - uscis_service
+    environment:
+      AM_I_IN_A_DOCKER_CONTAINER: 1
   uscis_service_schedule:
     build:
       context: ./uscis_service
