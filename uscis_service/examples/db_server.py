@@ -104,12 +104,13 @@ async def handle_main(request):
             f"Size of Output Text:\t{sys.getsizeof(text)}\n" \
             f"Head of message:\t{text[:1000]}\n" \
             f"Tail of message:\t{text[-1000:]}"
-        print(size_text)
 
         text.append(f"\n{size_text}")
 
+        full_text = "\n".join(text)
+        if len(full_text) < 1e7:
+            return web.Response(text=full_text)
         return web.Response(text="\n".join(["I'm a very short text", size_text]))
-        # return web.Response(text="\n".join(text))
 
 
 async def init_app():
