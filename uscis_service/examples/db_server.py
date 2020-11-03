@@ -1,6 +1,5 @@
 import aiohttp
 import asyncio
-import gc
 import sys
 from aiohttp import web
 from collections import defaultdict
@@ -79,11 +78,7 @@ async def handle_all(request):
 async def handle_main(request):
     pool = request.app['pool']
     async with pool.acquire() as connection:
-        print("Pre-Pull all uscis data")
         rep = await get_all_uscis(conn=connection)
-
-        size_rep = f"Pre - Size of Pulled Data:\t{sys.getsizeof(rep)}\n"
-        print(size_rep)
 
         text = [f"Number of entries {len(rep)}", ""]
 
@@ -106,11 +101,13 @@ async def handle_main(request):
 
         size_text = \
             f"Size of Pulled Data:\t{sys.getsizeof(rep)}\n" \
-            f"Size of Output Text;\t{sys.getsizeof(text)}"
+            f"Size of Output Text:\t{sys.getsizeof(text)}\n" \
+            f"Head of message:\t{text[:1000]}\n" \
+            f"Tail of message:\t{text[-1000:]}"
         print(size_text)
 
         text.append(f"\n{size_text}")
-        gc.collect()
+
         return web.Response(text="\n".join(["I'm a very short text", size_text]))
         # return web.Response(text="\n".join(text))
 
