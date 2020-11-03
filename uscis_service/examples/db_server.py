@@ -80,6 +80,10 @@ async def handle_main(request):
     pool = request.app['pool']
     async with pool.acquire() as connection:
         rep = await get_all_uscis(conn=connection)
+
+        size_rep = f"Size of Pulled Data:\t{sys.getsizeof(rep)}\n"
+        print(size_rep)
+
         text = [f"Number of entries {len(rep)}", ""]
 
         status_number = defaultdict(int)
@@ -103,6 +107,7 @@ async def handle_main(request):
             f"Size of Pulled Data:\t{sys.getsizeof(rep)}\n" \
             f"Size of Output Text;\t{sys.getsizeof(text)}"
         print(size_text)
+
         text.append(f"\n{size_text}")
         gc.collect()
         return web.Response(text="\n".join(text))
