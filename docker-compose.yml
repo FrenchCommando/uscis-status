@@ -31,6 +31,7 @@ services:
     command: python -m examples.db_schedule
     depends_on:
       - db
+      - uscis_service
     environment:
       AM_I_IN_A_DOCKER_CONTAINER: 1
   db:
@@ -52,6 +53,7 @@ services:
     depends_on:
       - db
       - uscis_service
+      - uscis_service_schedule
       - uscis_service_dash
 
 volumes:
