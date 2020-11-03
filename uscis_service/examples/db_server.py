@@ -1,5 +1,6 @@
 import aiohttp
 import asyncio
+import sys
 from aiohttp import web
 from collections import defaultdict
 import datetime as dt
@@ -96,6 +97,12 @@ async def handle_main(request):
         text.append("")
         text.append(str(len(errors)))
         text.append("")
+
+        size_text = \
+            f"Size of Pulled Data:\t{sys.getsizeof(rep)}\n" \
+            f"Size of Output Text;\t{sys.getsizeof(text)}"
+        print(size_text)
+        text.append(f"\n{size_text}")
         return web.Response(text="\n".join(text))
 
 
