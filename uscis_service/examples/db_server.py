@@ -79,9 +79,10 @@ async def handle_all(request):
 async def handle_main(request):
     pool = request.app['pool']
     async with pool.acquire() as connection:
+        print("Pre-Pull all uscis data")
         rep = await get_all_uscis(conn=connection)
 
-        size_rep = f"Size of Pulled Data:\t{sys.getsizeof(rep)}\n"
+        size_rep = f"Pre - Size of Pulled Data:\t{sys.getsizeof(rep)}\n"
         print(size_rep)
 
         text = [f"Number of entries {len(rep)}", ""]
