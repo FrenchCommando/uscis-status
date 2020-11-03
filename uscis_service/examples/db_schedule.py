@@ -25,7 +25,7 @@ def main():
     scheduler = BlockingScheduler()
     scheduler.configure(job_defaults=dict(max_instances=1, coalesce=True))
     # scheduler.add_job(refresh_job, 'interval', minutes=1)
-    scheduler.add_job(refresh_job, 'cron', hour='1-23/6', minute=30)
+    scheduler.add_job(refresh_job, 'cron', day_of_week=1, hour=4, minute=30)
     scheduler.add_job(case_status_job, 'cron', day_of_week=1, hour=16)
     scheduler.add_job(smart_job, 'cron', day_of_week=3, hour=0)
     scheduler.add_job(smart_date_job, 'cron', day_of_week=5, hour=8)
