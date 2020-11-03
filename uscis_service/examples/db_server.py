@@ -1,5 +1,6 @@
 import aiohttp
 import asyncio
+import gc
 import sys
 from aiohttp import web
 from collections import defaultdict
@@ -103,6 +104,7 @@ async def handle_main(request):
             f"Size of Output Text;\t{sys.getsizeof(text)}"
         print(size_text)
         text.append(f"\n{size_text}")
+        gc.collect()
         return web.Response(text="\n".join(text))
 
 
