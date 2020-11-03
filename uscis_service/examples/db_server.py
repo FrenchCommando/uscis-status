@@ -111,7 +111,8 @@ async def handle_main(request):
 
         text.append(f"\n{size_text}")
         gc.collect()
-        return web.Response(text="\n".join(text))
+        return web.Response(text="I'm a very short text")
+        # return web.Response(text="\n".join(text))
 
 
 async def init_app():
