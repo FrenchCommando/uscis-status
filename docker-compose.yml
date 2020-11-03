@@ -35,7 +35,7 @@ services:
     environment:
       AM_I_IN_A_DOCKER_CONTAINER: 1
   db:
-    image: postgres:13-alpine
+    image: postgres:12-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     restart: always
