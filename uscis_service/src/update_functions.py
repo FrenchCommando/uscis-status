@@ -158,26 +158,35 @@ async def refresh_status(status, skip_recent_threshold=0, chunk_size=100):
             new_status = await get_all_status(conn=conn2, table_name=uscis_table_name, status=status)
             conclusion = "Unchanged" if len(old_status) == len(new_status) \
                 else f"Reduced by {len(old_status) - len(new_status)}"
-            print("Refreshing Results", status, f"{len(old_status)} to {len(new_status)}\t---\t{conclusion}")
+            result_str = "Refreshing Results", status, f"{len(old_status)} to {len(new_status)}\t---\t{conclusion}"
+            print(result_str)
+            return "\t".join(result_str)
     finally:
         await pool.close()
 
 
 async def refresh_selected_status(filter_function=lambda x: x < 100, skip_recent_threshold=0):
     pool = await connect_to_database(database=uscis_database)
-    async with pool.acquire() as connection:
-        rep = await get_all(conn=connection, table_name=uscis_table_name, ignore_null=True)
-        print(f"Number of entries {len(rep)}")
+    try:
+        async with pool.acquire() as connection:
+            rep = await get_all(conn=connection, table_name=uscis_table_name, ignore_null=True)
+            print(f"Number of entries {len(rep)}")
 
-        status_number = {}
-        for status in status_to_msg:
-            rep_status = await get_all_status(conn=connection, status=status, table_name=uscis_table_name)
-            status_number[status] = len(rep_status)
+            status_number = {}
+            for status in status_to_msg:
+                rep_status = await get_all_status(conn=connection, status=status, table_name=uscis_table_name)
+                status_number[status] = len(rep_status)
 
-        for status, length in sorted(status_number.items(), key=lambda k: k[1], reverse=True):
-            if length and filter_function(length):
-                await refresh_status(status=status, skip_recent_threshold=skip_recent_threshold)
-                print()
+            rep_list = []
+            for status, length in sorted(status_number.items(), key=lambda k: k[1], reverse=True):
+                if length and filter_function(length):
+                    status_result = await refresh_status(
+                        status=status, skip_recent_threshold=skip_recent_threshold)
+                    rep_list.append(status_result)
+                    print()
+            return "\n".join(rep_list)
+    finally:
+        await pool.close()
 
 
 async def refresh_error():
@@ -282,6 +291,8 @@ async def smart_update_all(
         async with pool.acquire() as conn:
             await read_db(conn=conn, table_name=uscis_table_name, len_only=True)
             await read_db(conn=conn, table_name=error_table_name)
+
+        return "Smart Update Finished"
     finally:
         await pool.close()
 
