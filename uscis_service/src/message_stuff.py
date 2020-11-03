@@ -424,8 +424,12 @@ status_to_msg = {
         "We are processing your case and will send you a notice of action with our final decision. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Expedite Request Denied":
-        "On {date}, we denied your request for expedite processing of your {form_long_name}, "
-        "Receipt Number {receipt_number}. You did not provide evidence of an extreme emergent need. "
+        "On {date}, we denied your request for expedited processing of your {form_long_name}, "
+        "Receipt Number {receipt_number}. We do not believe, based on a review of your request, "
+        "that your case meets one or more of the expedite criteria and otherwise merits expedited processing. "
+        "We review all expedite requests on a case-by-case basis, and we grant them at the discretion of the director. "
+        "Information regarding the USCIS expedite policy, including the expedite criteria, "
+        "is available at www.uscis.gov/forms/expedite-criteria. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Expedite Request Received":
         "On {date}, we received your request for expedited processing on your {form_long_name}, "
