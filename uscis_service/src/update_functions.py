@@ -190,7 +190,9 @@ async def refresh_error():
         await update_entries(old_cases, skip_recent_threshold=0, chunk_size=100)
         async with pool.acquire() as conn:
             new_status = await get_all(conn=conn, table_name=error_table_name)
-            print("Refreshing Errors - result", f"{len(old_status)} to {len(new_status)}")
+            result_string = "Refreshing Errors - result", f"{len(old_status)} to {len(new_status)}"
+            print(result_string)
+            return result_string
     finally:
         await pool.close()
 

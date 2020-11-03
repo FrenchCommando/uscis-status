@@ -8,12 +8,12 @@ from src.update_functions import \
 
 
 def refresh_error_function():
-    asyncio.get_event_loop().run_until_complete(refresh_error())
+    return asyncio.get_event_loop().run_until_complete(refresh_error())
 
 
 def delete_entries_function(argv):
     clean_args = [argv] if isinstance(argv, str) else argv
-    asyncio.get_event_loop().run_until_complete(delete_entries(clean_args))
+    return asyncio.get_event_loop().run_until_complete(delete_entries(clean_args))
 
 
 def smart_update(argv):
@@ -24,11 +24,11 @@ def smart_update(argv):
         skip_recent_threshold=int(argv[3]),
         chunk_size=int(argv[4]),
     )
-    asyncio.get_event_loop().run_until_complete(smart_update_all(**d))
+    return asyncio.get_event_loop().run_until_complete(smart_update_all(**d))
 
 
 def refresh_status_function(argv):
-    asyncio.get_event_loop().run_until_complete(refresh_status(
+    return asyncio.get_event_loop().run_until_complete(refresh_status(
         status=" ".join(argv[:-2]),
         skip_recent_threshold=int(argv[-2]),
         chunk_size=int(argv[-1]),
@@ -36,14 +36,14 @@ def refresh_status_function(argv):
 
 
 def refresh_selected_status_function(argv):
-    asyncio.get_event_loop().run_until_complete(refresh_selected_status(
+    return asyncio.get_event_loop().run_until_complete(refresh_selected_status(
         filter_function=lambda x: 0 < x < int(argv[-2]),
         skip_recent_threshold=int(argv[-1]),
     ))
 
 
 def clear_table():
-    asyncio.get_event_loop().run_until_complete(clear_uscis_table())
+    return asyncio.get_event_loop().run_until_complete(clear_uscis_table())
 
 
 def main(argv, retry=0, main_init_time=None, error_msg=None):
@@ -58,18 +58,19 @@ def main(argv, retry=0, main_init_time=None, error_msg=None):
          )
     try:
         function_name = argv[0]
+        rep = None
         if function_name == "delete":
-            delete_entries_function(argv=argv[1:])
+            rep = delete_entries_function(argv=argv[1:])
         elif function_name == "refresh_errors":
-            refresh_error_function()
+            rep = refresh_error_function()
         elif function_name == "refresh_status":
-            refresh_status_function(argv=argv[1:])
+            rep = refresh_status_function(argv=argv[1:])
         elif function_name == "refresh_selected_status":
-            refresh_selected_status_function(argv=argv[1:])
+            rep = refresh_selected_status_function(argv=argv[1:])
         elif function_name == "smart_update":
-            smart_update(argv=argv[1:])
+            rep = smart_update(argv=argv[1:])
         elif function_name == "clear":
-            clear_table()
+            rep = clear_table()
         else:
             print(f"Function name did not match:\t{function_name}")
         end_time = datetime.datetime.now()
@@ -80,6 +81,7 @@ def main(argv, retry=0, main_init_time=None, error_msg=None):
                   f"end time:\t{end_time}\n"
                   f"elapsed:\t{end_time - init_time}\n"
                   f"main elapsed:\t{end_time - main_init_time_val}\n"
+                  f"return value:\t{rep}"
              )
     except BaseException as e:
         if retry > 3:
