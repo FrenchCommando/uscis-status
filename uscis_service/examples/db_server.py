@@ -107,9 +107,8 @@ async def handle_main(request):
 
         text.append(f"\n{size_text}")
 
-        full_text = "\n".join(text)
-        if len(full_text) < 1e7:
-            return web.Response(text=full_text)
+        if len(text) < 1e5:
+            return web.Response(text="\n".join(text))
         return web.Response(text="\n".join(["I'm a very short text", size_text]))
 
 
