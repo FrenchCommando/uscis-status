@@ -4,7 +4,7 @@ import datetime
 import itertools
 from src.constants import uscis_database, uscis_table_name, error_table_name
 from src.db_stuff import connect_to_database, build_table, insert_entry, \
-    get_all, get_all_case, update_case, delete_case, get_all_status, read_db, drop_table
+    get_all, get_all_case, update_case, delete_case, get_all_status, read_db, drop_table, truncate_table
 from src.message_stuff import string_to_args, get_arguments_from_string, rebuild_string_from_template, \
     args_to_string, remove_tags, check_title_in_status, get_template, status_to_msg
 from src.parse_site import check as uscis_check
@@ -314,5 +314,14 @@ async def clear_uscis_table():
             await drop_table(conn=conn, table_name=uscis_table_name)
             await build_table(conn=conn, table_name=uscis_table_name)
             await build_table(conn=conn, table_name=error_table_name)
+    finally:
+        await pool.close()
+
+
+async def clear_error_table():
+    pool = await connect_to_database(database=uscis_database)
+    try:
+        async with pool.acquire() as conn:
+            await truncate_table(conn=conn, table_name=error_table_name)
     finally:
         await pool.close()

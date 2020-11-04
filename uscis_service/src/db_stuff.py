@@ -31,6 +31,10 @@ async def drop_table(conn: asyncpg.Connection, table_name: str):
     await conn.execute(f'DROP TABLE IF EXISTS {table_name};')
 
 
+async def truncate_table(conn: asyncpg.Connection, table_name: str):
+    await conn.execute(f'TRUNCATE {table_name};')
+
+
 async def insert_entry(conn: asyncpg.Connection, table_name: str, **kwargs):
     await conn.execute(f'''
         INSERT INTO {table_name}({",".join(kwargs.keys())})
