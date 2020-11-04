@@ -12,7 +12,10 @@ from src.parse_site import check as uscis_check
 
 async def update_case_internal(conn, url_session, receipt_number, skip_recent_threshold=10):
     # print(f"update_case_internal - Updating {receipt_number}\t")
+    print("Ready ?")
+    print(receipt_number)
     rep = await get_all_case(conn=conn, table_name=uscis_table_name, case_number=receipt_number)
+    print(f"Tick get_all_case:\t{rep}\t{datetime.datetime.now()}")
     if rep and skip_recent_threshold:
         current_status = rep[0]['current_status']
         current_timestamp = rep[0]['last_updated']
@@ -30,8 +33,10 @@ async def update_case_internal(conn, url_session, receipt_number, skip_recent_th
                 msg = f"\t{current_status} - Request not sent - {receipt_number}"
                 return msg
     # print(f"\t\tupdate_case_internal - Requesting {receipt_number}\t")
+    print(f"Tick pre uscis_check\t{datetime.datetime.now()}")
     timestamp, title, message = await uscis_check(url_session=url_session, receipt_number=receipt_number)
     # print(f"\t\t\tupdate_case_internal - Result {receipt_number}\t{title} - {message}")
+    print(f"Tick post uscis_check:\t{timestamp}{title}{message}\t{datetime.datetime.now()}")
 
     async def handle_error(error=None):
         await insert_entry(conn, error_table_name, title=title, case_number=receipt_number, message=message)
@@ -42,6 +47,8 @@ async def update_case_internal(conn, url_session, receipt_number, skip_recent_th
         return "Something went Wrong"
 
     try:
+        print(f"Tick pre multiple checks\t{datetime.datetime.now()}")
+
         if not check_title_in_status(title=title):
             raise AttributeError("Title not in Status")
         current_args = args_to_string(d=get_arguments_from_string(s=message, status=title))
@@ -85,7 +92,9 @@ async def update_case_internal(conn, url_session, receipt_number, skip_recent_th
                               current_args=current_args,
                               history=new_history_joined
                               )
+        print(f"Tick post multiple checks\t{datetime.datetime.now()}")
         await delete_case(conn=conn, table_name=error_table_name, case_number=receipt_number)
+        print(f"Tick post delete case\t{datetime.datetime.now()}")
         return title
     except BaseException as e:
         return await handle_error(error=e)
