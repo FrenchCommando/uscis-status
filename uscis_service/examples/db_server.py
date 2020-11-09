@@ -89,7 +89,7 @@ async def handle_main(request):
 
         for status, length in sorted(status_number.items(), key=lambda k: k[1], reverse=True):
             if length:
-                text.append(f"Number of entries for {status}: {length}")
+                text.append(f"Number of entries :\t{length:7d}\t\t{status}")
 
         text.append("")
         errors = await get_all_errors(conn=connection)
@@ -102,8 +102,8 @@ async def handle_main(request):
         size_text = \
             f"Size of Pulled Data:\t{sys.getsizeof(rep)}\n" \
             f"Size of Output Text:\t{sys.getsizeof(text)}\n" \
-            f"Head of message:\t{text[:1000]}\n" \
-            f"Tail of message:\t{text[-1000:]}"
+            f"Head of message:\t{text[:10]}\n" \
+            f"Tail of message:\t{text[-10:]}"
 
         text.append(f"\n{size_text}")
 
