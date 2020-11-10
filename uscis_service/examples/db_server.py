@@ -2,7 +2,7 @@ import aiohttp
 import asyncio
 import sys
 from aiohttp import web
-from collections import defaultdict
+from collections import defaultdict, Counter
 import datetime as dt
 from src.constants import port_number
 from src.db_analysis_functions import count_date_status_function, count_date_status_format, \
@@ -75,19 +75,19 @@ async def handle_all(request):
         return web.Response(text=rep_text)
 
 
-async def handle_main(request):
+async def response_counter(request, line_to_item):
     pool = request.app['pool']
     async with pool.acquire() as connection:
         rep = await get_all_uscis(conn=connection)
 
         text = [f"Number of entries {len(rep)}", ""]
 
-        status_number = defaultdict(int)
+        item_number = Counter()
         for line in rep:
-            current_status = line["current_status"]
-            status_number[current_status] += 1
+            item = line_to_item(line=line)
+            item_number[item] += 1
 
-        for status, length in sorted(status_number.items(), key=lambda k: k[1], reverse=True):
+        for status, length in item_number.most_common():
             if length:
                 text.append(f"Number of entries :\t{length:7d}\t\t{status}")
 
@@ -112,6 +112,21 @@ async def handle_main(request):
         return web.Response(text="\n".join(["I'm a very short text", size_text]))
 
 
+async def handle_form(request):
+    def get_form(line):
+        status_value = line['current_status']
+        args_value = line['current_args']
+        form_value, date_value = get_form_date(
+            current_status=status_value, current_args=args_value
+        )
+        return form_value
+    return await response_counter(request=request, line_to_item=get_form)
+
+
+async def handle_main(request):
+    return await response_counter(request=request, line_to_item=lambda line: line["current_status"])
+
+
 async def init_app():
     """Initialize the application server."""
     app_inst = web.Application()
@@ -125,6 +140,7 @@ async def init_app():
     app_inst.router.add_route('GET', '/analysis', handle_analysis)
     app_inst.router.add_route('GET', '/approval_analysis/{form}/{date}', handle_approval_analysis)
     app_inst.router.add_route('GET', '/all', handle_all)
+    app_inst.router.add_route('GET', '/form', handle_form)
     app_inst.router.add_route('GET', '/', handle_main)
     return app_inst
 
