@@ -71,7 +71,7 @@ async def handle_all(request):
             date_str = date_value.strftime("%Y-%m-%d") if date_value else date_value
             return f"{case_value}\t{status_value}\t{form_value}\t{date_str}"
 
-        rep_text = "\n".join([str(len(rep)), "\n".join(get_line(u=u) for u in rep)])
+        rep_text = "\n".join([str(len(rep)), "\n".join(get_line(u=u) for u in rep[:100])])
         return web.Response(text=rep_text)
 
 
