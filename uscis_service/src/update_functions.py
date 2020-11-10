@@ -209,9 +209,11 @@ async def refresh_error():
         await update_entries(old_cases, skip_recent_threshold=0, chunk_size=100)
         async with pool.acquire() as conn:
             new_status = await get_all(conn=conn, table_name=error_table_name)
-            result_string = "Refreshing Errors - result", f"{len(old_status)} to {len(new_status)}"
+            result_string = f"Refreshing Errors - result {len(old_status)} to {len(new_status)}"
             print(result_string)
-            return result_string
+            if len(new_status) == 0:
+                clear_rep = await clear_error_table()
+            return f"{result_string}\n{clear_rep}"
     finally:
         await pool.close()
 
@@ -323,5 +325,7 @@ async def clear_error_table():
     try:
         async with pool.acquire() as conn:
             await truncate_table(conn=conn, table_name=error_table_name)
+            return "Error Table Cleared"
+
     finally:
         await pool.close()

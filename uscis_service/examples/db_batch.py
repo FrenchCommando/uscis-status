@@ -5,7 +5,7 @@ import datetime
 from gmail.gmail_functions import send
 from src.update_functions import \
     refresh_error, delete_entries, smart_update_all, refresh_status, \
-    clear_uscis_table, refresh_selected_status, clear_error_table
+    refresh_selected_status
 
 
 def refresh_error_function():
@@ -43,14 +43,6 @@ def refresh_selected_status_function(argv):
     ))
 
 
-def clear_table():  # this is too dangerous to be exposed like that
-    return asyncio.get_event_loop().run_until_complete(clear_uscis_table())
-
-
-def clear_uscis_error_table():
-    return asyncio.get_event_loop().run_until_complete(clear_error_table())
-
-
 def main(argv, retry=0, main_init_time=None, error_msg=None):
     init_time = datetime.datetime.now()
     main_init_time_val = init_time if main_init_time is None else main_init_time
@@ -74,8 +66,6 @@ def main(argv, retry=0, main_init_time=None, error_msg=None):
             rep = refresh_selected_status_function(argv=argv[1:])
         elif function_name == "smart_update":
             rep = smart_update(argv=argv[1:])
-        elif function_name == "clear_errors":
-            rep = clear_uscis_error_table()
         else:
             print(f"Function name did not match:\t{function_name}")
         end_time = datetime.datetime.now()
