@@ -16,7 +16,7 @@ status_to_msg = {
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Amended Notice Was Mailed":
         "On {date}, we sent you an amended notice describing how we will process your {form_long_name}, "
-        "Receipt Number {receipt_number}.¿ It is being processed at our National Benefits Center location. "
+        "Receipt Number {receipt_number}.¿ It is being processed at our {location_name} location. "
         "Please follow any instructions in the notice. "
         "If you do not receive your amended notice by {notice_deadline}, "
         "please go to www.uscis.gov/e-request to request a copy of the notice. "
@@ -611,7 +611,7 @@ status_to_msg = {
         "If you move, contact the premium-processing unit directly to update your address.",
     "Request To Reschedule My Appointment Was Received":
         "On {date}, we received your request to reschedule your appointment for {form_long_name}, "
-        "Receipt Number {receipt_number}. Our National Benefits Center office is reviewing your request. "
+        "Receipt Number {receipt_number}. Our {location_name} office is reviewing your request. "
         "We will inform you if your appointment is rescheduled and send any notices to the address you gave us. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Response To USCIS' Request For Evidence Was Received":
