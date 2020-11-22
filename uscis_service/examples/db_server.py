@@ -128,16 +128,25 @@ async def handle_main(request):
     return await response_counter(request=request, line_to_item=lambda line: line["current_status"])
 
 
-app_inst = web.Application()
-app_inst['pool'] = await get_pool()
+async def init_app():
+    """Initialize the application server."""
+    app_inst = web.Application()
+    app_inst['pool'] = await get_pool()
 
-async with app_inst['pool'].acquire() as connection_pool:
-    await init_tables(conn=connection_pool)
+    async with app_inst['pool'].acquire() as connection:
+        await init_tables(conn=connection)
 
-app_inst.router.add_route('GET', '/case/{receipt_number}', handle_case)
-app_inst.router.add_route('GET', '/status/{status}', handle_status)
-app_inst.router.add_route('GET', '/analysis', handle_analysis)
-app_inst.router.add_route('GET', '/approval_analysis/{form}/{date}', handle_approval_analysis)
-app_inst.router.add_route('GET', '/all', handle_all)
-app_inst.router.add_route('GET', '/form', handle_form)
-app_inst.router.add_route('GET', '/', handle_main)
+    app_inst.router.add_route('GET', '/case/{receipt_number}', handle_case)
+    app_inst.router.add_route('GET', '/status/{status}', handle_status)
+    app_inst.router.add_route('GET', '/analysis', handle_analysis)
+    app_inst.router.add_route('GET', '/approval_analysis/{form}/{date}', handle_approval_analysis)
+    app_inst.router.add_route('GET', '/all', handle_all)
+    app_inst.router.add_route('GET', '/form', handle_form)
+    app_inst.router.add_route('GET', '/', handle_main)
+    return app_inst
+
+
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    app = loop.run_until_complete(init_app())
+    web.run_app(app, port=port_number)
