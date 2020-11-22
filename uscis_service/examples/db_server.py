@@ -147,6 +147,7 @@ async def init_app():
 
 
 if __name__ == "__main__":
+    from src.constants import port_number
     loop = asyncio.get_event_loop()
     app = loop.run_until_complete(init_app())
     web.run_app(app, port=port_number)
