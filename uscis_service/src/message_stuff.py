@@ -405,6 +405,13 @@ status_to_msg = {
         "If you do not receive your document by {notice_deadline}, "
         "please go to www.uscis.gov/e-request to request the document be sent to you. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Document Was Returned To USCIS":
+        "On {date}, the Post Office returned your document to us. "
+        "We will hold your document for 180 days or until {hold_deadline}. "
+        "Please go to www.uscis.gov/e-request to request that we resend the document to you. "
+        "If you do not submit an online request by {notice_deadline}, we will destroy your document "
+        "and you will need to file a new {long_form_name}, with fee. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Duplicate Notice Was Mailed":
         "On {date}, we sent you a duplicate notice about a decision on your {form_long_name}, "
         "Receipt Number {receipt_number}, or describing how we will process the case if it is still pending. "
