@@ -21,6 +21,8 @@ available_status = df["StatusName"].unique()
 available_form = df["FormName"].unique()
 pre_index_list = sorted(df["PreIndex"].unique())
 
+print("pre-init passed")
+
 
 def init_dash_app():
     app = dash.Dash(__name__)
@@ -163,5 +165,5 @@ def init_dash_app():
 
 
 if __name__ == '__main__':
-    app = init_dash_app()
-    app.run_server(debug=False, port=port_number_dash, host="0.0.0.0")
+    my_app = init_dash_app()
+    my_app.run_server(debug=False, port=port_number_dash, host="0.0.0.0")
