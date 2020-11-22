@@ -213,7 +213,8 @@ async def refresh_error():
             print(result_string)
             if len(new_status) == 0:
                 clear_rep = await clear_error_table()
-            return f"{result_string}\n{clear_rep}"
+                return f"{result_string}\n{clear_rep}"
+            return f"{result_string}"
     finally:
         await pool.close()
 
