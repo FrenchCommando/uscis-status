@@ -139,11 +139,14 @@ def update_y_timeseries(
         xaxis_column_name,
         axis_type
 ):
-    y_selection = hoverData['points'][0]['y']
-    dff = df[df['StatusName'].isin(xaxis_column_name)]
-    dff = dff[dff['FormName'] == y_selection]
-    title = '<b>{}</b><br>{}'.format(y_selection, xaxis_column_name)
-    return create_time_series(dff, axis_type, title)
+    try:
+        y_selection = hoverData['points'][0]['y']
+        dff = df[df['StatusName'].isin(xaxis_column_name)]
+        dff = dff[dff['FormName'] == y_selection]
+        title = '<b>{}</b><br>{}'.format(y_selection, xaxis_column_name)
+        return create_time_series(dff, axis_type, title)
+    except KeyError:
+        pass
 
 
 @app.callback(
@@ -158,11 +161,14 @@ def update_x_timeseries(
         yaxis_column_name,
         axis_type
 ):
-    x_selection = hoverData['points'][0]['x']
-    dff = df[df['FormName'].isin(yaxis_column_name)]
-    dff = dff[dff['StatusName'] == x_selection]
-    title = '<b>{}</b><br>{}'.format(x_selection, yaxis_column_name)
-    return create_time_series(dff, axis_type, title)
+    try:
+        x_selection = hoverData['points'][0]['x']
+        dff = df[df['FormName'].isin(yaxis_column_name)]
+        dff = dff[dff['StatusName'] == x_selection]
+        title = '<b>{}</b><br>{}'.format(x_selection, yaxis_column_name)
+        return create_time_series(dff, axis_type, title)
+    except KeyError:
+        pass
 
 
 if __name__ == '__main__':
