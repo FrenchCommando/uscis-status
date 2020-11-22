@@ -5,7 +5,7 @@ services:
     build:
       context: ./uscis_service
       dockerfile: Dockerfile
-    command: python -m examples.db_server
+    command: gunicorn examples.db_server:app_inst --bind localhost:5000 --worker-class aiohttp.worker.GunicornWebWorker
     expose:
       - 5000
     depends_on:

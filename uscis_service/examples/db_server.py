@@ -4,7 +4,6 @@ import sys
 from aiohttp import web
 from collections import defaultdict, Counter
 import datetime as dt
-from src.constants import port_number
 from src.db_analysis_functions import count_date_status_function, count_date_status_format, \
     count_approval_history_function, get_form_date
 from src.db_interaction import init_tables, \
@@ -71,7 +70,9 @@ async def handle_all(request):
             date_str = date_value.strftime("%Y-%m-%d") if date_value else date_value
             return f"{case_value}\t{status_value}\t{form_value}\t{date_str}"
 
-        rep_text = "\n".join([str(len(rep)), "\n".join(get_line(u=u) for u in sorted(rep, key=lambda u: u['case_number'])[:-1000:-1])])
+        rep_text = "\n".join([str(len(rep)),
+                              "\n".join(get_line(u=u)
+                                        for u in sorted(rep, key=lambda u: u['case_number'])[:-1000:-1])])
         return web.Response(text=rep_text)
 
 
@@ -127,25 +128,16 @@ async def handle_main(request):
     return await response_counter(request=request, line_to_item=lambda line: line["current_status"])
 
 
-async def init_app():
-    """Initialize the application server."""
-    app_inst = web.Application()
-    app_inst['pool'] = await get_pool()
+app_inst = web.Application()
+app_inst['pool'] = await get_pool()
 
-    async with app_inst['pool'].acquire() as connection:
-        await init_tables(conn=connection)
+async with app_inst['pool'].acquire() as connection_pool:
+    await init_tables(conn=connection_pool)
 
-    app_inst.router.add_route('GET', '/case/{receipt_number}', handle_case)
-    app_inst.router.add_route('GET', '/status/{status}', handle_status)
-    app_inst.router.add_route('GET', '/analysis', handle_analysis)
-    app_inst.router.add_route('GET', '/approval_analysis/{form}/{date}', handle_approval_analysis)
-    app_inst.router.add_route('GET', '/all', handle_all)
-    app_inst.router.add_route('GET', '/form', handle_form)
-    app_inst.router.add_route('GET', '/', handle_main)
-    return app_inst
-
-
-if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    app = loop.run_until_complete(init_app())
-    web.run_app(app, port=port_number)
+app_inst.router.add_route('GET', '/case/{receipt_number}', handle_case)
+app_inst.router.add_route('GET', '/status/{status}', handle_status)
+app_inst.router.add_route('GET', '/analysis', handle_analysis)
+app_inst.router.add_route('GET', '/approval_analysis/{form}/{date}', handle_approval_analysis)
+app_inst.router.add_route('GET', '/all', handle_all)
+app_inst.router.add_route('GET', '/form', handle_form)
+app_inst.router.add_route('GET', '/', handle_main)
