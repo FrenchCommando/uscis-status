@@ -104,8 +104,9 @@ def update_graph(
     dff = dff[dff['FormName'].isin(yaxis_column_name)]
 
     fig = px.scatter(
-        x=dff['StatusName'],
-        y=dff['FormName'],
+        dff,
+        x='StatusName',
+        y='FormName',
         # hover_name=dff[dff['FormName'] == yaxis_column_name]['PreIndex']
     )
     # fig.update_traces(customdata=dff[dff['FormName'] == yaxis_column_name]['Date'])
