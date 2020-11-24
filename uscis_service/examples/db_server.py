@@ -131,7 +131,6 @@ async def handle_graph(request):
     pool = request.app['pool']
     async with pool.acquire() as connection:
         rep = await get_all_uscis(conn=connection)
-        text = [f"Number of entries {len(rep)}", ""]
 
         # build the markov chain of status change from history
         graph = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
@@ -142,7 +141,6 @@ async def handle_graph(request):
             if old_status:
                 graph[current_form][old_status][current_status] += 1
                 graph["Common"][old_status][current_status] += 1
-        print(graph)
         return web.json_response(
             data=dict(number_of_items=len(rep), graph=graph)
         )
