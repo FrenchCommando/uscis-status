@@ -30,5 +30,5 @@ G.add_weighted_edges_from(ebunch_to_add=[
 ])
 for (n, d), (nn, dd), (nnn, ddd) in zip(G.degree(), G.out_degree(), G.in_degree()):
     print(d, dd, ddd, n, nn, nnn)
-nx.draw(G, with_labels=True)
+nx.draw_shell(G, with_labels=True, font_size=5, node_size=200, width=1)
 plt.show()

@@ -13,5 +13,6 @@ html5lib
 matplotlib
 networkx
 pandas
+scipy
 tornado
 
