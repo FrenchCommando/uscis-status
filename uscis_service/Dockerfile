@@ -14,7 +14,8 @@ ENV PYTHONUNBUFFERED 1
 
 # install system dependencies
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc
+    apt-get install -y --no-install-recommends \
+        gcc gfortran python-dev libopenblas-dev liblapack-dev cython
 
 # lint
 COPY . /usr/src/app/
