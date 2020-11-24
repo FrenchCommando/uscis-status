@@ -134,6 +134,21 @@ def get_form_date(current_status, current_args):
     return form_name, record_date
 
 
+def get_form(line):
+    status_value = line['current_status']
+    args_value = line['current_args']
+    form_value, date_value = get_form_date(
+        current_status=status_value, current_args=args_value
+    )
+    return form_value
+
+
+def get_old_status(line):
+    history = line["history"]
+    if history:
+        return history.split("||")[0].split(":")[0]
+
+
 async def count_date_status_function(conn, custom_filter=lambda x: True):
     records = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
     all_data = await get_all(conn=conn, table_name=uscis_table_name, ignore_null=True)
