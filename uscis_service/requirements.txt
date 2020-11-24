@@ -12,6 +12,7 @@ gunicorn
 html5lib
 matplotlib
 networkx
+numpy==1.19.3
 pandas
 scipy
 tornado
