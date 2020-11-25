@@ -5,6 +5,8 @@ services:
     build:
       context: ./uscis_service
       dockerfile: Dockerfile
+    volumes:
+      - ./uscis_service/:/usr/src/app/
     command: gunicorn examples.db_server:init_app --bind 0.0.0.0:5000 --worker-class aiohttp.worker.GunicornWebWorker
     expose:
       - 5000
