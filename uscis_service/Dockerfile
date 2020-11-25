@@ -40,7 +40,7 @@ RUN apt-get update && \
         zlib1g-dev
 
 RUN pip install --upgrade pip && \
-        pip install -r requirements.txt
+        pip install -r --no-binary --no-cache-dir requirements.txt
 
 RUN chown -R app:app $APP_HOME
 USER app
