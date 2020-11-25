@@ -9,8 +9,4 @@ google-auth-httplib2
 google-auth-oauthlib
 gunicorn
 html5lib
-pycares
-pytz
-six
 tornado
-tzlocal

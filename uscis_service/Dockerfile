@@ -23,7 +23,7 @@ RUN pip install --upgrade pip setuptools && pip install flake8 && flake8 --ignor
 
 # install python dependencies
 COPY ./requirements.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+RUN pip wheel --no-cache-dir --wheel-dir /usr/src/app/wheels -r requirements.txt
 
 
 #########
