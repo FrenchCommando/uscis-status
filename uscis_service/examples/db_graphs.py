@@ -147,10 +147,6 @@ def build_figure_from_graph(G, pos, title):
         hoverinfo='text',
         marker=dict(
             showscale=True,
-            # colorscale options
-            #'Greys' | 'YlGnBu' | 'Greens' | 'YlOrRd' | 'Bluered' | 'RdBu' |
-            #'Reds' | 'Blues' | 'Picnic' | 'Rainbow' | 'Portland' | 'Jet' |
-            #'Hot' | 'Blackbody' | 'Earth' | 'Electric' | 'Viridis' |
             colorscale='YlGnBu',
             reversescale=True,
             color=[],
@@ -167,7 +163,7 @@ def build_figure_from_graph(G, pos, title):
     node_text = []
     for node, adjacencies in enumerate(G.adjacency()):
         node_adjacencies.append(len(adjacencies[1]))
-        node_text.append('# of connections: '+str(len(adjacencies[1])))
+        node_text.append('# of connections: ' + str(len(adjacencies[1])))
 
     node_trace.marker.color = node_adjacencies
     node_trace.text = node_text
