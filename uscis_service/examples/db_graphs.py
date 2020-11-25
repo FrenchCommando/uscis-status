@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 import json
 import networkx as nx
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from src.constants import port_number, host_uscis_service
 import plotly.graph_objects as go
 import dash
@@ -93,13 +93,13 @@ if i == 100:
                     G, sub_layout, nodelist=[node], node_color=color_value, node_size=100, alpha=0.8
                 )
 
-    plt.figure(num="Cycle subset - Raw")
+    # plt.figure(num="Cycle subset - Raw")
     draw_internal(sub_layout=enhanced_pos)
 
-    plt.figure(num="Cycle subset - Circle")
+    # plt.figure(num="Cycle subset - Circle")
     draw_internal(sub_layout=nx.shell_layout(G=subG))
 
-plt.figure(num="Status Oriented Graph")
+# plt.figure(num="Status Oriented Graph")
 nx.draw(
     G,
     with_labels=True, font_size=5, node_size=200, width=1,
