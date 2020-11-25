@@ -14,11 +14,11 @@ ENV PYTHONUNBUFFERED 1
 
 # install system dependencies
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc
+    apt-get install -y --no-install-recommends python3 python3-dev gcc gfortran musl-dev
 
 # lint
 COPY . /usr/src/app/
-RUN pip install --upgrade pip && pip install flake8 && flake8 --ignore=E121,E501,F401,W605 .
+RUN pip install --upgrade pip setuptools && pip install flake8 && flake8 --ignore= E121,E501,F401,W605 .
 
 # install python dependencies
 COPY ./requirements.txt .
