@@ -4,6 +4,10 @@ import json
 import networkx as nx
 import matplotlib.pyplot as plt
 from src.constants import port_number, host_uscis_service
+import plotly.graph_objects as go
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
 
 
 r = requests.get(f'http://{host_uscis_service}:{port_number}/graph')
@@ -110,11 +114,6 @@ for node, val in G.nodes.data():
 
 # plt.show()
 
-import plotly.graph_objects as go
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-
 
 def build_figure_from_graph(G, pos, title):
     edge_x = []
@@ -180,11 +179,6 @@ def build_figure_from_graph(G, pos, title):
                     showlegend=False,
                     hovermode='closest',
                     margin=dict(b=20, l=5, r=5, t=40),
-                    annotations=[dict(
-                        text="Python code: <a href='https://plotly.com/ipython-notebooks/network-graphs/'> https://plotly.com/ipython-notebooks/network-graphs/</a>",
-                        showarrow=False,
-                        xref="paper", yref="paper",
-                        x=0.005, y=-0.002 ) ],
                     xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                     yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
                     )
