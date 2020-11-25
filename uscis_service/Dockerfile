@@ -18,7 +18,7 @@ RUN apt-get update && \
 
 # lint
 COPY . /usr/src/app/
-RUN pip install --upgrade pip setuptools && pip install flake8 && flake8 --ignore= E121,E501,F401,W605 .
+RUN pip install --upgrade pip setuptools && pip install flake8 && flake8 --ignore=E121,E501,F401,W605 .
 
 # install python dependencies
 COPY ./requirements.txt .
