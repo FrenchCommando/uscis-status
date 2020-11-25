@@ -12,9 +12,18 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+# install system dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc
+
 # lint
 COPY . /usr/src/app/
 RUN pip install --upgrade pip && pip install flake8 && flake8 --ignore=E121,E501,F401,W605 .
+
+# install python dependencies
+COPY ./requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+
 
 #########
 # FINAL #
@@ -27,7 +36,7 @@ FROM python:3.8.6-slim-buster
 RUN mkdir -p /home/app
 
 # create the app user
-RUN addgroup --system app && adduser --system --group app
+RUN addgroup -S app && adduser -S app -G app
 
 # create the appropriate directories
 ENV HOME=/home/app
@@ -36,14 +45,11 @@ RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
 # install dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends netcat
+COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    netcat gcc g++ libffi-dev&& \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip
+RUN pip install --no-cache /wheels/*
 
 COPY . $APP_HOME
 RUN chown -R app:app $APP_HOME

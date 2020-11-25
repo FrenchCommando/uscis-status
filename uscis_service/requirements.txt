@@ -11,6 +11,5 @@ google-auth-oauthlib
 gunicorn
 html5lib
 pandas
-scipy
 tornado
 
