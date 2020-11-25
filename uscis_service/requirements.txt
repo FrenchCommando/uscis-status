@@ -10,6 +10,6 @@ google-auth-httplib2
 google-auth-oauthlib
 gunicorn
 html5lib
+numpy==1.19.3
 pandas
 tornado
-
