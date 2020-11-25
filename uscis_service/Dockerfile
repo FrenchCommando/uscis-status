@@ -17,8 +17,8 @@ RUN apt-get update && \
     apt-get install --reinstall -y build-essential && \
     apt-get install -y --no-install-recommends \
     gcc gfortran \
-    jpeg-dev \
     libffi-dev \
+    libjpeg-dev \
     musl-dev \
     python3 python3-dev \
     zlib1g-dev
