@@ -21,7 +21,7 @@ RUN apt-get update && \
     libffi-dev \
     musl-dev \
     python3 python3-dev \
-    zlib-dev
+    zlib1g-dev
 
 # lint
 COPY . /usr/src/app/
