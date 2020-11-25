@@ -14,6 +14,7 @@ ENV PYTHONUNBUFFERED 1
 
 # install system dependencies
 RUN apt-get update && \
+    apt-get install --reinstall build-essential && \
     apt-get install -y --no-install-recommends python3 python3-dev gcc gfortran musl-dev
 
 # lint
