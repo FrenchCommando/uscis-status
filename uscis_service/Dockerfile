@@ -3,10 +3,14 @@
 ###########
 
 # pull official base image
-FROM python:3.8.1-slim-buster as builder
+FROM python:3.8.6-slim-buster as builder
 
 # set work directory
 WORKDIR /usr/src/app
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
 # lint
 COPY . /usr/src/app/
@@ -17,7 +21,7 @@ RUN pip install --upgrade pip && pip install flake8 && flake8 --ignore=E121,E501
 #########
 
 # pull official base image
-FROM python:3.8.1-slim-buster
+FROM python:3.8.6-slim-buster
 
 # create directory for the app user
 RUN mkdir -p /home/app
@@ -35,11 +39,11 @@ WORKDIR $APP_HOME
 COPY --from=builder /usr/src/app/requirements.txt .
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    netcat gcc g++ libffi-dev gfortran python-dev libopenblas-dev liblapack-dev cython && \
+    netcat gcc g++ libffi-dev&& \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     pip install --upgrade pip && \
-    pip install -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt
 
 COPY . $APP_HOME
 RUN chown -R app:app $APP_HOME
