@@ -9,21 +9,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # lint
-COPY . /usr/src/app/
 RUN pip install --upgrade pip setuptools && pip install flake8 && flake8 --ignore=E121,E501,F401,W605 .
-
-# install dependencies
-RUN apt-get update && \
-    apt-get install --reinstall -y build-essential && \
-    apt-get install -y --no-install-recommends \
-        gcc gfortran \
-        libffi-dev \
-        libjpeg-dev \
-        musl-dev \
-        netcat \
-        python3 python3-dev \
-        zlib1g-dev
-RUN pip wheel --no-cache-dir --wheel-dir /usr/src/app/wheels -r requirements.txt
 
 # pull official base image
 FROM python:3.8.6-slim-buster
@@ -45,12 +31,16 @@ WORKDIR $APP_HOME
 RUN apt-get update && \
     apt-get install --reinstall -y build-essential && \
     apt-get install -y --no-install-recommends \
-        netcat
-COPY --from=builder /usr/src/app/wheels /wheels
-COPY --from=builder /usr/src/app/requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install --no-cache /wheels/*
+        gcc gfortran \
+        libffi-dev \
+        libjpeg-dev \
+        musl-dev \
+        netcat \
+        python3 python3-dev \
+        zlib1g-dev
 
+RUN pip install --upgrade pip && \
+        pip install --no-cache-dir -r requirements.txt --no-binary :all:
 
 RUN chown -R app:app $APP_HOME
 USER app
