@@ -4,9 +4,13 @@ apscheduler
 asyncpg
 beautifulsoup4
 cchardet
+dash
 google-api-python-client
 google-auth-httplib2
 google-auth-oauthlib
 gunicorn
 html5lib
+motplotlib
+numpy==1.19.3
+pandas
 tornado
