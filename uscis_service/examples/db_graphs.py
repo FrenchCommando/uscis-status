@@ -116,7 +116,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 
 
-def build_figure_from_graph(G, pos):
+def build_figure_from_graph(G, pos, title):
     edge_x = []
     edge_y = []
     for edge in G.edges():
@@ -175,12 +175,12 @@ def build_figure_from_graph(G, pos):
 
     fig = go.Figure(data=[edge_trace, node_trace],
                     layout=go.Layout(
-                    title='<br>Network graph made with Python',
+                    title=f'<br>{title}',
                     titlefont_size=16,
                     showlegend=False,
                     hovermode='closest',
-                    margin=dict(b=20,l=5,r=5,t=40),
-                    annotations=[ dict(
+                    margin=dict(b=20, l=5, r=5, t=40),
+                    annotations=[dict(
                         text="Python code: <a href='https://plotly.com/ipython-notebooks/network-graphs/'> https://plotly.com/ipython-notebooks/network-graphs/</a>",
                         showarrow=False,
                         xref="paper", yref="paper",
@@ -192,12 +192,14 @@ def build_figure_from_graph(G, pos):
 
 
 graphs = [
-    dcc.Graph(figure=build_figure_from_graph(G=G, pos=enhanced_pos))
+    dcc.Graph(figure=build_figure_from_graph(G=G, pos=enhanced_pos, title="Status Oriented Graph"))
 ]
 
 if "subG" in locals():
-    graphs.append(dcc.Graph(figure=build_figure_from_graph(G=subG, pos=enhanced_pos)))
-    graphs.append(dcc.Graph(figure=build_figure_from_graph(G=subG, pos=nx.shell_layout(G=subG))))
+    graphs.append(dcc.Graph(figure=build_figure_from_graph(
+        G=subG, pos=enhanced_pos, title="Cycle subset - Raw")))
+    graphs.append(dcc.Graph(figure=build_figure_from_graph(
+        G=subG, pos=nx.shell_layout(G=subG), title="Cycle subset - Circle")))
 
 
 app = dash.Dash()
