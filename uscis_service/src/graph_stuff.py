@@ -306,7 +306,7 @@ class GraphCommon:
             plot_bgcolor='#E5ECF6',
             annotations=annotateELarge + annotateESmall,  # arrows
             xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False, scaleanchor='x', scaleratio=0.5),
         )
 
         plotly_fig = dict(data=data, layout=layout, margin=dict(b=20, l=5, r=5, t=40),)
