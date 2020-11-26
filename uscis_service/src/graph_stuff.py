@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 from src.constants import port_number, host_uscis_service
 
 
-class UscisGraph:
+class UscisGraphBuilder:
     def __init__(self):
         r = requests.get(f'http://{host_uscis_service}:{port_number}/graph')
         data = json.loads(r.text)
@@ -45,6 +45,10 @@ class GraphCommon:
         return sub_g
 
     @staticmethod
+    def add_colors(g, d):
+        nx.set_node_attributes(G=g, name='favorite_color', values=d)
+
+    @staticmethod
     def direction_consistent(g, pos, direction):
         for node_from in pos:
             y_from = pos[node_from][direction]
@@ -57,6 +61,10 @@ class GraphCommon:
                     pos[node_to][direction] = y_from - (y_to - y_from)
                     return False
         return True
+
+    @staticmethod
+    def find_shell_layout(g):
+        return nx.shell_layout(G=g)
 
     @staticmethod
     def find_layout(g):
