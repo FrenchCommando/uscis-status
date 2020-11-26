@@ -29,8 +29,7 @@ RUN apt-get update && \
         python3 python3-dev \
         zlib1g-dev
 
-RUN pip install --upgrade pip setuptools && \
-        pip install --no-cache-dir -r requirements.txt --no-binary :all:
+RUN pip install --no-cache-dir -r requirements.txt --no-binary :all:
 
 RUN chown -R app:app $APP_HOME
 USER app
