@@ -87,10 +87,10 @@ class GraphCommon:
         node_up_only = [node for node in G.nodes() if in_degree_dict[node] == 0]
         node_down_only = [node for node in G.nodes() if out_degree_dict[node] == 0]
         node_alone_only = [node for node in G.nodes() if is_self_dict[node]]
-        node_others = [node for node in G.nodes()
-                       if node not in node_alone_only
-                       and node not in node_up_only
-                       and node not in node_down_only]
+        node_others = [
+            node for node in G.nodes() if
+            node not in node_alone_only and node not in node_up_only and node not in node_down_only
+        ]
 
         d = {}
         rotate = np.pi / (len(list(self.g.nodes())) + 0.5)
