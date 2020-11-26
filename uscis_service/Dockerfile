@@ -11,7 +11,6 @@ RUN addgroup --system app && adduser --system --group app
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/uscis_service
 RUN mkdir $APP_HOME
-COPY . $APP_HOME
 WORKDIR $APP_HOME
 
 # lint
@@ -29,7 +28,10 @@ RUN apt-get update && \
         python3 python3-dev \
         zlib1g-dev
 
+COPY ./requirements.txt $APP_HOME
 RUN pip install --no-cache-dir -r requirements.txt --no-binary :all:
+
+COPY . $APP_HOME
 
 RUN chown -R app:app $APP_HOME
 USER app

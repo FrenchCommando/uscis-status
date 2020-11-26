@@ -20,7 +20,9 @@ services:
     build:
       context: ./uscis_service
       dockerfile: Dockerfile
-    command: gunicorn examples.db_graphs:server --bind 0.0.0.0:8050 --timeout 300
+    command: >
+      gunicorn examples.db_graphs:server
+      --bind 0.0.0.0:8050 --timeout 300
     expose:
       - 8050
     depends_on:
