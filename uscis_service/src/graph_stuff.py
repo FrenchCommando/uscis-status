@@ -153,6 +153,12 @@ class GraphCommon:
         elif metric == "Up-Down":
             in_degree_dict = {node: degree for node, degree in G.in_degree()}
             out_degree_dict = {node: degree for node, degree in G.out_degree()}
+            is_self_dict = {
+                node: True
+                if in_degree_dict[node] == 1 and out_degree_dict[node] == 1 and node in list(G[node])
+                else False
+                for node in G.nodes()
+            }
             node_text_content = [
                 f'{node}<br># of in: {in_degree_dict[node]}<br># of out: {out_degree_dict[node]}'
                 for node in pos]
@@ -161,6 +167,7 @@ class GraphCommon:
 
             node_up_only = [1 if in_degree_dict[node] == 0 else 0 for node in pos]
             node_down_only = [1 if out_degree_dict[node] == 0 else 0 for node in pos]
+            node_alone = [1 if is_self_dict[node] else 0 for node in pos]
 
             nodes_up = dict(
                 type='scatter', x=x_n, y=y_n, mode='markers',
@@ -236,6 +243,21 @@ class GraphCommon:
                 hoverinfo='skip',
             )
             data.append(nodes_down_only)
+
+            nodes_alone = dict(
+                type='scatter',
+                x=[x for x, p in zip(x_n, node_alone) if p],
+                y=[y for y, p in zip(y_n, node_alone) if p],
+                mode='markers',
+                marker=dict(
+                    symbol='circle-open',
+                    color='orange',
+                    size=10,
+                    line_width=2,
+                ),
+                hoverinfo='skip',
+            )
+            data.append(nodes_alone)
 
         annotateELarge = [dict(
             showarrow=True, arrowsize=1, arrowwidth=1, arrowhead=1, standoff=10, startstandoff=10,
