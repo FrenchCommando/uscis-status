@@ -92,40 +92,28 @@ class GraphCommon:
 
     def build_figure_from_graph(self, pos, title):
         G = self.g
-        edge_x = []
-        edge_y = []
-        for edge in G.edges():
-            x0, y0 = pos[edge[0]]
-            x1, y1 = pos[edge[1]]
-            edge_x.append(x0)
-            edge_x.append(x1)
-            edge_x.append(None)
-            edge_y.append(y0)
-            edge_y.append(y1)
-            edge_y.append(None)
+        pos = {node: value for node, value in pos.items() if node in G.nodes()}
 
-        edge_trace = go.Scatter(
-            x=edge_x, y=edge_y,
-            line=dict(width=0.5, color='#888'),
-            hoverinfo='none',
-            mode='lines')
+        # https://stackoverflow.com/questions/57482878/plotting-a-directed-graph-with-dash-through-matplotlib
 
-        node_x = []
-        node_y = []
-        for node in G.nodes():
-            x, y = pos[node]
-            node_x.append(x)
-            node_y.append(y)
+        elarge = [(u, v) for (u, v, d) in G.edges(data=True) if d['weight'] > 10]
+        esmall = [(u, v) for (u, v, d) in G.edges(data=True) if d['weight'] <= 10]
 
-        node_trace = go.Scatter(
-            x=node_x, y=node_y,
-            mode='markers',
-            hoverinfo='text',
+        # pos = nx.spring_layout(G)  # positions for all nodes
+
+        x_n = [pos[k][0] for k in pos]
+        y_n = [pos[k][1] for k in pos]
+        adjacency_dict = {node: len(adjacency) for node, adjacency in G.adjacency()}
+        node_text = [f'{node}<br># of connections: {adjacency_dict[node]}' for node in pos]
+        node_adjacencies = [adjacency_dict[node] for node in pos]
+
+        nodes = dict(
+            type='scatter', x=x_n, y=y_n, mode='markers+text',
             marker=dict(
                 showscale=True,
                 colorscale='YlGnBu',
                 reversescale=True,
-                color=[],
+                color=node_adjacencies,
                 size=10,
                 colorbar=dict(
                     thickness=15,
@@ -133,27 +121,33 @@ class GraphCommon:
                     xanchor='left',
                     titleside='right'
                 ),
-                line_width=2))
-
-        node_adjacencies = []
-        node_text = []
-        for node, adjacencies in enumerate(G.adjacency()):
-            node_adjacencies.append(len(adjacencies[1]))
-            node_text.append(f'{node}<br># of connections: {len(adjacencies[1])}')
-
-        node_trace.marker.color = node_adjacencies
-        node_trace.text = node_text
-
-        fig = go.Figure(
-            data=[edge_trace, node_trace],
-            layout=go.Layout(
-                title=f'<br>{title}',
-                titlefont_size=16,
-                showlegend=False,
-                hovermode='closest',
-                margin=dict(b=20, l=5, r=5, t=40),
-                xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)
-            )
+                line_width=2
+            ),
+            textfont=dict(size=3, color='red'),
+            text=node_text,
+            hoverinfo='text',
         )
-        return fig
+
+        annotateELarge = [dict(
+            showarrow=True, arrowsize=1, arrowwidth=1, arrowhead=1, standoff=10, startstandoff=10,
+            ax=pos[arrow[0]][0], ay=pos[arrow[0]][1], axref='x', ayref='y',
+            x=pos[arrow[1]][0], y=pos[arrow[1]][1], xref='x', yref='y',
+        ) for arrow in elarge]
+        annotateESmall = [dict(
+            showarrow=True, arrowsize=1, arrowwidth=1, arrowhead=1, opacity=0.5, standoff=10, startstandoff=10,
+            ax=pos[arrow[0]][0], ay=pos[arrow[0]][1], axref='x', ayref='y',
+            x=pos[arrow[1]][0], y=pos[arrow[1]][1], xref='x', yref='y'
+        ) for arrow in esmall]
+
+        layout = dict(
+            title=f'<br>{title}',
+            showlegend=False,
+            hovermode='closest',
+            plot_bgcolor='#E5ECF6',
+            annotations=annotateELarge + annotateESmall,  # arrows
+            xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+        )
+
+        plotly_fig = dict(data=[nodes], layout=layout,margin=dict(b=20, l=5, r=5, t=40),)
+        return plotly_fig

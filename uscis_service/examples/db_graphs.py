@@ -20,7 +20,7 @@ form_chooser = dcc.Dropdown(
 )
 
 app = dash.Dash()
-app.layout = html.Div([
+app.layout = html.Div(children=[
     html.Div(form_chooser),
     html.Div(graphs)
 ])
