@@ -1,7 +1,7 @@
 import json
 import networkx as nx
+import numpy as np
 import requests
-import plotly.graph_objects as go
 from src.constants import port_number, host_uscis_service
 
 
@@ -63,7 +63,8 @@ class GraphCommon:
         return True
 
     def find_shell_layout(self):
-        return nx.shell_layout(G=self.g)
+        rotate = np.pi / (len(list(self.g.nodes())) + 0.5)
+        return nx.shell_layout(G=self.g, rotate=rotate)
 
     def find_layout(self):
         enhanced_pos = self.find_shell_layout()
