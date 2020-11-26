@@ -75,16 +75,44 @@ class GraphCommon:
         return enhanced_pos
 
     def find_even_better_layout(self):
-        enhanced_pos = self.find_shell_layout()
-        i = 0
-        i_max = 100
-        while not self.direction_consistent(pos=enhanced_pos, direction=1) and i < i_max:
-            i += 1
-        i = 0
-        i_max = 100
-        while not self.direction_consistent(pos=enhanced_pos, direction=0) and i < i_max:
-            i += 1
-        return enhanced_pos
+        G = self.g
+        in_degree_dict = {node: degree for node, degree in G.in_degree()}
+        out_degree_dict = {node: degree for node, degree in G.out_degree()}
+        is_self_dict = {
+            node: True
+            if in_degree_dict[node] == 1 and out_degree_dict[node] == 1 and node in list(G[node])
+            else False
+            for node in G.nodes()
+        }
+        node_up_only = [node for node in G.nodes() if in_degree_dict[node] == 0]
+        node_down_only = [node for node in G.nodes() if out_degree_dict[node] == 0]
+        node_alone_only = [node for node in G.nodes() if is_self_dict[node]]
+        node_others = [node for node in G.nodes()
+                       if node not in node_alone_only
+                       and node not in node_up_only
+                       and node not in node_down_only]
+
+        d = {}
+        rotate = np.pi / (len(list(self.g.nodes())) + 0.5)
+
+        def node_list_to_arc_list(node_list):
+            if not node_list:
+                return [["Blah"]]
+            lll = node_list
+            n = len(node_list)
+            lll.extend([node_list[0]] * n)
+            return [lll]
+
+        d.update(nx.shell_layout(G=self.g, nlist=node_list_to_arc_list(node_list=node_up_only),
+                                 center=(0, 2), rotate=rotate))
+        d.update(nx.shell_layout(G=self.g, nlist=node_list_to_arc_list(node_down_only),
+                                 center=(0, -2), rotate=rotate))
+        d.update(nx.shell_layout(G=self.g, nlist=node_list_to_arc_list(node_alone_only),
+                                 center=(-1.1, -0.4), rotate=rotate, scale=0.2))
+        d.update(nx.shell_layout(G=self.g, nlist=node_list_to_arc_list(node_others),
+                                 center=(0, 0), rotate=rotate))
+
+        return d
 
     @staticmethod
     def draw_internal(sub_g, sub_layout):  # used in conjonction with matplotlib
