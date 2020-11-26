@@ -24,7 +24,7 @@ metric_chooser = dcc.RadioItems(
     options=[dict(label=i, value=i) for i in [
         "Connections", "Up-Down",
     ]],
-    value="Connections",
+    value="Up-Down",
     labelStyle={'display': 'inline-block'}
 )
 

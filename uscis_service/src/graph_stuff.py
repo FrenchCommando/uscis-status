@@ -123,7 +123,7 @@ class GraphCommon:
                 type='scatter', x=x_n, y=y_n, mode='markers+text',
                 marker=dict(
                     showscale=True,
-                    symbol='arrow-up',
+                    symbol='circle',
                     colorscale='YlGnBu',
                     reversescale=True,
                     color=node_adjacencies,
@@ -141,12 +141,16 @@ class GraphCommon:
                 hoverinfo='text',
             )
             data.append(nodes)
-        if metric == "Up-Down":
+        elif metric == "Up-Down":
             in_degree_dict = {node: degree for node, degree in G.in_degree()}
             out_degree_dict = {node: degree for node, degree in G.out_degree()}
             node_text = [f'{node}<br># of in: {in_degree_dict[node]}<br># of out: {out_degree_dict[node]}'
                          for node in pos]
             node_up = [out_degree_dict[node] for node in pos]
+            node_down = [in_degree_dict[node] for node in pos]
+
+            node_up_only = [1 if in_degree_dict[node] == 0 else 0 for node in pos]
+            node_down_only = [1 if out_degree_dict[node] == 0 else 0 for node in pos]
 
             nodes_up = dict(
                 type='scatter', x=x_n, y=y_n, mode='markers+text',
@@ -157,13 +161,14 @@ class GraphCommon:
                     reversescale=True,
                     color=node_up,
                     size=10,
+                    # https://stackoverflow.com/questions/60458220/two-or-three-colorbars-for-one-plot-in-plotly
                     colorbar=dict(
-                        thickness=15,
+                        thickness=5,
                         title='Node Up',
-                        xanchor='left',
-                        titleside='right'
+                        x=1,
+                        titleside='right',
                     ),
-                    line_width=2
+                    line_width=2,
                 ),
                 textfont=dict(size=3, color='blue'),
                 text=node_text,
@@ -171,27 +176,56 @@ class GraphCommon:
             )
             data.append(nodes_up)
 
-            node_down = [in_degree_dict[node] for node in pos]
-
             nodes_down = dict(
                 type='scatter', x=x_n, y=y_n, mode='markers',
                 marker=dict(
                     showscale=True,
                     symbol='arrow-down',
                     colorscale='RdYlGn',
-                    reversescale=True,
+                    reversescale=False,
                     color=node_down,
                     size=10,
                     colorbar=dict(
                         thickness=5,
                         title='Node Down',
-                        xanchor='left',
-                        titleside='right'
+                        x=1.05,
+                        titleside='right',
                     ),
-                    line_width=1
+                    line_width=2,
                 ),
+                hoverinfo='skip',
             )
             data.append(nodes_down)
+
+            nodes_up_only = dict(
+                type='scatter',
+                x=[x for x, p in zip(x_n, node_up_only) if p],
+                y=[y for y, p in zip(y_n, node_up_only) if p],
+                mode='markers',
+                marker=dict(
+                    symbol='square-open',
+                    color='green',
+                    size=10,
+                    line_width=2,
+                ),
+                hoverinfo='skip',
+            )
+            data.append(nodes_up_only)
+
+            nodes_down_only = dict(
+                type='scatter',
+                x=[x for x, p in zip(x_n, node_down_only) if p],
+                y=[y for y, p in zip(y_n, node_down_only) if p],
+                mode='markers',
+                marker=dict(
+                    symbol='square-open',
+                    color='red',
+                    size=10,
+                    line_width=2,
+                ),
+                hoverinfo='skip',
+            )
+            data.append(nodes_down_only)
 
         annotateELarge = [dict(
             showarrow=True, arrowsize=1, arrowwidth=1, arrowhead=1, standoff=10, startstandoff=10,
