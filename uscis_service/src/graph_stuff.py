@@ -98,9 +98,9 @@ class GraphCommon:
         def node_list_to_arc_list(node_list):
             if not node_list:
                 return [["Blah"]]
-            lll = node_list
+            lll = node_list[:]
             n = len(node_list)
-            lll.extend([node_list[0]] * n)
+            lll.extend([node_list[0]] * (n + 1))
             return [lll]
 
         d.update(nx.shell_layout(G=self.g, nlist=node_list_to_arc_list(node_list=node_up_only),
