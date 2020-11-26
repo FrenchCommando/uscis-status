@@ -7,33 +7,26 @@ from src.graph_stuff import UscisGraphBuilder, GraphCommon
 ug = UscisGraphBuilder()
 ug.describe()
 G = ug.digraph(form="Common")
-
-
-GraphCommon.describe_graph_degree(g=G)
-
-GraphCommon.add_colors(g=G, d={
+G.describe_graph_degree()
+G.add_colors(d={
     "Case Was Approved": "red",
     "Case Was Approved And My Decision Was Emailed": "orange",
     "Case Was Denied": "magenta",
     "Case Was Received": "green",
 })
 
-enhanced_pos = GraphCommon.find_layout(g=G)
-sub_g = GraphCommon.problematic_subgraph(g=G)
-even_better_pos = GraphCommon.find_even_better_layout(g=G)
-
+sub_g = G.problematic_subgraph()
 
 graphs = [
-    dcc.Graph(figure=GraphCommon.build_figure_from_graph(
-        G=G, pos=enhanced_pos, title="Status Oriented Graph"))
+    dcc.Graph(figure=G.build_figure_from_graph(
+        pos=G.find_layout(), title="Status Oriented Graph")),
+    dcc.Graph(figure=sub_g.build_figure_from_graph(
+        pos=G.find_layout(), title="Cycle subset - Raw")),
+    dcc.Graph(figure=sub_g.build_figure_from_graph(
+        pos=sub_g.find_shell_layout(), title="Cycle subset - Circle")),
+    dcc.Graph(figure=G.build_figure_from_graph(
+        pos=G.find_even_better_layout(), title="Status Oriented Graph - Improved")),
 ]
-
-if "sub_g" in locals():
-    graphs.append(dcc.Graph(figure=GraphCommon.build_figure_from_graph(
-        G=sub_g, pos=enhanced_pos, title="Cycle subset - Raw")))
-    graphs.append(dcc.Graph(figure=GraphCommon.build_figure_from_graph(
-        G=sub_g, pos=GraphCommon.find_shell_layout(g=sub_g), title="Cycle subset - Circle")))
-
 
 app = dash.Dash()
 app.layout = html.Div(graphs)

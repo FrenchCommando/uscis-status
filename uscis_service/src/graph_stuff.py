@@ -28,33 +28,33 @@ class UscisGraphBuilder:
         g.add_weighted_edges_from(ebunch_to_add=[
             (old_status, new_status, number) for old_status, v in common.items() for new_status, number in v.items()
         ])
-        return g
+        return GraphCommon(g)
 
 
 class GraphCommon:
-    @staticmethod
-    def describe_graph_degree(g):
-        for (n, d), (nn, dd), (nnn, ddd) in zip(g.degree(), g.out_degree(), g.in_degree()):
+    def __init__(self, g):
+        self.g = g
+
+    def describe_graph_degree(self):
+        for (n, d), (nn, dd), (nnn, ddd) \
+                in zip(self.g.degree(), self.g.out_degree(), self.g.in_degree()):
             print(d, dd, ddd, n, nn, nnn)
-        print(nx.info(g))
+        print(nx.info(self.g))
 
-    @staticmethod
-    def problematic_subgraph(g):
-        enhanced_pos = GraphCommon.find_layout(g=g)
-        sub_g = g.subgraph(nodes=(n for n in enhanced_pos if enhanced_pos[n][1] < -20))
-        return sub_g
+    def problematic_subgraph(self):
+        enhanced_pos = self.find_layout()
+        sub_g = self.g.subgraph(nodes=(n for n in enhanced_pos if enhanced_pos[n][1] < -20))
+        return GraphCommon(g=sub_g)
 
-    @staticmethod
-    def add_colors(g, d):
-        nx.set_node_attributes(G=g, name='favorite_color', values=d)
+    def add_colors(self, d):
+        nx.set_node_attributes(G=self.g, name='favorite_color', values=d)
 
-    @staticmethod
-    def direction_consistent(g, pos, direction):
+    def direction_consistent(self, pos, direction):
         for node_from in pos:
             y_from = pos[node_from][direction]
-            for node_to in g.successors(n=node_from):
+            for node_to in self.g.successors(n=node_from):
                 y_to = pos[node_to][direction]
-                if node_from in g.successors(node_to):
+                if node_from in self.g.successors(node_to):
                     continue
                 if y_from <= y_to:
                     # print(y_from, y_to, node_from, node_to, y_from - (y_to - y_from))
@@ -62,39 +62,36 @@ class GraphCommon:
                     return False
         return True
 
-    @staticmethod
-    def find_shell_layout(g):
-        return nx.shell_layout(G=g)
+    def find_shell_layout(self):
+        return nx.shell_layout(G=self.g)
 
-    @staticmethod
-    def find_layout(g):
-        enhanced_pos = nx.shell_layout(G=g)
+    def find_layout(self):
+        enhanced_pos = self.find_shell_layout()
         i = 0
         i_max = 100
-        while not GraphCommon.direction_consistent(g=g, pos=enhanced_pos, direction=1) and i < i_max:
+        while not self.direction_consistent(pos=enhanced_pos, direction=1) and i < i_max:
             i += 1
         return enhanced_pos
 
-    @staticmethod
-    def find_even_better_layout(g):
-        return nx.shell_layout(G=g)
+    def find_even_better_layout(self):
+        return self.find_shell_layout()
 
     @staticmethod
     def draw_internal(sub_g, sub_layout):  # used in conjonction with matplotlib
         nx.draw(
-            sub_g,
+            sub_g.g,
             with_labels=True, font_size=5, node_size=200, width=1,
             pos=sub_layout,
         )
-        for node, val in sub_g.nodes.data():
+        for node, val in sub_g.g.nodes.data():
             if "favorite_color" in val:
                 color_value = val["favorite_color"]
                 nx.draw_networkx_nodes(
-                    sub_g, sub_layout, nodelist=[node], node_color=color_value, node_size=100, alpha=0.8
+                    sub_g.g, sub_layout, nodelist=[node], node_color=color_value, node_size=100, alpha=0.8
                 )
 
-    @staticmethod
-    def build_figure_from_graph(G, pos, title):
+    def build_figure_from_graph(self, pos, title):
+        G = self.g
         edge_x = []
         edge_y = []
         for edge in G.edges():
