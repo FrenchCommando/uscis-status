@@ -114,13 +114,22 @@ class GraphCommon:
         y_n = [pos[k][1] for k in pos]
 
         data = []
+
+        node_text = dict(
+            type='scatter', x=x_n, y=y_n, mode='text',
+            textfont=dict(size=3, color='blue'),
+            text=[node for node in pos],
+            hoverinfo='skip',
+        )
+        data.append(node_text)
+
         if metric == "Connections":
             adjacency_dict = {node: len(adjacency) for node, adjacency in G.adjacency()}
-            node_text = [f'{node}<br># of connections: {adjacency_dict[node]}' for node in pos]
+            node_text_content = [f'{node}<br># of connections: {adjacency_dict[node]}' for node in pos]
             node_adjacencies = [adjacency_dict[node] for node in pos]
 
             nodes = dict(
-                type='scatter', x=x_n, y=y_n, mode='markers+text',
+                type='scatter', x=x_n, y=y_n, mode='markers',
                 marker=dict(
                     showscale=True,
                     symbol='circle',
@@ -137,15 +146,16 @@ class GraphCommon:
                     line_width=2
                 ),
                 textfont=dict(size=3, color='blue'),
-                text=node_text,
+                text=node_text_content,
                 hoverinfo='text',
             )
             data.append(nodes)
         elif metric == "Up-Down":
             in_degree_dict = {node: degree for node, degree in G.in_degree()}
             out_degree_dict = {node: degree for node, degree in G.out_degree()}
-            node_text = [f'{node}<br># of in: {in_degree_dict[node]}<br># of out: {out_degree_dict[node]}'
-                         for node in pos]
+            node_text_content = [
+                f'{node}<br># of in: {in_degree_dict[node]}<br># of out: {out_degree_dict[node]}'
+                for node in pos]
             node_up = [out_degree_dict[node] for node in pos]
             node_down = [in_degree_dict[node] for node in pos]
 
@@ -153,7 +163,7 @@ class GraphCommon:
             node_down_only = [1 if out_degree_dict[node] == 0 else 0 for node in pos]
 
             nodes_up = dict(
-                type='scatter', x=x_n, y=y_n, mode='markers+text',
+                type='scatter', x=x_n, y=y_n, mode='markers',
                 marker=dict(
                     showscale=True,
                     symbol='arrow-up',
@@ -171,7 +181,7 @@ class GraphCommon:
                     line_width=2,
                 ),
                 textfont=dict(size=3, color='blue'),
-                text=node_text,
+                text=node_text_content,
                 hoverinfo='text',
             )
             data.append(nodes_up)
