@@ -45,7 +45,7 @@ RUN apt-get update && \
 
 COPY ./requirements.txt $APP_HOME
 RUN pip install --upgrade pip setuptools
-RUN pip install --no-cache-dir -r requirements.txt --no-binary :all:
+RUN pip install -r requirements.txt
 
 COPY . $APP_HOME
 
