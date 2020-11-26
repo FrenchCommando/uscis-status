@@ -74,7 +74,16 @@ class GraphCommon:
         return enhanced_pos
 
     def find_even_better_layout(self):
-        return self.find_shell_layout()
+        enhanced_pos = self.find_shell_layout()
+        i = 0
+        i_max = 100
+        while not self.direction_consistent(pos=enhanced_pos, direction=1) and i < i_max:
+            i += 1
+        i = 0
+        i_max = 100
+        while not self.direction_consistent(pos=enhanced_pos, direction=0) and i < i_max:
+            i += 1
+        return enhanced_pos
 
     @staticmethod
     def draw_internal(sub_g, sub_layout):  # used in conjonction with matplotlib
@@ -90,7 +99,7 @@ class GraphCommon:
                     sub_g.g, sub_layout, nodelist=[node], node_color=color_value, node_size=100, alpha=0.8
                 )
 
-    def build_figure_from_graph(self, pos, title):
+    def build_figure_from_graph(self, pos, title, metric):
         G = self.g
         pos = {node: value for node, value in pos.items() if node in G.nodes()}
 
@@ -103,30 +112,86 @@ class GraphCommon:
 
         x_n = [pos[k][0] for k in pos]
         y_n = [pos[k][1] for k in pos]
-        adjacency_dict = {node: len(adjacency) for node, adjacency in G.adjacency()}
-        node_text = [f'{node}<br># of connections: {adjacency_dict[node]}' for node in pos]
-        node_adjacencies = [adjacency_dict[node] for node in pos]
 
-        nodes = dict(
-            type='scatter', x=x_n, y=y_n, mode='markers+text',
-            marker=dict(
-                showscale=True,
-                colorscale='YlGnBu',
-                reversescale=True,
-                color=node_adjacencies,
-                size=10,
-                colorbar=dict(
-                    thickness=15,
-                    title='Node Connections',
-                    xanchor='left',
-                    titleside='right'
+        data = []
+        if metric == "Connections":
+            adjacency_dict = {node: len(adjacency) for node, adjacency in G.adjacency()}
+            node_text = [f'{node}<br># of connections: {adjacency_dict[node]}' for node in pos]
+            node_adjacencies = [adjacency_dict[node] for node in pos]
+
+            nodes = dict(
+                type='scatter', x=x_n, y=y_n, mode='markers+text',
+                marker=dict(
+                    showscale=True,
+                    symbol='arrow-up',
+                    colorscale='YlGnBu',
+                    reversescale=True,
+                    color=node_adjacencies,
+                    size=10,
+                    colorbar=dict(
+                        thickness=15,
+                        title='Node Connections',
+                        xanchor='left',
+                        titleside='right'
+                    ),
+                    line_width=2
                 ),
-                line_width=2
-            ),
-            textfont=dict(size=3, color='red'),
-            text=node_text,
-            hoverinfo='text',
-        )
+                textfont=dict(size=3, color='blue'),
+                text=node_text,
+                hoverinfo='text',
+            )
+            data.append(nodes)
+        if metric == "Up-Down":
+            in_degree_dict = {node: degree for node, degree in G.in_degree()}
+            out_degree_dict = {node: degree for node, degree in G.out_degree()}
+            node_text = [f'{node}<br># of in: {in_degree_dict[node]}<br># of out: {out_degree_dict[node]}'
+                         for node in pos]
+            node_up = [out_degree_dict[node] for node in pos]
+
+            nodes_up = dict(
+                type='scatter', x=x_n, y=y_n, mode='markers+text',
+                marker=dict(
+                    showscale=True,
+                    symbol='arrow-up',
+                    colorscale='YlGnBu',
+                    reversescale=True,
+                    color=node_up,
+                    size=10,
+                    colorbar=dict(
+                        thickness=15,
+                        title='Node Up',
+                        xanchor='left',
+                        titleside='right'
+                    ),
+                    line_width=2
+                ),
+                textfont=dict(size=3, color='blue'),
+                text=node_text,
+                hoverinfo='text',
+            )
+            data.append(nodes_up)
+
+            node_down = [in_degree_dict[node] for node in pos]
+
+            nodes_down = dict(
+                type='scatter', x=x_n, y=y_n, mode='markers',
+                marker=dict(
+                    showscale=True,
+                    symbol='arrow-down',
+                    colorscale='RdYlGn',
+                    reversescale=True,
+                    color=node_down,
+                    size=10,
+                    colorbar=dict(
+                        thickness=5,
+                        title='Node Down',
+                        xanchor='left',
+                        titleside='right'
+                    ),
+                    line_width=1
+                ),
+            )
+            data.append(nodes_down)
 
         annotateELarge = [dict(
             showarrow=True, arrowsize=1, arrowwidth=1, arrowhead=1, standoff=10, startstandoff=10,
@@ -149,5 +214,5 @@ class GraphCommon:
             yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
         )
 
-        plotly_fig = dict(data=[nodes], layout=layout,margin=dict(b=20, l=5, r=5, t=40),)
+        plotly_fig = dict(data=data, layout=layout, margin=dict(b=20, l=5, r=5, t=40),)
         return plotly_fig
