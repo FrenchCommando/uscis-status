@@ -1,3 +1,20 @@
+###########
+# BUILDER #
+###########
+
+# pull official base image
+FROM python:3.8.1-slim-buster as builder
+
+# set work directory
+WORKDIR /usr/src/app
+
+# lint
+RUN pip install --upgrade pip setuptools
+RUN pip install flake8
+COPY . $WORKDIR
+RUN flake8 --ignore=E121,E501,F401,W605 .
+
+
 # pull official base image
 FROM python:3.8.6-slim-buster
 
@@ -13,8 +30,6 @@ ENV APP_HOME=/home/app/uscis_service
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
-# lint
-RUN pip install --upgrade pip setuptools && pip install flake8 && flake8 --ignore=E121,E501,F401,W605 .
 
 # install dependencies
 RUN apt-get update && \
@@ -29,6 +44,7 @@ RUN apt-get update && \
         zlib1g-dev
 
 COPY ./requirements.txt $APP_HOME
+RUN pip install --upgrade pip setuptools
 RUN pip install --no-cache-dir -r requirements.txt --no-binary :all:
 
 COPY . $APP_HOME
