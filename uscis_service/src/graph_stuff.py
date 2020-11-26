@@ -26,7 +26,7 @@ class UscisGraphBuilder:
         common = self.graph[form]
         g = nx.DiGraph()
         g.add_weighted_edges_from(ebunch_to_add=[
-            (new_status, old_status, number) for old_status, v in common.items() for new_status, number in v.items()
+            (old_status, new_status, number) for old_status, v in common.items() for new_status, number in v.items()
         ])
         return GraphCommon(g)
 
