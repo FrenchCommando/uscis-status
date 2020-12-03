@@ -34,6 +34,12 @@ status_to_msg = {
         "On {date}, we sent you a notice about this action. "
         "If you do not receive your notice by {notice_deadline}, please contact the appellate authority directly. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Appeal Was Remanded To The Originating Office For Consideration":
+        "On {date}, the appellate authority returned your appeal for {form_long_name}, "
+        "Receipt Number {receipt_number}, to the originating office so it can reconsider its decision. "
+        "You were notified by mail of this action. If you do not receive your notice by {notice_deadline}, "
+        "please contact the appellate authority directly. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Appeal Was Terminated and A Notice Was Mailed To Me":
         "We terminated your appeal for {form_long_name}, Receipt Number {receipt_number}, "
         "and mailed you a termination notice. "
