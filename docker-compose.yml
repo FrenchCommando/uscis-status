@@ -5,6 +5,7 @@ services:
     build:
       context: ./uscis_service
       dockerfile: Dockerfile
+    restart: always
     command: >
       gunicorn examples.db_server:init_app
       --bind 0.0.0.0:5000
@@ -23,6 +24,7 @@ services:
     command: >
       gunicorn examples.db_graphs:server
       --bind 0.0.0.0:8050 --timeout 300
+    restart: always
     expose:
       - 8050
     depends_on:
@@ -34,6 +36,7 @@ services:
     build:
       context: ./uscis_service
       dockerfile: Dockerfile
+    restart: always
     command: python -m examples.db_schedule
     depends_on:
       - db
@@ -53,6 +56,7 @@ services:
       - 5432
   nginx:
     build: ./nginx
+    restart: always
     ports:
       - 1337:1337
       - 1338:1338
