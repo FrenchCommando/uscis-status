@@ -8,7 +8,7 @@ from src.update_functions import update_entries, smart_update_all, refresh_statu
 # ))
 
 asyncio.get_event_loop().run_until_complete(update_entries(
-    it=[f"LIN{2190009879 + i}" for i in range(1)],
+    it=[f"LIN{2190047829 + i}" for i in range(1)],
     skip_recent_threshold=0,
 ))
 

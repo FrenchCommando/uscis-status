@@ -133,6 +133,14 @@ status_to_msg = {
         "on hold because there is pending litigation that may affect the outcome. "
         "We will start working on your case as soon as the litigation is resolved. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Case Is Pending at a Local Office":
+        "On {date}, we received your case for Receipt Number {receipt_number}, "
+        "and we are processing it at our {location_name} location. "
+        "We mailed you a notice describing how we will process your case. "
+        "Please follow the instructions in your notice. "
+        "If you do not receive your receipt notice by {notice_deadline}, "
+        "contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Case is Ready to Be Scheduled for An Interview":
         "As of {date}, we are ready to schedule your {form_long_name}, "
         "Receipt Number {receipt_number}, for an interview. We will schedule your interview and send you a notice. "
