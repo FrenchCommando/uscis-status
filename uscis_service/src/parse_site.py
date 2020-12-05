@@ -4,7 +4,8 @@ import datetime
 async def check(url_session, receipt_number):
     async with url_session.get(
         url='https://egov.uscis.gov/casestatus/mycasestatus.do',
-        params={"appReceiptNum": receipt_number}
+        params={"appReceiptNum": receipt_number},
+        verify_ssl=False,
     ) as resp:
         timestamp = datetime.datetime.strptime(resp.headers['date'], "%a, %d %b %Y %H:%M:%S %Z")
         # print(timestamp)
