@@ -25,33 +25,30 @@ async def display_msg(content):
     i = 0
     d = dict()
     async for line in content:
-        if i == 695:
+        if i == 693:
             # print(line)  # appReceiptNum
+            # 693 b'var appReceiptNum = "LIN2190047829";\n'
             # 695 b'var appReceiptNum = "LIN2090097008";\n'
             d["appReceiptNum"] = line.decode("utf-8").split("\"")[1]
-        elif i == 721:
+        elif i == 719:
             # print(line)  # Short Case Status
+            # 719 b'\t            Case Is Pending at a Local Office\n'
             # 721 b'\t            Case Was Reopened\n'
             d["ShortCaseStatus"] = line.decode("utf-8").strip()
-        elif i == 734:
+        elif i == 732:
             # print(line)  # Long Case Status with h1
+            # 732 b'\t              <h1>Case Is Pending at a Local Office</h1>\n'
             # 734 b'\t              <h1>Case Was Reopened</h1>\n'
             d["LongCaseStatus"] = line.decode("utf-8").strip().split("<h1>")[1].split("</h1>")[0]
-        elif i == 735:
+        elif i == 733:
             # print(line)  # Case Status Content p
-            # 735 b'\t              <p>On January 10, 2020, we reopened your Form I-290B,
-            # Notice of Appeal or Motion, Receipt Number LIN2090097008, and mailed you a notice.
-            # Please follow the instructions in the notice.
-            # If you do not receive your reopening notice by February 9, 2020,
-            # please go to <a href="https://egov.uscis.gov/e-Request/Intro.do"
-            # target="_blank">www.uscis.gov/e-request</a> to request a copy of the notice.
-            # If you move, go to <a href="https://egov.uscis.gov/coa/displayCOAForm.do"
-            # target="_blank">www.uscis.gov/addresschange</a> to give us your new mailing address.</p>\n'
+            # 733 b'\t              <p>On July 1, 2020, we .... address.</p>\n'
             d["StatusContent"] = line.decode("utf-8").strip().split("<p>")[1].split("</p>")[0]
-        elif i == 770:  # [671, 672, 673]:
+        elif i == 768:  # [671, 672, 673]:
             # print(line)  # formErrorMessages
             error_message = line.decode("utf-8").strip()
             d["ErrorMessage"] = error_message != '</div>'
+            # 768 b'  </div>\n'
             # 770 b'  </div>\n'
             # '<h4>Validation Error(s)<br/>You must correct the following error(s) before proceeding:</h4>'
         # print(i, line)
