@@ -28,17 +28,14 @@ async def display_msg(content):
         if i == 693:
             # print(line)  # appReceiptNum
             # 693 b'var appReceiptNum = "LIN2190047829";\n'
-            # 695 b'var appReceiptNum = "LIN2090097008";\n'
             d["appReceiptNum"] = line.decode("utf-8").split("\"")[1]
         elif i == 719:
             # print(line)  # Short Case Status
             # 719 b'\t            Case Is Pending at a Local Office\n'
-            # 721 b'\t            Case Was Reopened\n'
             d["ShortCaseStatus"] = line.decode("utf-8").strip()
         elif i == 732:
             # print(line)  # Long Case Status with h1
             # 732 b'\t              <h1>Case Is Pending at a Local Office</h1>\n'
-            # 734 b'\t              <h1>Case Was Reopened</h1>\n'
             d["LongCaseStatus"] = line.decode("utf-8").strip().split("<h1>")[1].split("</h1>")[0]
         elif i == 733:
             # print(line)  # Case Status Content p
@@ -49,8 +46,7 @@ async def display_msg(content):
             error_message = line.decode("utf-8").strip()
             d["ErrorMessage"] = error_message != '</div>'
             # 768 b'  </div>\n'
-            # 770 b'  </div>\n'
-            # '<h4>Validation Error(s)<br/>You must correct the following error(s) before proceeding:</h4>'
+            # 768 b'      <h4>Validation Error(s)<br/>You must correct the following error(s) before proceeding:</h4>\n'
         # print(i, line)
         i += 1
     # print(d)
