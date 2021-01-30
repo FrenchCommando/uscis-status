@@ -654,6 +654,12 @@ status_to_msg = {
         "If you do not receive your notice by {notice_deadline}, "
         "please go to www.uscis.gov/e-request to request a copy of the notice. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Termination Notice Sent":
+        "On {date}, we sent you a termination notice for Receipt Number {receipt_number}. "
+        "The notice explains the reasons for our action. Please follow the instructions in the notice. "
+        "If you do not receive your notice by {notice_deadline}, "
+        "please go to www.uscis.gov/e-request to request a copy of the notice. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Travel Document Was Destroyed":
         "On {date}, we destroyed your travel document for Receipt Number {receipt_number}, "
         "that you returned to us with a letter of explanation. "
