@@ -144,8 +144,11 @@ async def delete_entries(it):
     pool = await connect_to_database(database=uscis_database)
     try:
         async with pool.acquire() as conn:
-            for case in it:
-                await remove_case_internal(conn=conn, receipt_number=case)
+            if not it:
+                await clear_uscis_table()
+            else:
+                for case in it:
+                    await remove_case_internal(conn=conn, receipt_number=case)
             await read_db(conn=conn, table_name=uscis_table_name, len_only=True)
     finally:
         await pool.close()
