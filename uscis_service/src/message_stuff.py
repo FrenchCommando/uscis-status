@@ -504,6 +504,13 @@ status_to_msg = {
         "For more information on filing a Form G-28, "
         "please visit http://www.uscis.gov/forms/filing-your-form-g-28. "
         "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
+    "Intent To Rescind Notice Was Mailed":
+        "On {date}, we mailed you a notice explaining our intent to rescind the decision on your case, "
+        "Receipt Number {receipt_number}. The notice explains what we will do. "
+        "Please follow the instructions in the notice, and submit any requested materials. "
+        "If you do not receive your notice before {notice_deadline}, "
+        "contact the USCIS Contact Center at www.uscis.gov/contactcenter. "
+        "If you move, go to www.uscis.gov/addresschange to give us your new mailing address.",
     "Intent to Revoke Notice Was Sent":
         "On {date}, we mailed you a notice explaining our intent to revoke our earlier approval of your case, "
         "Receipt Number {receipt_number}. The notice explains what we will do. "
