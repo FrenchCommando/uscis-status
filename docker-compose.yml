@@ -36,7 +36,7 @@ services:
     build:
       context: ./uscis_service
       dockerfile: Dockerfile
-    restart: always
+#    restart: always
     command: python -m examples.db_schedule
     depends_on:
       - db
