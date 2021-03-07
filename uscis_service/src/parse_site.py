@@ -25,24 +25,27 @@ async def check(url_session, receipt_number):
 async def display_msg(content):
     i = 0
     d = dict()
+    # async for line in content:
+    #     print(i, line)
+    #     i += 1
     async for line in content:
-        if i == 693:
+        if i == 699:
             # print(line)  # appReceiptNum
             # 693 b'var appReceiptNum = "LIN2190047829";\n'
             d["appReceiptNum"] = line.decode("utf-8").split("\"")[1]
-        elif i == 719:
+        elif i == 725:
             # print(line)  # Short Case Status
             # 719 b'\t            Case Is Pending at a Local Office\n'
             d["ShortCaseStatus"] = line.decode("utf-8").strip()
-        elif i == 732:
+        elif i == 738:
             # print(line)  # Long Case Status with h1
             # 732 b'\t              <h1>Case Is Pending at a Local Office</h1>\n'
             d["LongCaseStatus"] = line.decode("utf-8").strip().split("<h1>")[1].split("</h1>")[0]
-        elif i == 733:
+        elif i == 739:
             # print(line)  # Case Status Content p
             # 733 b'\t              <p>On July 1, 2020, we .... address.</p>\n'
             d["StatusContent"] = line.decode("utf-8").strip().split("<p>")[1].split("</p>")[0]
-        elif i == 768:  # [671, 672, 673]:
+        elif i == 774:  # [671, 672, 673]:
             # print(line)  # formErrorMessages
             error_message = line.decode("utf-8").strip()
             d["ErrorMessage"] = error_message != '</div>'
