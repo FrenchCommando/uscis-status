@@ -12,6 +12,6 @@ google-auth-oauthlib
 gunicorn
 html5lib
 networkx
-numpy==1.19.3
+numpy==1.22.0
 pandas
 tornado
